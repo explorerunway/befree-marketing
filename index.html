@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BeFree — voice-first life assistant</title>
+<meta name="description" content="Tap the mic and speak your mind. BeFree quietly files your thoughts as tasks, events, reminders, and grocery items." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F4EEE2;
+    --bg-card: #FBF7EE;
+    --ink: #2A2622;
+    --ink-soft: #5C544B;
+    --terracotta: #C4543A;
+    --brass: #B8923D;
+    --rule: #D5C8B0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 64px 28px 96px; }
+  header { text-align: center; padding: 48px 0 64px; }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 64px;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 32px;
+    margin: 56px 0 16px;
+    letter-spacing: -0.01em;
+  }
+  .tagline {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin: 32px auto;
+    width: 80px;
+  }
+  .mic {
+    display: inline-block;
+    width: 96px; height: 96px;
+    border-radius: 24px;
+    background: var(--bg-card);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.7) inset,
+      0 4px 14px rgba(0,0,0,0.06);
+    line-height: 96px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .mic svg { vertical-align: middle; }
+  p { margin: 0 0 18px; color: var(--ink-soft); }
+  p strong { color: var(--ink); font-weight: 600; }
+  .cta {
+    display: inline-block;
+    background: var(--terracotta);
+    color: #FBF7EE;
+    text-decoration: none;
+    padding: 16px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 17px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04);
+    margin-top: 8px;
+  }
+  .cta:hover { background: #B04830; }
+  .feat { margin: 32px 0; }
+  .feat h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+  .feat p { margin: 0 0 8px; }
+  footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--terracotta); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mic" aria-label="BeFree mascot">
+      <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+        <rect x="18" y="10" width="20" height="28" rx="10" fill="#3A322B"/>
+        <circle cx="24" cy="20" r="1.6" fill="#FBF7EE"/>
+        <circle cx="32" cy="20" r="1.6" fill="#FBF7EE"/>
+        <circle cx="22" cy="25" r="1.4" fill="#C97A6F" opacity="0.7"/>
+        <circle cx="34" cy="25" r="1.4" fill="#C97A6F" opacity="0.7"/>
+        <path d="M25 27 Q28 30 31 27" stroke="#FBF7EE" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <line x1="28" y1="40" x2="28" y2="46" stroke="#3A322B" stroke-width="2"/>
+        <line x1="22" y1="46" x2="34" y2="46" stroke="#3A322B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1>BeFree</h1>
+    <p class="tagline">Speak your mind. We'll keep the rest organised.</p>
+  </header>
+
+  <p>BeFree is a voice-first life assistant. Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said as <strong>tasks</strong>, <strong>events</strong>, <strong>reminders</strong>, and <strong>grocery items</strong>. No noise, no judgement.</p>
+
+  <p>Built for people who'd rather think out loud than wrestle with forms.</p>
+
+  <hr class="rule" />
+
+  <h2>What it does</h2>
+  <div class="feat">
+    <h3>Voice in, structure out</h3>
+    <p>Say "remind me to call mum at 5 tomorrow" — get a reminder. Say "buy oat milk and almonds" — get a grocery list. Say "team lunch Thursday at the Italian place" — get an event.</p>
+  </div>
+  <div class="feat">
+    <h3>Lives where you do</h3>
+    <p>Syncs with Apple Calendar and Reminders. Geofence reminders fire when you arrive. Works offline; everything reconciles when you're back online.</p>
+  </div>
+  <div class="feat">
+    <h3>Yours, not ours</h3>
+    <p>Export your data anytime as JSON or iCal. Delete your account in two taps. We don't sell anything to anyone.</p>
+  </div>
+
+  <hr class="rule" />
+
+  <h2>Get the beta</h2>
+  <p>BeFree is in TestFlight. Tap below to join — you'll need TestFlight installed (free from the App Store).</p>
+  <p style="text-align: center;">
+    <a href="https://testflight.apple.com/join/mnB2xMZY" class="cta">Join the BeFree beta →</a>
+  </p>
+
+  <footer>
+    <p>
+      <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="mailto:vranaau@gmail.com">Contact</a>
+    </p>
+    <p>© 2026 Vishal Rana. Made in Sydney.</p>
+  </footer>
+</div>
+</body>
+</html>
