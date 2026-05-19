@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Subprocessors — BeFree</title>
+<meta name="description" content="The service providers BeFree uses to operate the app, what they do, and where their data lives." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F4EEE2;
+    --bg-card: #FBF7EE;
+    --ink: #2A2622;
+    --ink-soft: #5C544B;
+    --terracotta: #C4543A;
+    --brass: #B8923D;
+    --rule: #D5C8B0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 28px 96px; }
+  .crumb { margin: 0 0 32px; font-size: 14px; }
+  .crumb a { color: var(--terracotta); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 44px;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .last {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+    font-style: italic;
+  }
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 40px 0 12px;
+    letter-spacing: -0.01em;
+  }
+  p, li { color: var(--ink-soft); margin: 0 0 14px; }
+  p strong, li strong { color: var(--ink); font-weight: 600; }
+  ol, ul { padding-left: 22px; }
+  ol li, ul li { margin-bottom: 8px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 15px; }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--bg-card);
+  }
+  td { color: var(--ink-soft); }
+  td strong { color: var(--ink); }
+  a { color: var(--terracotta); }
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--terracotta); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumb"><a href="/">← BeFree</a></p>
+  <h1>Subprocessors</h1>
+  <p class="last">Last updated May 9, 2026</p>
+
+  <p>BeFree uses the following service providers ("subprocessors") to operate the app. This page lists each provider, what role they play, and where their data centers are. We update this list when we change a provider.</p>
+
+  <p>If you have questions about how any of these providers handle BeFree data, email <a href="mailto:support@heybefree.app">support@heybefree.app</a>.</p>
+
+  <table>
+    <thead>
+      <tr><th>Provider</th><th>Role</th><th>Data Region</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Supabase</strong></td><td>Authentication, primary database (Postgres), object storage, serverless Edge Functions</td><td>US</td></tr>
+      <tr><td><strong>PowerSync</strong></td><td>Offline-first sync between BeFree and our database</td><td>US</td></tr>
+      <tr><td><strong>Anthropic</strong></td><td>AI language-model processing for brain-dump parsing</td><td>US</td></tr>
+      <tr><td><strong>Voyage AI</strong></td><td>Embedding generation for in-app search and retrieval</td><td>US</td></tr>
+      <tr><td><strong>Apple</strong></td><td>App distribution (App Store), in-app purchase processing, push notifications, Sign in with Apple</td><td>US / EU</td></tr>
+      <tr><td><strong>RevenueCat</strong></td><td>Subscription entitlement management</td><td>US</td></tr>
+      <tr><td><strong>Sentry</strong></td><td>Crash diagnostics (only when "Help improve BeFree" is enabled)</td><td>US / EU</td></tr>
+      <tr><td><strong>PostHog</strong></td><td>Product analytics (only when "Help improve BeFree" is enabled)</td><td>US</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How We Vet Providers</h2>
+  <p>Before we add a subprocessor, we check that:</p>
+  <ol>
+    <li>They sign a Data Processing Agreement (DPA) that prohibits using BeFree user data to train their own AI models.</li>
+    <li>They commit to a defined data-retention window for prompts and intermediate data.</li>
+    <li>They support encryption in transit and at rest.</li>
+    <li>They commit to notifying us of security incidents within a defined window.</li>
+  </ol>
+  <p>We add new providers only when they meet these requirements.</p>
+
+  <h2>Changes</h2>
+  <p>When we add, remove, or change a subprocessor, we update this page. For material changes — for example, adding a new AI processor or changing where data is processed — we also notify you in-app before the change takes effect.</p>
+
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:support@heybefree.app">support@heybefree.app</a></p>
+
+  <footer>
+    <p>
+      <a href="/">BeFree</a> ·
+      <a href="/privacy.html">Privacy</a> ·
+      <a href="/terms.html">Terms</a> ·
+      <a href="/support.html">Support</a> ·
+      <a href="/accessibility.html">Accessibility</a> ·
+      <a href="/data-deletion.html">Delete data</a> ·
+      <a href="/subprocessors.html">Subprocessors</a>
+    </p>
+    <p>© 2026 Vishal Rana. Made in Sydney.</p>
+  </footer>
+</div>
+</body>
+</html>

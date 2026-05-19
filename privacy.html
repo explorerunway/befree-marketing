@@ -56,21 +56,7 @@
   p strong, li strong { color: var(--ink); font-weight: 600; }
   ul { padding-left: 22px; }
   ul li { margin-bottom: 8px; }
-  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 15px; }
-  th, td {
-    text-align: left;
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--rule);
-    vertical-align: top;
-  }
-  th {
-    font-family: 'Fraunces', Georgia, serif;
-    font-weight: 600;
-    color: var(--ink);
-    background: var(--bg-card);
-  }
-  td { color: var(--ink-soft); }
-  td strong { color: var(--ink); }
+  a { color: var(--terracotta); }
   footer {
     margin-top: 64px;
     padding-top: 24px;
@@ -80,106 +66,104 @@
     color: var(--ink-soft);
   }
   footer a { color: var(--terracotta); text-decoration: none; }
-  a { color: var(--terracotta); }
+  footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <p class="crumb"><a href="/">← BeFree</a></p>
   <h1>Privacy Policy</h1>
-  <p class="last">Last updated 26 April 2026</p>
+  <p class="last">Effective date: May 9, 2026</p>
 
-  <p>BeFree (the "App") is built and operated by Vishal Rana ("we", "us"), based in Sydney, Australia. This document explains what we collect, why, who else sees it, and how to get it back or delete it.</p>
+  <p>BeFree is a voice-first life assistant. You speak or type a brain dump, and BeFree organizes it into tasks, calendar events, reminders, grocery items, and notes.</p>
 
-  <p>Plain-English summary: <strong>your stuff is yours</strong>. We use trusted third parties to store it and to turn your voice into structured items. We don't sell data and we don't track you across the web.</p>
+  <p>This policy describes what BeFree collects, why, and what choices you have. It is written to be read, not skimmed past. If anything is unclear, email us at <a href="mailto:support@heybefree.app">support@heybefree.app</a>.</p>
 
-  <h2>What we collect</h2>
-  <table>
-    <thead>
-      <tr><th>Data</th><th>Why</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Account identifier</strong> (email, or anonymous user ID if you skip sign-in)</td>
-        <td>So your data syncs across your devices and you can sign back in.</td>
-      </tr>
-      <tr>
-        <td><strong>What you say into the mic, and what you type</strong></td>
-        <td>To produce tasks, events, reminders, and grocery items.</td>
-      </tr>
-      <tr>
-        <td><strong>Tasks, events, reminders, grocery items, projects, tags, chat history</strong> you create</td>
-        <td>The product. Stored to your account so it survives across devices.</td>
-      </tr>
-      <tr>
-        <td><strong>Calendar events</strong> from Apple Calendar (read), and events you ask BeFree to write</td>
-        <td>So scheduling speaks the same language as the rest of your phone.</td>
-      </tr>
-      <tr>
-        <td><strong>Apple Reminders</strong> (mirror, when you grant access)</td>
-        <td>Optional integration so iOS Reminders shows up alongside BeFree.</td>
-      </tr>
-      <tr>
-        <td><strong>Approximate location</strong> (only when you opt in to a geofence reminder)</td>
-        <td>To fire reminders like "buy oat milk when I'm near Whole Foods". Used in background only when you enable a geofence; never stored as a location trail.</td>
-      </tr>
-      <tr>
-        <td><strong>Subscription state</strong> (free / pro)</td>
-        <td>To gate Pro features.</td>
-      </tr>
-      <tr>
-        <td><strong>Anonymised crash + usage events</strong> (only if you leave Privacy → Sharing on)</td>
-        <td>To find bugs and learn what's confusing. You can turn it off in <em>You → Privacy</em>.</td>
-      </tr>
-    </tbody>
-  </table>
+  <h2>What We Collect</h2>
 
-  <p>We <strong>do not</strong> collect: contacts, photos, your full location history, or anything that isn't directly tied to a feature you used.</p>
+  <p><strong>Account information.</strong> When you sign in, we create an account identifier and store the email or Apple Sign-In identifier you used.</p>
 
-  <h2>Who else sees your data</h2>
-  <p>We use the following sub-processors to operate BeFree. Each only sees the slice they need to do their job, and each is contractually bound to keep it confidential.</p>
-  <table>
-    <thead><tr><th>Provider</th><th>What they do</th><th>What they see</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Anthropic</strong> (Claude API)</td><td>Turns your voice/text into structured items.</td><td>The text of each "brain dump" you make, plus a small amount of context (your projects and tags) so it can categorise.</td></tr>
-      <tr><td><strong>Voyage AI</strong></td><td>Builds search vectors so you can find old items.</td><td>The text of your items.</td></tr>
-      <tr><td><strong>Supabase</strong> (Postgres + auth)</td><td>Stores your account and items.</td><td>Everything in your account.</td></tr>
-      <tr><td><strong>PowerSync</strong></td><td>Mirrors your data to your device for offline use.</td><td>Everything in your account.</td></tr>
-      <tr><td><strong>Apple TestFlight / App Store</strong></td><td>Distributes the app and processes purchases.</td><td>Your Apple Account, install state, in-app purchases.</td></tr>
-      <tr><td><strong>RevenueCat</strong></td><td>Manages Pro subscriptions.</td><td>Your subscription receipts and a pseudo-anonymous identifier.</td></tr>
-      <tr><td><strong>Sentry</strong> (only with Sharing on)</td><td>Records crashes so we can fix them.</td><td>Anonymised crash reports tied to a random ID.</td></tr>
-      <tr><td><strong>PostHog</strong> (only with Sharing on)</td><td>Records anonymised usage events.</td><td>Anonymised events tied to a random ID, e.g. "user opened the app", "user added a task".</td></tr>
-    </tbody>
-  </table>
-  <p>We do not sell, rent, or share your data with advertisers, data brokers, or any other third party.</p>
+  <p><strong>Your content.</strong> We store the content you create — tasks, events, reminders, grocery items, lists, notes, projects, tags, and the original brain-dump text. This is the data you'd lose if your phone fell in the ocean, and it's what BeFree exists to keep safe across devices.</p>
 
-  <h2>Where it lives</h2>
-  <p>Your data is stored on Supabase infrastructure in Sydney, Australia (region <code>ap-southeast-2</code>). Some sub-processors (e.g., Anthropic, Voyage, RevenueCat, Sentry, PostHog) operate from US data centres; the data they see in transit may be processed there.</p>
+  <p><strong>Voice audio is not stored.</strong> Speech-to-text runs on your device. We receive only the resulting text when you submit a capture.</p>
 
-  <h2>How long we keep it</h2>
-  <p>For as long as your account exists. When you tap <em>You → Delete account</em>, all of your stored data is permanently removed from our systems within 30 days. AI sub-processors hold short-lived inference logs (typically 30 days) which they purge on their schedule.</p>
+  <p><strong>Calendar and Reminders.</strong> If you grant access, BeFree reads from your selected Apple Calendar and Apple Reminders to surface events and reminders in the app. We do not write to them unless you explicitly enable a sync.</p>
 
-  <h2>Your rights</h2>
+  <p><strong>Location.</strong> BeFree does not collect device location in this release. If a future feature needs it, we will update this policy first.</p>
+
+  <p><strong>Purchases.</strong> If you subscribe to Pro, our subscription processor handles purchase and entitlement details so BeFree can unlock paid features.</p>
+
+  <p><strong>Diagnostics &amp; analytics.</strong> If the "Help improve BeFree" setting is on, we collect anonymized crash reports and product-usage analytics. You can turn this off any time in the app's privacy settings.</p>
+
+  <p>We do not sell your data, and we do not track you across other companies' apps or websites.</p>
+
+  <h2>How We Use What We Collect</h2>
   <ul>
-    <li><strong>Export</strong> — <em>You → Export to JSON</em> or <em>Export to iCal</em>. The exports include everything we have on you that's tied to your account.</li>
-    <li><strong>Delete</strong> — <em>You → Delete account</em>. Removes everything tied to your user ID from Supabase, PowerSync, and our sub-processors.</li>
-    <li><strong>Correct</strong> — edit any item directly in the app.</li>
-    <li><strong>Revoke</strong> — turn off mic, location, calendar, or reminders permission in iOS Settings any time. The app will keep working with whatever you leave on.</li>
-    <li><strong>Opt out of sharing</strong> — <em>You → Privacy → Sharing off</em> stops crash reports and analytics.</li>
+    <li>To provide core features: capture, organization, reminders, search, sync, widgets, and Live Activities.</li>
+    <li>To sync your data across your devices.</li>
+    <li>To process purchases.</li>
+    <li>To diagnose crashes and understand product usage, when you've allowed it.</li>
+    <li>To honor your data export and deletion requests.</li>
   </ul>
-  <p>If you're in the EU, UK, California, or another jurisdiction with explicit data rights (GDPR, CCPA, etc.), the rights above are how we honour them.</p>
 
-  <h2>Children</h2>
-  <p>BeFree is not directed at children under 13. We do not knowingly collect data from anyone under 13.</p>
+  <h2>AI Processing</h2>
+  <p>BeFree uses AI to turn your brain dumps into structured items.</p>
+  <ul>
+    <li>The text you submit is sent to a language-model processor, which returns the structured output (tasks, events, etc.) that BeFree saves to your account.</li>
+    <li>BeFree also generates embeddings — small numerical fingerprints — from your content to power in-app search and contextual retrieval.</li>
+    <li>Your content is <strong>not used to train</strong> any AI model. Our AI processors operate under contractual terms that prohibit them from using your content for model training and require them to delete prompts after a short retention window for abuse-monitoring purposes.</li>
+  </ul>
 
-  <h2>Changes to this policy</h2>
-  <p>If we materially change this policy we'll update the date above and surface a notice in the app the next time you open it.</p>
+  <h2>Service Providers</h2>
+  <p>BeFree relies on a small set of service providers to operate the app:</p>
+  <ul>
+    <li>Authentication, database, storage, and serverless functions</li>
+    <li>Offline sync</li>
+    <li>AI language-model processing</li>
+    <li>Embedding generation</li>
+    <li>Subscription billing and entitlements</li>
+    <li>Crash diagnostics (when enabled)</li>
+    <li>Product analytics (when enabled)</li>
+  </ul>
+  <p>For the current list of named providers, see our <a href="/subprocessors.html">Subprocessors</a> page. We update that list when we change a provider, so you can always see exactly who processes BeFree data.</p>
+  <p>These providers process data only to deliver the app functionality you've used. We do not sell personal data.</p>
+
+  <h2>Data Security</h2>
+  <p>BeFree uses encrypted network connections and database-level access controls so each account can access only its own data. We design around least-necessary processing — no provider sees more than they need to do their job. No system is perfect, and we recommend keeping your device's OS up to date.</p>
+
+  <h2>Your Choices</h2>
+  <p>You can:</p>
+  <ul>
+    <li>Turn diagnostics and analytics off in BeFree's privacy settings.</li>
+    <li>Revoke microphone, speech-recognition, calendar, reminder, or notification permissions in iOS Settings.</li>
+    <li>Export your data from BeFree.</li>
+    <li>Delete your account and your BeFree data from inside the app.</li>
+  </ul>
+  <p>For step-by-step instructions, see our <a href="/data-deletion.html">Data Deletion</a> guide.</p>
+
+  <h2>Data Retention</h2>
+  <p>We keep your account data while your account is active. When you delete your account, we remove it from production systems within 30 days. Some provider logs or short-window backups may persist for security, fraud prevention, or operational reasons, but those copies are isolated from the live product.</p>
+
+  <h2>Children's Privacy</h2>
+  <p>BeFree is not directed to children under 13. If you believe a child has provided personal information to BeFree, contact us and we will remove it.</p>
+
+  <h2>Changes</h2>
+  <p>We may update this policy as BeFree changes. The effective date at the top shows when. We will notify you in-app for material changes.</p>
 
   <h2>Contact</h2>
-  <p>Questions, requests, complaints: <a href="mailto:vranaau@gmail.com">vranaau@gmail.com</a>.</p>
+  <p>Email: <a href="mailto:support@heybefree.app">support@heybefree.app</a></p>
 
   <footer>
-    <p><a href="/">BeFree</a> · <a href="/terms.html">Terms</a> · <a href="mailto:vranaau@gmail.com">Contact</a></p>
+    <p>
+      <a href="/">BeFree</a> ·
+      <a href="/privacy.html">Privacy</a> ·
+      <a href="/terms.html">Terms</a> ·
+      <a href="/support.html">Support</a> ·
+      <a href="/accessibility.html">Accessibility</a> ·
+      <a href="/data-deletion.html">Delete data</a> ·
+      <a href="/subprocessors.html">Subprocessors</a>
+    </p>
+    <p>© 2026 Vishal Rana. Made in Sydney.</p>
   </footer>
 </div>
 </body>

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Accessibility — BeFree</title>
+<meta name="description" content="How BeFree supports assistive technology, what's built in today, and how to reach us." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F4EEE2;
+    --bg-card: #FBF7EE;
+    --ink: #2A2622;
+    --ink-soft: #5C544B;
+    --terracotta: #C4543A;
+    --brass: #B8923D;
+    --rule: #D5C8B0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 28px 96px; }
+  .crumb { margin: 0 0 32px; font-size: 14px; }
+  .crumb a { color: var(--terracotta); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 44px;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .last {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+    font-style: italic;
+  }
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 40px 0 12px;
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 24px 0 8px;
+    color: var(--ink);
+  }
+  p, li { color: var(--ink-soft); margin: 0 0 14px; }
+  p strong, li strong { color: var(--ink); font-weight: 600; }
+  ul { padding-left: 22px; }
+  ul li { margin-bottom: 8px; }
+  a { color: var(--terracotta); }
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--terracotta); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumb"><a href="/">← BeFree</a></p>
+  <h1>Accessibility</h1>
+  <p class="last">Last updated May 9, 2026</p>
+
+  <p>BeFree is built for people who think out loud — including people who use assistive technology to do it. This page describes how BeFree supports accessibility today, what we're working on, and how to reach us if something doesn't work.</p>
+
+  <h2>Our Commitment</h2>
+  <p>We target <strong>WCAG 2.1 Level AA</strong> as a baseline. We don't always hit it on the first build of a feature, but every release tightens the gap, and we treat accessibility regressions as bugs — not nice-to-haves.</p>
+
+  <h2>What's Built In</h2>
+
+  <h3>Voice-first capture</h3>
+  <ul>
+    <li>BeFree's primary input is your voice. You can capture an entire brain dump without typing, tapping a small target, or remembering a tap-and-hold gesture.</li>
+    <li>The mic button is a single, large, persistent target on every primary screen.</li>
+    <li>Speech-to-text runs <strong>on-device</strong>. Your voice never leaves your phone.</li>
+    <li>Capture also works through <strong>Hey Siri</strong> ("Hey Siri, BeFree…") with no need to open the app.</li>
+  </ul>
+
+  <h3>Screen reader support (VoiceOver)</h3>
+  <ul>
+    <li>Every interactive element has a labelled role and accessible name.</li>
+    <li>Card and sheet titles are announced as headings.</li>
+    <li>Status changes (capture starting, AI thinking, item created) are announced through ARIA-style live regions.</li>
+  </ul>
+
+  <h3>Dynamic Type</h3>
+  <ul>
+    <li>BeFree respects the system Text Size preference, including the larger accessibility sizes.</li>
+    <li>Layouts are tested at the largest accessibility size — no clipped labels, no overlapping rows.</li>
+  </ul>
+
+  <h3>Reduce Motion</h3>
+  <ul>
+    <li>BeFree respects the system Reduce Motion preference. The mascot's idle animation, page transitions, and entrance fades are toned down or removed when Reduce Motion is on.</li>
+    <li>The brain-dump "thinking" indicator does not flash; it fades.</li>
+  </ul>
+
+  <h3>Color and Contrast</h3>
+  <ul>
+    <li>Light and dark modes are first-class. Both meet 4.5:1 contrast for body text and 3:1 for large text against their respective backgrounds.</li>
+    <li>We don't use color alone to convey meaning — every status uses an icon plus a label.</li>
+  </ul>
+
+  <h3>Reduced Cognitive Load</h3>
+  <ul>
+    <li>One mic. One sheet. No streaks, no badges, no engagement loops. The app is designed to let you walk away.</li>
+    <li>Confirmations name where the AI put your item ("Milk's on Groceries.") so you don't have to hunt for it after a dump.</li>
+  </ul>
+
+  <h3>Lock-screen and widget capture</h3>
+  <ul>
+    <li>Capture from the lock screen via the BeFree mic widget — no need to unlock, find the app, and tap a target.</li>
+    <li>Widget tap-to-mark-done on iOS 17+ lets you complete a task without opening the app.</li>
+  </ul>
+
+  <h2>What We Use</h2>
+  <ul>
+    <li><strong>Apple Speech framework</strong> for on-device speech recognition.</li>
+    <li><strong>iOS native</strong> components wherever possible so VoiceOver, Switch Control, Voice Control, and Full Keyboard Access work the way you expect.</li>
+    <li><strong>System Text Size</strong> and <strong>Reduce Motion</strong> are read directly from iOS settings — no separate in-app toggle to forget.</li>
+  </ul>
+
+  <h2>Known Gaps</h2>
+  <p>We're honest about what isn't done:</p>
+  <ul>
+    <li><strong>iPad layout</strong> is not optimized for iPad in v1; we ship iPhone-only.</li>
+    <li><strong>Voice Control on iOS</strong> works for basic commands ("tap mic", "tap submit") but isn't fully tuned — some custom gestures don't have a verbal name yet.</li>
+    <li><strong>Older devices</strong> (iPhone 8, SE 1st gen) may experience reduced animation framerates. Reduce Motion is the recommended workaround.</li>
+    <li>We don't yet ship a high-contrast theme beyond what dark mode provides.</li>
+  </ul>
+  <p>These are tracked. If you depend on one of them, email us — we will prioritize what real users need.</p>
+
+  <h2>Reporting an Accessibility Issue</h2>
+  <p>If you find something that doesn't work for you, email <strong><a href="mailto:support@heybefree.app">support@heybefree.app</a></strong> with:</p>
+  <ul>
+    <li>The device and iOS version you're using.</li>
+    <li>The assistive technology in use (VoiceOver, Switch Control, etc.).</li>
+    <li>A short description of what you tried to do and what happened instead.</li>
+  </ul>
+  <p>We aim to respond within 3 business days and prioritize accessibility fixes ahead of feature work.</p>
+
+  <h2>Designing With Us</h2>
+  <p>If you're an accessibility researcher, neurodivergent advocate, or assistive-technology user who'd like to test pre-release builds, email <strong><a href="mailto:support@heybefree.app">support@heybefree.app</a></strong> with the subject "Accessibility tester" and we will get you a TestFlight invite.</p>
+
+  <footer>
+    <p>
+      <a href="/">BeFree</a> ·
+      <a href="/privacy.html">Privacy</a> ·
+      <a href="/terms.html">Terms</a> ·
+      <a href="/support.html">Support</a> ·
+      <a href="/accessibility.html">Accessibility</a> ·
+      <a href="/data-deletion.html">Delete data</a> ·
+      <a href="/subprocessors.html">Subprocessors</a>
+    </p>
+    <p>© 2026 Vishal Rana. Made in Sydney.</p>
+  </footer>
+</div>
+</body>
+</html>

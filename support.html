@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Support — BeFree</title>
+<meta name="description" content="How to get help with BeFree, the voice-first life assistant." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F4EEE2;
+    --bg-card: #FBF7EE;
+    --ink: #2A2622;
+    --ink-soft: #5C544B;
+    --terracotta: #C4543A;
+    --brass: #B8923D;
+    --rule: #D5C8B0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 28px 96px; }
+  .crumb { margin: 0 0 32px; font-size: 14px; }
+  .crumb a { color: var(--terracotta); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 44px;
+    margin: 0 0 24px;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 40px 0 12px;
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 24px 0 8px;
+    color: var(--ink);
+  }
+  p, li { color: var(--ink-soft); margin: 0 0 14px; }
+  p strong, li strong { color: var(--ink); font-weight: 600; }
+  ul { padding-left: 22px; }
+  ul li { margin-bottom: 8px; }
+  code {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+    font-size: 14px;
+    background: var(--bg-card);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--ink);
+  }
+  a { color: var(--terracotta); }
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--terracotta); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumb"><a href="/">← BeFree</a></p>
+  <h1>Support</h1>
+
+  <p>BeFree is a voice-first life assistant for capturing tasks, events, reminders, groceries, and notes.</p>
+
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:support@heybefree.app">support@heybefree.app</a></p>
+
+  <p>For App Review and TestFlight support, include:</p>
+  <ul>
+    <li>The email address you used to sign in.</li>
+    <li>Your device model and iOS version.</li>
+    <li>A short description of what happened.</li>
+    <li>Screenshots or a screen recording if the issue is visual.</li>
+  </ul>
+  <p>Do not send passwords, API keys, private calendar details, or sensitive personal information by email.</p>
+
+  <h2>Common Help</h2>
+
+  <h3>Voice capture is not starting</h3>
+  <p>Check <strong>iOS Settings → Privacy &amp; Security → Microphone</strong> and <strong>Speech Recognition</strong>, then make sure BeFree is allowed.</p>
+
+  <h3>Reminders are not firing</h3>
+  <p>Check <strong>iOS Settings → Notifications → BeFree</strong> and confirm notifications are allowed.</p>
+
+  <h3>Widgets look empty</h3>
+  <p>Open BeFree once after installing or updating. The app writes a fresh widget snapshot when it becomes active and when it moves to the background.</p>
+
+  <h3>Siri shortcuts do not appear</h3>
+  <p>Launch BeFree once after installing the TestFlight build, then check <strong>Settings → Siri &amp; Search → BeFree</strong>. iOS can take a short time to index new App Intents.</p>
+
+  <h3>Purchases or Pro status are missing</h3>
+  <p>Open BeFree → <strong>You → Subscription → Restore Purchases</strong>. If the issue continues, email support with your BeFree account email and the approximate purchase time.</p>
+
+  <h3>Export or delete account</h3>
+  <p>Open BeFree → <strong>You → Account &amp; Data</strong>. You can export your data or delete your account from there. See the full <a href="/data-deletion.html">Data Deletion</a> guide for details.</p>
+
+  <h2>Status</h2>
+  <p>Status notices for ongoing incidents will be posted here at <code>https://heybefree.app/support</code> until a dedicated status page exists.</p>
+
+  <footer>
+    <p>
+      <a href="/">BeFree</a> ·
+      <a href="/privacy.html">Privacy</a> ·
+      <a href="/terms.html">Terms</a> ·
+      <a href="/support.html">Support</a> ·
+      <a href="/accessibility.html">Accessibility</a> ·
+      <a href="/data-deletion.html">Delete data</a> ·
+      <a href="/subprocessors.html">Subprocessors</a>
+    </p>
+    <p>© 2026 Vishal Rana. Made in Sydney.</p>
+  </footer>
+</div>
+</body>
+</html>
