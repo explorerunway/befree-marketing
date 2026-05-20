@@ -92,6 +92,12 @@
 
   <p><strong>Calendar and Reminders.</strong> If you grant access, BeFree reads from your selected Apple Calendar and Apple Reminders to surface events and reminders in the app. We do not write to them unless you explicitly enable a sync.</p>
 
+  <p><strong>Google Calendar.</strong> If you connect a Google account in Settings &rarr; Sources, BeFree requests calendar read + write access via Google OAuth 2.0. Read access lets BeFree show your Google events alongside what you capture; write access lets BeFree push events you create in BeFree back to your Google calendar. The OAuth tokens live in your device's Keychain &mdash; we never send them to our servers. You can disconnect at any time in Settings &rarr; Sources; disconnecting clears every token and tombstones the Google-imported events on your device.</p>
+
+  <p><strong>Photos and Camera.</strong> If you attach a photo to a note, BeFree uploads that image to encrypted object storage so it can sync across your devices. The image is associated with your account, served to the app via short-lived signed URLs, and removed when you delete the note or your account. If you take a photo with the in-app camera, the captured image is treated identically. We do not access your photo library or camera at any other time.</p>
+
+  <p><strong>Microphone.</strong> BeFree uses on-device speech recognition for voice capture. The audio stream stays on your device &mdash; we never upload raw audio. Only the resulting transcript text is sent to our servers (and only if you submit the capture).</p>
+
   <p><strong>Location.</strong> BeFree does not collect device location in this release. If a future feature needs it, we will update this policy first.</p>
 
   <p><strong>Purchases.</strong> If you subscribe to Pro, our subscription processor handles purchase and entitlement details so BeFree can unlock paid features.</p>
