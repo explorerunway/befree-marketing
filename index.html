@@ -4,10 +4,26 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>BeFree — voice-first life assistant</title>
-<meta name="description" content="Tap the mic and speak your mind. BeFree quietly files your thoughts as tasks, events, reminders, and grocery items." />
+<meta name="description" content="Tap the mic and speak your mind. BeFree quietly files what you said as tasks, events, reminders, grocery items, and notes." />
+<meta name="theme-color" content="#F4EEE2" />
+
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="BeFree — voice-first life assistant" />
+<meta property="og:description" content="Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said. No noise, no judgement." />
+<meta property="og:url" content="https://heybefree.app/" />
+<meta property="og:image" content="https://heybefree.app/mascot.png" />
+<meta property="og:image:alt" content="BeFree's kawaii mic mascot" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BeFree — voice-first life assistant" />
+<meta name="twitter:description" content="Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said." />
+<meta name="twitter:image" content="https://heybefree.app/mascot.png" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Geist:wght@100..900&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #F4EEE2;
@@ -23,13 +39,13 @@
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 17px;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
   .wrap { max-width: 720px; margin: 0 auto; padding: 64px 28px 96px; }
-  header { text-align: center; padding: 48px 0 64px; }
+  header { text-align: center; padding: 48px 0 56px; }
   h1 {
     font-family: 'Fraunces', Georgia, serif;
     font-weight: 700;
@@ -58,19 +74,25 @@
     margin: 32px auto;
     width: 80px;
   }
-  .mic {
+  /* Mascot — the real kawaii mic (assets/cutemic.png from the app).
+     Frame uses radius 20 (the "sheet" tier of the shape ladder, matching
+     how the mascot is hosted in the app's TalkSheet). */
+  .mascot-frame {
     display: inline-block;
-    width: 96px; height: 96px;
-    border-radius: 24px;
+    width: 144px; height: 144px;
+    border-radius: 20px;
     background: var(--bg-card);
     box-shadow:
       0 1px 0 rgba(255,255,255,0.7) inset,
-      0 4px 14px rgba(0,0,0,0.06);
-    line-height: 96px;
-    margin-bottom: 24px;
-    position: relative;
+      0 6px 20px rgba(0,0,0,0.06);
+    margin-bottom: 28px;
+    padding: 14px;
   }
-  .mic svg { vertical-align: middle; }
+  .mascot-frame img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+  }
   p { margin: 0 0 18px; color: var(--ink-soft); }
   p strong { color: var(--ink); font-weight: 600; }
   .cta {
@@ -79,7 +101,8 @@
     color: #FBF7EE;
     text-decoration: none;
     padding: 16px 28px;
-    border-radius: 12px;
+    /* radius 14 — buttons + inputs per design-language.md */
+    border-radius: 14px;
     font-weight: 600;
     font-size: 17px;
     border: 1px solid rgba(0,0,0,0.06);
@@ -95,6 +118,12 @@
     margin: 0 0 4px;
   }
   .feat p { margin: 0 0 8px; }
+  .platform-note {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 12px;
+  }
   footer {
     margin-top: 96px;
     padding-top: 32px;
@@ -110,23 +139,14 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="mic" aria-label="BeFree mascot">
-      <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
-        <rect x="18" y="10" width="20" height="28" rx="10" fill="#3A322B"/>
-        <circle cx="24" cy="20" r="1.6" fill="#FBF7EE"/>
-        <circle cx="32" cy="20" r="1.6" fill="#FBF7EE"/>
-        <circle cx="22" cy="25" r="1.4" fill="#C97A6F" opacity="0.7"/>
-        <circle cx="34" cy="25" r="1.4" fill="#C97A6F" opacity="0.7"/>
-        <path d="M25 27 Q28 30 31 27" stroke="#FBF7EE" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-        <line x1="28" y1="40" x2="28" y2="46" stroke="#3A322B" stroke-width="2"/>
-        <line x1="22" y1="46" x2="34" y2="46" stroke="#3A322B" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+    <div class="mascot-frame" aria-label="BeFree mascot — a friendly mic">
+      <img src="/mascot.png" alt="BeFree mascot — a friendly kawaii microphone" width="144" height="144" />
     </div>
     <h1>BeFree</h1>
     <p class="tagline">Speak your mind. We'll keep the rest organised.</p>
   </header>
 
-  <p>BeFree is a voice-first life assistant. Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said as <strong>tasks</strong>, <strong>events</strong>, <strong>reminders</strong>, and <strong>grocery items</strong>. No noise, no judgement.</p>
+  <p>BeFree is a voice-first life assistant. Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said as <strong>tasks</strong>, <strong>events</strong>, <strong>reminders</strong>, <strong>grocery items</strong>, and <strong>notes</strong>. No noise, no judgement.</p>
 
   <p>Built for people who'd rather think out loud than wrestle with forms.</p>
 
@@ -135,15 +155,15 @@
   <h2>What it does</h2>
   <div class="feat">
     <h3>Voice in, structure out</h3>
-    <p>Say "remind me to call mum at 5 tomorrow" — get a reminder. Say "buy oat milk and almonds" — get a grocery list. Say "team lunch Thursday at the Italian place" — get an event.</p>
+    <p>Say "remind me to call mum at 5 tomorrow" — get a reminder. Say "buy oat milk and almonds" — get a grocery list. Say "team lunch Thursday at the Italian place" — get an event. Speech-to-text runs on-device; your voice never leaves your phone.</p>
   </div>
   <div class="feat">
     <h3>Lives where you do</h3>
-    <p>Syncs with Apple Calendar and Reminders. Geofence reminders fire when you arrive. Works offline; everything reconciles when you're back online.</p>
+    <p>Reads from Apple Calendar and Apple Reminders so scheduling speaks the same language as the rest of your phone. Capture from the home-screen mic widget, the lock-screen mic widget, or "Hey Siri, BeFree…" — no need to open the app. Works offline; everything reconciles when you're back online.</p>
   </div>
   <div class="feat">
     <h3>Yours, not ours</h3>
-    <p>Export your data anytime as JSON or iCal. Delete your account in two taps. We don't sell anything to anyone.</p>
+    <p>Export your data anytime as JSON or iCal. Delete your account from inside the app and your data is removed within 30 days. We don't sell anything to anyone, and we don't use your content to train AI models.</p>
   </div>
 
   <hr class="rule" />
@@ -153,6 +173,7 @@
   <p style="text-align: center;">
     <a href="https://testflight.apple.com/join/mnB2xMZY" class="cta">Join the BeFree beta →</a>
   </p>
+  <p class="platform-note" style="text-align: center;">iOS only at v1. Android testing is in private beta.</p>
 
   <footer>
     <p>
