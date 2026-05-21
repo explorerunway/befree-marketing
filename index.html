@@ -68,6 +68,19 @@
     color: var(--ink-soft);
     margin: 0;
   }
+  .trio {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--brass);
+    margin: 6px 0 0;
+    letter-spacing: 0.02em;
+  }
+  .privacy-trifecta {
+    margin-top: 12px;
+    font-style: italic;
+    color: var(--brass);
+  }
   .rule {
     border: 0;
     border-top: 1px solid var(--rule);
@@ -139,11 +152,12 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="mascot-frame" aria-label="BeFree mascot — a friendly mic">
-      <img src="/mascot.png" alt="BeFree mascot — a friendly kawaii microphone" width="144" height="144" />
+    <div class="mascot-frame" aria-label="BeFree's kawaii mic mascot">
+      <img src="/mascot.png" alt="BeFree's kawaii mic mascot" width="144" height="144" />
     </div>
     <h1>BeFree</h1>
     <p class="tagline">Speak your mind. We'll keep the rest organised.</p>
+    <p class="trio">Drop it. Keep it. Bring it back.</p>
   </header>
 
   <p>BeFree is a voice-first life assistant. Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said as <strong>tasks</strong>, <strong>events</strong>, <strong>reminders</strong>, <strong>grocery items</strong>, and <strong>notes</strong>. No noise, no judgement.</p>
@@ -154,7 +168,7 @@
 
   <h2>What it does</h2>
   <div class="feat">
-    <h3>Voice in, structure out</h3>
+    <h3>Speak in any order, sorted in seconds</h3>
     <p>Say "remind me to call mum at 5 tomorrow" — get a reminder. Say "buy oat milk and almonds" — get a grocery list. Say "team lunch Thursday at the Italian place" — get an event. Speech-to-text runs on-device; your voice never leaves your phone.</p>
   </div>
   <div class="feat">
@@ -164,6 +178,7 @@
   <div class="feat">
     <h3>Yours, not ours</h3>
     <p>Export your data anytime as JSON or iCal. Delete your account from inside the app and your data is removed within 30 days. We don't sell anything to anyone, and we don't use your content to train AI models.</p>
+    <p class="privacy-trifecta">Calm by default. Voice stays on-device. No cross-app tracking.</p>
   </div>
 
   <hr class="rule" />
@@ -173,7 +188,7 @@
   <p style="text-align: center;">
     <a href="https://testflight.apple.com/join/mnB2xMZY" class="cta">Join the BeFree beta →</a>
   </p>
-  <p class="platform-note" style="text-align: center;">iOS only at v1. Android testing is in private beta.</p>
+  <p class="platform-note" style="text-align: center;">iOS only at v1.</p>
 
   <footer>
     <p>
