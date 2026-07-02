@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BeFree — voice-first life assistant</title>
-<meta name="description" content="Tap the mic and speak your mind. BeFree quietly files what you said as tasks, events, reminders, grocery items, and notes." />
+<title>BeFree — your voice inbox for real life</title>
+<meta name="description" content="Say the messy thing. BeFree turns it into tasks, calendar events, reminders, grocery lists, and notes — so you don't have to decide where things go." />
 <meta name="theme-color" content="#F4EEE2" />
 
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/favicon.png" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="BeFree — voice-first life assistant" />
-<meta property="og:description" content="Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said. No noise, no judgement." />
+<meta property="og:title" content="BeFree — your voice inbox for real life" />
+<meta property="og:description" content="Say the messy thing. BeFree sorts it into tasks, reminders, calendar, lists, and notes. No noise, no judgement." />
 <meta property="og:url" content="https://heybefree.app/" />
 <meta property="og:image" content="https://heybefree.app/mascot.png" />
 <meta property="og:image:alt" content="BeFree's kawaii mic mascot" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="BeFree — voice-first life assistant" />
-<meta name="twitter:description" content="Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said." />
+<meta name="twitter:title" content="BeFree — your voice inbox for real life" />
+<meta name="twitter:description" content="Say the messy thing. BeFree sorts it into tasks, reminders, calendar, lists, and notes." />
 <meta name="twitter:image" content="https://heybefree.app/mascot.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -86,6 +86,43 @@
     border-top: 1px solid var(--rule);
     margin: 32px auto;
     width: 80px;
+  }
+  /* Before/after card — the product moment (messy dump in, sorted items out).
+     bg-card at radius 16 matches the app's entity-card tier of the shape ladder. */
+  .ba-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin: 28px 0;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.03);
+  }
+  .ba-say {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink);
+    margin: 0 0 14px;
+    line-height: 1.5;
+  }
+  .ba-arrow {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 10px;
+  }
+  .ba-items { list-style: none; margin: 0; padding: 0; }
+  .ba-items li { padding: 9px 0; border-top: 1px solid var(--rule); color: var(--ink-soft); }
+  .ba-items li:first-child { border-top: 0; }
+  .ba-kind {
+    display: inline-block;
+    min-width: 96px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 600;
   }
   /* Mascot — the real kawaii mic (assets/cutemic.png from the app).
      Frame uses radius 20 (the "sheet" tier of the shape ladder, matching
@@ -156,13 +193,24 @@
       <img src="/mascot.png" alt="BeFree's kawaii mic mascot" width="144" height="144" />
     </div>
     <h1>BeFree</h1>
-    <p class="tagline">Speak your mind. We'll keep the rest organised.</p>
+    <p class="tagline">Your voice inbox for real life.</p>
     <p class="trio">Drop it. Keep it. Bring it back.</p>
   </header>
 
-  <p>BeFree is a voice-first life assistant. Tap the mic, talk like you'd talk to a friend, and BeFree quietly files what you said as <strong>tasks</strong>, <strong>events</strong>, <strong>reminders</strong>, <strong>grocery items</strong>, and <strong>notes</strong>. No noise, no judgement.</p>
+  <p>BeFree is a calm intake room for everything on your mind. Tap the mic, say it all in one breath — appointments, groceries, reminders, half-formed ideas — and BeFree quietly files it as <strong>tasks</strong>, <strong>events</strong>, <strong>reminders</strong>, <strong>grocery items</strong>, and <strong>notes</strong>. The relief isn't organisation. It's not having to decide where things go.</p>
 
-  <p>Built for people who'd rather think out loud than wrestle with forms.</p>
+  <div class="ba-card" aria-label="Example: what you say becomes organised items">
+    <p class="ba-say">"Dentist Tuesday at 3… bananas and oat milk… remind me to send the school form tonight… oh, and paint the hallway sage."</p>
+    <div class="ba-arrow">becomes</div>
+    <ul class="ba-items">
+      <li><span class="ba-kind">Event</span>Dentist — Tuesday, 3:00 pm</li>
+      <li><span class="ba-kind">Groceries</span>Bananas · Oat milk</li>
+      <li><span class="ba-kind">Reminder</span>Send the school form — tonight</li>
+      <li><span class="ba-kind">Note</span>Paint the hallway sage</li>
+    </ul>
+  </div>
+
+  <p>Built for people whose brain is louder than their to-do app — no boards, no systems, no ceremony.</p>
 
   <hr class="rule" />
 
