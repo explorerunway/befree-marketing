@@ -16,23 +16,26 @@ const windowCards = [
 ---
 
 <Site
-  title="BeFree for Mac — The calm room, now on your desktop"
-  description="One keystroke opens a quiet capture bar over any app. Speak, and it's sorted — menu-bar capture, global hotkey, offline, synced to your iPhone."
+  title="BeFree for Mac — The calm room, next on your desktop"
+  description="BeFree for Mac is in development — menu-bar capture, a global hotkey, offline capture, synced to your iPhone. BeFree is free on iPhone today."
   active="mac"
 >
   <!-- ══════════ HERO ══════════ -->
   <section class="hero">
-    <div class="eyebrow">BeFree for Mac</div>
-    <h1>The calm room,<br />now on your <span class="voice">desktop.</span></h1>
+    <div class="eyebrow">BeFree for Mac — in development</div>
+    <h1>The calm room,<br />next on your <span class="voice">desktop.</span></h1>
     <p>
       A thought hits while you're deep in work. One keystroke, say it, and it's sorted — without
-      ever leaving what you're doing.
+      ever leaving what you're doing. Here's what we're building.
     </p>
     <div class="hero-cta">
-      <a href="#download" class="download-btn">
-        <i class="ph-bold ph-download-simple"></i> Download for Mac
+      <a
+        href="mailto:support@heybefree.app?subject=BeFree%20for%20Mac%20%E2%80%94%20tell%20me%20when%20it%20lands"
+        class="download-btn"
+      >
+        <i class="ph-bold ph-bell-ringing"></i> Tell me when it lands
       </a>
-      <span class="hero-meta">Free · macOS 13+</span>
+      <span class="hero-meta">In development · macOS 13+ planned</span>
     </div>
   </section>
 
@@ -179,12 +182,17 @@ const windowCards = [
 
   <!-- ══════════ DOWNLOAD CTA ══════════ -->
   <DownloadCTA
-    title="Get BeFree for Mac."
-    sub="Free to start. Your menu bar's about to get a lot more useful."
-    meta="Free · macOS 13 Ventura or later · Universal (Apple silicon & Intel)"
+    title="BeFree for Mac is on the way."
+    sub="Until it lands, the calm room is free on iPhone — same account, same content, ready when the Mac app arrives."
+    meta="In development · macOS 13+ planned"
   >
-    <StoreBadge store="mac" />
-    <a href="#" class="dmg-btn"><i class="ph-bold ph-download-simple"></i> Direct download (.dmg)</a>
+    <StoreBadge store="ios" />
+    <a
+      href="mailto:support@heybefree.app?subject=BeFree%20for%20Mac%20%E2%80%94%20tell%20me%20when%20it%20lands"
+      class="notify-btn"
+    >
+      <i class="ph-bold ph-bell-ringing"></i> Tell me when it lands
+    </a>
   </DownloadCTA>
 </Site>
 
@@ -622,8 +630,8 @@ const windowCards = [
     margin: 0;
   }
 
-  /* dmg button (inside dark CTA) */
-  .dmg-btn {
+  /* notify button (inside dark CTA) */
+  .notify-btn {
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -637,11 +645,11 @@ const windowCards = [
     font-weight: 600;
     font-size: 16px;
   }
-  .dmg-btn:hover {
+  .notify-btn:hover {
     border-color: #b583be;
     color: #e6c7ed;
   }
-  .dmg-btn i {
+  .notify-btn i {
     font-size: 18px;
   }
 </style>

@@ -8,11 +8,11 @@ import DownloadCTA from '../components/DownloadCTA.astro';
 const faqs = [
   {
     q: 'Is the free plan actually free?',
-    a: 'Yes — genuinely, forever. Capture, AI sorting, and all five kinds of content on one device, no card required. Plus is there when you want sync and unlimited history.',
+    a: 'Yes — genuinely, forever. Capture, AI sorting, and all five kinds of content, synced across your devices, no card required. Pro is there when your brain-dump volume outgrows the free AI budget.',
   },
   {
     q: 'Does it work on both Mac and iPhone?',
-    a: "Both, and they stay in sync on Plus and Family. Dump a thought on your Mac and check it off on your phone — it's all one calm room.",
+    a: 'iPhone today. The Mac app is in development — and when it lands, your account and content will be there waiting, in sync.',
   },
   {
     q: 'Do you train AI on my brain dumps?',
@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: 'Can I switch or cancel whenever?',
-    a: 'Anytime, in a couple of taps. Cancel Plus and you simply drop back to Free — your content stays right where it is.',
+    a: 'Anytime, in a couple of taps. Cancel Pro and you simply drop back to Free — your content stays right where it is.',
   },
 ];
 ---
@@ -43,7 +43,7 @@ const faqs = [
     <div class="toggle" role="group" aria-label="Billing period">
       <button type="button" id="bill-monthly" class="seg">Monthly</button>
       <button type="button" id="bill-annual" class="seg on"
-        >Annual <span class="save">SAVE 20%</span></button
+        >Annual <span class="save">SAVE 28%</span></button
       >
     </div>
   </section>
@@ -62,60 +62,39 @@ const faqs = [
         <a href="/#download" class="tier-btn outline">Get started</a>
         <div class="feats">
           <div class="feat"><i class="ph-bold ph-check olive"></i> Voice capture &amp; AI sorting</div>
-          <div class="feat"><i class="ph-bold ph-check olive"></i> Tasks, reminders, lists &amp; notes</div>
-          <div class="feat"><i class="ph-bold ph-check olive"></i> One device</div>
-          <div class="feat"><i class="ph-bold ph-check olive"></i> 7 days of history</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Tasks, events, reminders, lists &amp; notes</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Sync across your devices</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Works offline</div>
         </div>
       </div>
 
-      <!-- PLUS (highlighted) -->
+      <!-- PRO (highlighted) -->
       <div class="tier plus">
         <div class="pop">Most popular</div>
-        <div class="tier-name">Plus</div>
-        <div class="tier-tag">For a life across devices.</div>
+        <div class="tier-name">Pro</div>
+        <div class="tier-tag">For when life gets loud.</div>
         <div class="price-row tight">
-          <span class="price">$<span data-price-plus>4</span></span>
+          <span class="price">$<span data-price-pro>5</span></span>
           <span class="per">/mo</span>
         </div>
-        <div class="bill-note" data-bill-note>billed annually</div>
-        <a href="/#download" class="tier-btn solid">Start free, upgrade later</a>
+        <div class="bill-note" data-bill-note>billed annually — $59.99/yr</div>
+        <a href="/#download" class="tier-btn solid">Start free, upgrade in the app</a>
         <div class="feats-label">Everything in Free, plus</div>
         <div class="feats">
-          <div class="feat"><i class="ph-bold ph-check plum"></i> Unlimited history</div>
-          <div class="feat"><i class="ph-bold ph-check plum"></i> Sync across Mac &amp; iPhone</div>
-          <div class="feat"><i class="ph-bold ph-check plum"></i> Calendar integrations</div>
-          <div class="feat"><i class="ph-bold ph-check plum"></i> Recurring reminders</div>
-          <div class="feat"><i class="ph-bold ph-check plum"></i> Priority AI, always fresh</div>
-        </div>
-      </div>
-
-      <!-- FAMILY -->
-      <div class="tier">
-        <div class="tier-name">Family</div>
-        <div class="tier-tag">For a whole calm household.</div>
-        <div class="price-row tight">
-          <span class="price">$<span data-price-family>8</span></span>
-          <span class="per">/mo</span>
-        </div>
-        <div class="bill-note" data-bill-note>billed annually</div>
-        <a href="/#download" class="tier-btn outline">Choose Family</a>
-        <div class="feats-label">Everything in Plus, plus</div>
-        <div class="feats">
-          <div class="feat"><i class="ph-bold ph-check brass"></i> Up to 5 people</div>
-          <div class="feat"><i class="ph-bold ph-check brass"></i> Shared lists &amp; calendars</div>
-          <div class="feat"><i class="ph-bold ph-check brass"></i> Per-person private space</div>
-          <div class="feat"><i class="ph-bold ph-check brass"></i> One simple bill</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> About 100× the monthly AI budget</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> Heavy brain-dump weeks never hit a wall</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> Keeps BeFree independent — no ads, ever</div>
         </div>
       </div>
     </div>
     <div class="all-note">
-      All plans include the Mac app, the iPhone app, and offline capture. Cancel anytime.
+      Both plans include the iPhone app, offline capture, and sync. Cancel anytime.
     </div>
   </section>
 
   <!-- ══════════ VOICE MOMENT ══════════ -->
   <section class="voice-moment">
-    <p>No trials that trap you. No plan you'll forget to cancel. Just calm.</p>
+    <p>No pressure to upgrade. No plan you'll forget to cancel. Just calm.</p>
   </section>
 
   <!-- ══════════ FAQ ══════════ -->
@@ -146,20 +125,20 @@ const faqs = [
 </Site>
 
 <script>
-  // Toggle logic — verbatim from the spec's logic class:
-  // annual ? Plus $4 / Family $8 / "billed annually" : Plus $6 / Family $10 / "billed monthly"
+  // Toggle logic — the spec's state machine wired to the REAL App Store
+  // prices: Pro $6.99/mo monthly, $59.99/yr annual (≈$5/mo, 28% off).
   const monthlyBtn = document.getElementById('bill-monthly')!;
   const annualBtn = document.getElementById('bill-annual')!;
-  const plusEl = document.querySelector('[data-price-plus]')!;
-  const familyEl = document.querySelector('[data-price-family]')!;
+  const proEl = document.querySelector('[data-price-pro]')!;
   const notes = document.querySelectorAll('[data-bill-note]');
 
   function apply(annual: boolean) {
     annualBtn.classList.toggle('on', annual);
     monthlyBtn.classList.toggle('on', !annual);
-    plusEl.textContent = annual ? '4' : '6';
-    familyEl.textContent = annual ? '8' : '10';
-    notes.forEach((n) => (n.textContent = annual ? 'billed annually' : 'billed monthly'));
+    proEl.textContent = annual ? '5' : '6.99';
+    notes.forEach(
+      (n) => (n.textContent = annual ? 'billed annually — $59.99/yr' : 'billed monthly')
+    );
   }
   monthlyBtn.addEventListener('click', () => apply(false));
   annualBtn.addEventListener('click', () => apply(true));
@@ -255,6 +234,9 @@ const faqs = [
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
     gap: 18px;
     align-items: start;
+    /* two tiers — cap the row so the cards keep the spec's ~330px proportions */
+    max-width: 740px;
+    margin: 0 auto;
   }
   .tier {
     background: var(--bg-card);
