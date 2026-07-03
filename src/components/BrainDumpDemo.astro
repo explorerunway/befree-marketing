@@ -1,0 +1,1058 @@
+---
+// BrainDumpDemo — the live, playable hero demo (embed variant).
+// Faithful port of designs/The Brain Dump.dc.html: three phases
+// (input → sorting → result), Web Speech mic with typed fallback,
+// live AI parse via the brain-parse edge function, offline keyword
+// classifier as the always-works fallback. Nothing is saved.
+//
+// The demo deliberately keeps the spec's standalone hex values (they equal
+// the light-mode tokens) — it always renders on the plum-wash stage.
+---
+
+<div class="bfd" id="bfd">
+  <!-- ═══ INPUT ═══ -->
+  <div class="phase" id="bfd-input">
+    <div class="input-card">
+      <textarea
+        id="bfd-ta"
+        placeholder="dentist thursday at 3, out of coffee and oat milk, call mum tonight, finish the report by friday, pay the electricity bill…"
+        rows="4"></textarea>
+
+      <div class="controls">
+        <div class="mic-slot">
+          <button type="button" id="bfd-mic-idle" class="mic-idle">
+            <svg viewBox="0 0 256 256"><path
+                d="M128,180a52.06,52.06,0,0,0,52-52V64A52,52,0,0,0,76,64v64A52.06,52.06,0,0,0,128,180ZM100,64a28,28,0,0,1,56,0v64a28,28,0,0,1-56,0Zm40,155.22V240a12,12,0,0,1-24,0V219.22A92.14,92.14,0,0,1,36,128a12,12,0,0,1,24,0,68,68,0,0,0,136,0,12,12,0,0,1,24,0A92.14,92.14,0,0,1,140,219.22Z"
+              ></path></svg>
+            <span>Or just talk</span>
+          </button>
+          <button type="button" id="bfd-mic-on" class="mic-on" hidden>
+            <span class="waves">
+              <span></span><span></span><span></span><span></span>
+            </span>
+            <span>Listening… tap to stop</span>
+          </button>
+        </div>
+        <button type="button" id="bfd-clear" class="clear" hidden>
+          <svg viewBox="0 0 256 256"><path
+              d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"
+            ></path></svg>
+          <span>Clear</span>
+        </button>
+      </div>
+
+      <button type="button" id="bfd-sort" class="sort">
+        <span>Sort my brain</span>
+        <svg viewBox="0 0 256 256"><path
+            d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"
+          ></path></svg>
+      </button>
+
+      <div class="hint" id="bfd-hint" hidden></div>
+
+      <div class="examples">
+        <div class="examples-label">Not sure? Steal a mess:</div>
+        <div class="chips" id="bfd-chips"></div>
+      </div>
+    </div>
+    <div class="foot-note">Live AI · nothing saved · works offline too</div>
+  </div>
+
+  <!-- ═══ SORTING ═══ -->
+  <div class="phase sorting" id="bfd-sorting" hidden>
+    <div class="pulse-stage">
+      <span class="ring"></span>
+      <span class="ring ring2"></span>
+      <div class="listen-mascot">
+        <img src="/assets/cutemic-blink.png" alt="BeFree listening" />
+      </div>
+    </div>
+    <div class="status-row">
+      <span class="waves big">
+        <span class="w1"></span><span class="w2"></span><span class="w3"></span><span class="w4"
+        ></span><span class="w5"></span>
+      </span>
+      <span class="status" id="bfd-status" aria-live="polite">Listening…</span>
+    </div>
+    <div class="quote" id="bfd-quote"></div>
+  </div>
+
+  <!-- ═══ RESULT ═══ -->
+  <div class="phase" id="bfd-result" hidden>
+    <div class="payoff">
+      <div class="ai-badge">
+        <svg viewBox="0 0 256 256"><path
+            d="M208,144a15.78,15.78,0,0,1-10.42,14.94L146,178l-19,51.62a15.92,15.92,0,0,1-29.88,0L78,178l-51.62-19a15.92,15.92,0,0,1,0-29.88L78,110l19-51.62a15.92,15.92,0,0,1,29.88,0L146,110l51.62,19A15.78,15.78,0,0,1,208,144ZM152,48h16V64a8,8,0,0,0,16,0V48h16a8,8,0,0,0,0-16H184V16a8,8,0,0,0-16,0V32H152a8,8,0,0,0,0,16Zm88,32h-8V72a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0V96h8a8,8,0,0,0,0-16Z"
+          ></path></svg>
+        <span id="bfd-ainote">Parsed live by AI</span>
+      </div>
+      <h2 class="payoff-title">
+        BeFree cleared <span class="counter" id="bfd-counter">0</span> things<br />off your mind.
+      </h2>
+      <p class="payoff-sub">One messy sentence in. A sorted day out. That took about five seconds.</p>
+    </div>
+    <div class="you-said" id="bfd-yousaid"></div>
+    <div class="groups" id="bfd-groups"></div>
+    <div class="result-cta">
+      <a href="https://apps.apple.com/app/id6763826891" class="store-dark">
+        <svg viewBox="0 0 384 512"><path
+            d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C61.5 141.2 0 184.4 0 272.1c0 25.9 4.7 52.7 14.2 80.3 12.6 36.4 58 125.6 105.4 124.1 24.8-.6 42.3-17.6 74.6-17.6 31.3 0 47.5 17.6 76.4 17.6 47.8-.7 88.9-81.7 100.9-118.2-64.1-30.2-63.2-88.5-63.2-90.1zm-49.4-152.9c23.9-28.3 21.7-54.1 21-63.4-21.1 1.2-45.5 14.3-59.4 30.4-15.3 17.3-24.3 38.7-22.4 63.1 22.8 1.7 43.6-10 60.8-30.1z"
+          ></path></svg>
+        <span class="store-text">
+          <span class="s1">Download on the</span>
+          <span class="s2">App Store</span>
+        </span>
+      </a>
+      <button type="button" id="bfd-again" class="again">
+        <svg viewBox="0 0 256 256"><path
+            d="M244,56v48a12,12,0,0,1-12,12H184a12,12,0,1,1,0-24H201.1l-19-17.38c-.13-.12-.26-.24-.38-.37A76,76,0,1,0,127,204h1a75.53,75.53,0,0,0,52.15-20.72,12,12,0,0,1,16.49,17.45A99.45,99.45,0,0,1,128,228h-1.37A100,100,0,1,1,198.51,57.06L220,76.72V56a12,12,0,0,1,24,0Z"
+          ></path></svg>
+        <span>Dump another</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── config ─────────────────────────────────────────────────────────────
+  const PARSE_URL = 'https://vicddpzvanjndlqzglue.supabase.co/functions/v1/brain-parse';
+  // Public anon key (same one shipped in the iOS bundle) — required by the
+  // functions gateway; grants nothing beyond anon.
+  const ANON_KEY =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpY2RkcHp2YW5qbmRscXpnbHVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MDI0MjEsImV4cCI6MjA5MzE3ODQyMX0.q8l_WG4fqa6p2kJbDN2uOD6MivEblbalecT-t5jIAcU';
+  const DWELL_MS = 1600;
+
+  // Group glyphs + palette — verbatim from The Brain Dump.dc.html logic class.
+  const ICON: Record<string, string> = {
+    cald: 'M208,28H188V24a12,12,0,0,0-24,0v4H92V24a12,12,0,0,0-24,0v4H48A20,20,0,0,0,28,48V208a20,20,0,0,0,20,20H208a20,20,0,0,0,20-20V48A20,20,0,0,0,208,28ZM68,52a12,12,0,0,0,24,0h72a12,12,0,0,0,24,0h16V76H52V52ZM52,204V100H204V204Zm92-76a16,16,0,1,1-16-16A16,16,0,0,1,144,128Zm48,0a16,16,0,1,1-16-16A16,16,0,0,1,192,128ZM96,176a16,16,0,1,1-16-16A16,16,0,0,1,96,176Zm48,0a16,16,0,1,1-16-16A16,16,0,0,1,144,176Zm48,0a16,16,0,1,1-16-16A16,16,0,0,1,192,176Z',
+    bell: 'M225.29,165.93C216.61,151,212,129.57,212,104a84,84,0,0,0-168,0c0,25.58-4.59,47-13.27,61.93A20.08,20.08,0,0,0,30.66,186,19.77,19.77,0,0,0,48,196H84.18a44,44,0,0,0,87.64,0H208a19.77,19.77,0,0,0,17.31-10A20.08,20.08,0,0,0,225.29,165.93ZM128,212a20,20,0,0,1-19.6-16h39.2A20,20,0,0,1,128,212ZM54.66,172C63.51,154,68,131.14,68,104a60,60,0,0,1,120,0c0,27.13,4.48,50,13.33,68Z',
+    cksq: 'M79.51,144.49a12,12,0,1,1,17-17L112,143l47.51-47.52a12,12,0,0,1,17,17l-56,56a12,12,0,0,1-17,0ZM228,48V208a20,20,0,0,1-20,20H48a20,20,0,0,1-20-20V48A20,20,0,0,1,48,28H208A20,20,0,0,1,228,48Zm-24,4H52V204H204Z',
+    bask: 'M140,128v40a12,12,0,0,1-24,0V128a12,12,0,0,1,24,0Zm28.06-1.19-4,40a12,12,0,0,0,10.75,13.13c.4,0,.81.06,1.2.06a12,12,0,0,0,11.93-10.81l4-40a12,12,0,0,0-23.88-2.38Zm-80.12,0a12,12,0,0,0-23.88,2.38l4,40A12,12,0,0,0,80,180c.39,0,.8,0,1.2-.06a12,12,0,0,0,10.75-13.13Zm156-37.22-15.07,113A20.06,20.06,0,0,1,209,220H47a20.06,20.06,0,0,1-19.82-17.36l-15.07-113A12,12,0,0,1,24,76H66.55L119,16.1a12,12,0,0,1,18.06,0L189.45,76H232a12,12,0,0,1,11.89,13.59ZM98.45,76h59.1L128,42.22Zm119.84,24H37.71l12.8,96h155Z',
+    note: 'M84,108A12,12,0,0,1,96,96h64a12,12,0,0,1,0,24H96A12,12,0,0,1,84,108Zm32,28H96a12,12,0,0,0,0,24h20a12,12,0,0,0,0-24ZM228,48V156.69a19.86,19.86,0,0,1-5.86,14.14l-51.31,51.31A19.86,19.86,0,0,1,156.69,228H48a20,20,0,0,1-20-20V48A20,20,0,0,1,48,28H208A20,20,0,0,1,228,48ZM52,204h92V156a12,12,0,0,1,12-12h48V52H52Zm139-36H168v23Z',
+  };
+  const GROUP_DEFS = [
+    { type: 'event', label: 'On your calendar', hex: '#3D5A52', wash: '#CDD8D4', icon: ICON.cald },
+    { type: 'reminder', label: 'Reminders', hex: '#C4543A', wash: '#E8C9BD', icon: ICON.bell },
+    { type: 'task', label: 'To-dos', hex: '#7A4583', wash: '#EDE3F0', icon: ICON.cksq },
+    { type: 'list', label: 'Lists', hex: '#B8923D', wash: '#E8DAB8', icon: ICON.bask },
+    { type: 'note', label: 'Notes', hex: '#3D5A7A', wash: '#D9DEE6', icon: ICON.note },
+  ];
+  const EXAMPLES = [
+    {
+      label: 'Monday reset',
+      text: "Dentist Thursday at 3, we're out of coffee and oat milk, call mum tonight, submit the Q3 report by Friday, and remind me to pay the electricity bill.",
+    },
+    {
+      label: 'Trip week',
+      text: 'Book flights for the 20th, renew my passport, standup moved to 10am tomorrow, pick up dry cleaning, need sunscreen and a travel adapter, and idea — try a walking meeting Wednesday.',
+    },
+    {
+      label: 'Family stuff',
+      text: "Mum's birthday next Saturday, buy her a gift, we need eggs bread and butter, water the plants, cancel the gym, dinner with Sam Friday at 7.",
+    },
+  ];
+  const STATUS_CYCLE = [
+    'Catching every thread…',
+    'Finding the to-dos…',
+    'Reading the dates…',
+    'Sorting your lists…',
+    'Almost done…',
+  ];
+
+  type Item = { title: string; type: string; meta: string };
+
+  // ── offline fallback classifier — verbatim port ────────────────────────
+  function tc(s: string): string {
+    return String(s).replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  function localParse(text: string): Item[] {
+    const frags = text
+      .replace(/\r/g, '')
+      .replace(/\band\b/gi, ',')
+      .split(/[,;\n]+|\bthen\b/i)
+      .map((x) => x.trim())
+      .filter((x) => x.length > 2);
+    const timeRe =
+      /\b(\d{1,2}(:\d{2})?\s?(am|pm)|noon|midnight|morning|afternoon|evening|tonight|at\s+\d{1,2})\b/i;
+    const dateRe =
+      /\b(mon|tue|wed|thu|fri|sat|sun)(day|s|nesday|rsday|urday)?\b|\b(today|tomorrow|tonight|weekend)\b|\bnext\s+\w+\b|\bthe\s+\d{1,2}(st|nd|rd|th)\b|\b\d{1,2}(st|nd|rd|th)\b|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{1,2}\b/i;
+    const eventRe =
+      /\b(meeting|lunch|dinner|breakfast|call|appt|appointment|standup|stand-up|review|flight|party|birthday|drinks|coffee with|catch up|catch-up|interview|class|game|match|date night|1:1|one on one|reservation|checkup|check-up)\b/i;
+    const groceryRe =
+      /\b(milk|coffee|oat milk|eggs|bread|butter|sugar|banana|apple|water|snack|grocer|out of|pick up|buy|beer|wine|toilet paper|detergent|veg|cheese|sunscreen|adapter|shampoo|paper towel)\b/i;
+    const noteRe = /\b(idea|note|remember that|thought|maybe|consider|thinking about)\b/i;
+    const remindRe =
+      /\b(remind|don'?t forget|pay|renew|bill|water the|cancel|return|email|text|call|book|schedule|submit|send|rsvp|follow up|follow-up|reply|confirm|register|passport)\b/i;
+    const items: Item[] = [];
+    for (const f of frags) {
+      const low = f.toLowerCase();
+      const hasDate = dateRe.test(low),
+        hasTime = timeRe.test(low);
+      let type = 'task',
+        meta = '';
+      if ((hasDate || hasTime) && eventRe.test(low)) type = 'event';
+      else if (hasDate || hasTime) type = eventRe.test(low) ? 'event' : 'reminder';
+      else if (groceryRe.test(low)) {
+        type = 'list';
+        meta = 'Groceries';
+      } else if (noteRe.test(low)) type = 'note';
+      else if (remindRe.test(low)) type = 'reminder';
+      if (type === 'event' || type === 'reminder') {
+        const dm = low.match(dateRe),
+          tm = low.match(timeRe);
+        const parts: string[] = [];
+        if (dm) parts.push(tc(dm[0]));
+        if (tm) parts.push(tc(tm[0]).replace(/^At\s+/, ''));
+        meta = parts.join(' · ');
+      }
+      let title = f
+        .replace(
+          /^\s*(i\s+)?(need to|have to|should|want to|gotta|got to|must|remember to|remind me to|don'?t forget to|make sure to|please)\s+/i,
+          ''
+        )
+        .replace(/\s+/g, ' ')
+        .trim();
+      title = title.charAt(0).toUpperCase() + title.slice(1);
+      if (title.length > 54) title = title.slice(0, 51) + '…';
+      if (title) items.push({ title, type, meta });
+    }
+    return items.length ? items : [{ title: text.trim().slice(0, 54), type: 'task', meta: '' }];
+  }
+
+  // ── live AI parse via brain-parse (errors → null → offline fallback) ───
+  async function aiParse(text: string): Promise<Item[] | null> {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 10_000);
+    try {
+      const today = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+      const res = await fetch(PARSE_URL, {
+        method: 'POST',
+        signal: ctrl.signal,
+        headers: {
+          Authorization: `Bearer ${ANON_KEY}`,
+          apikey: ANON_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text, today }),
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      const ok = new Set(['event', 'reminder', 'task', 'list', 'note']);
+      const items = Array.isArray(data?.items) ? data.items : [];
+      const cleaned = items
+        .filter((it: Item) => it && it.title)
+        .map((it: Item) => ({
+          title: String(it.title).trim(),
+          type: ok.has(it.type) ? it.type : 'task',
+          meta: it.meta ? String(it.meta).trim() : '',
+        }));
+      return cleaned.length ? cleaned : null;
+    } catch {
+      return null;
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  // ── DOM wiring ──────────────────────────────────────────────────────────
+  const $ = (id: string) => document.getElementById(id)!;
+  const root = $('bfd');
+  const phaseInput = $('bfd-input');
+  const phaseSorting = $('bfd-sorting');
+  const phaseResult = $('bfd-result');
+  const ta = $('bfd-ta') as HTMLTextAreaElement;
+  const micIdle = $('bfd-mic-idle');
+  const micOnBtn = $('bfd-mic-on');
+  const clearBtn = $('bfd-clear');
+  const hintEl = $('bfd-hint');
+  const statusEl = $('bfd-status');
+  const quoteEl = $('bfd-quote');
+  const counterEl = $('bfd-counter');
+  const aiNoteEl = $('bfd-ainote');
+  const youSaidEl = $('bfd-yousaid');
+  const groupsEl = $('bfd-groups');
+
+  let micOn = false;
+  let rec: SpeechRecognition | null = null;
+  let baseText = '';
+  let statusTimers: ReturnType<typeof setTimeout>[] = [];
+  let countTimer: ReturnType<typeof setInterval> | undefined;
+  let countBackstop: ReturnType<typeof setTimeout> | undefined;
+  let sorting = false;
+
+  const SR =
+    (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+  if (!SR) micIdle.style.display = 'none';
+
+  function setHint(msg: string) {
+    hintEl.textContent = msg;
+    hintEl.hidden = !msg;
+  }
+  function syncClear() {
+    clearBtn.hidden = !ta.value.trim();
+  }
+  function showPhase(which: 'input' | 'sorting' | 'result') {
+    phaseInput.hidden = which !== 'input';
+    phaseSorting.hidden = which !== 'sorting';
+    phaseResult.hidden = which !== 'result';
+  }
+
+  // examples
+  const chips = $('bfd-chips');
+  for (const ex of EXAMPLES) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.textContent = ex.label;
+    b.addEventListener('click', () => {
+      ta.value = ex.text;
+      setHint('');
+      syncClear();
+      ta.focus();
+    });
+    chips.appendChild(b);
+  }
+
+  ta.addEventListener('input', () => {
+    setHint('');
+    syncClear();
+  });
+  ta.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') sort();
+  });
+  clearBtn.addEventListener('click', () => {
+    ta.value = '';
+    setHint('');
+    syncClear();
+    ta.focus();
+  });
+
+  // mic
+  function stopMic() {
+    if (rec) {
+      try {
+        rec.stop();
+      } catch {
+        /* already stopped */
+      }
+      rec = null;
+    }
+    micOn = false;
+    micIdle.hidden = false;
+    micOnBtn.hidden = true;
+    if (!SR) micIdle.style.display = 'none';
+  }
+  function startMic() {
+    if (!SR) return;
+    try {
+      const r = new SR();
+      r.lang = 'en-US';
+      r.interimResults = true;
+      r.continuous = true;
+      baseText = ta.value ? ta.value.trim() + ' ' : '';
+      r.onresult = (e: SpeechRecognitionEvent) => {
+        let interim = '',
+          final = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          const t = e.results[i][0].transcript;
+          if (e.results[i].isFinal) final += t;
+          else interim += t;
+        }
+        if (final) baseText += final + ' ';
+        ta.value = (baseText + interim).replace(/\s+/g, ' ');
+        syncClear();
+      };
+      r.onerror = (ev: any) => {
+        stopMic();
+        setHint(ev && ev.error === 'not-allowed' ? 'Mic blocked — you can type instead.' : '');
+      };
+      r.onend = () => {
+        if (micOn) stopMic();
+      };
+      r.start();
+      rec = r;
+      micOn = true;
+      micIdle.hidden = true;
+      micOnBtn.hidden = false;
+      setHint('');
+    } catch {
+      stopMic();
+      setHint('Mic unavailable — type instead.');
+    }
+  }
+  micIdle.addEventListener('click', startMic);
+  micOnBtn.addEventListener('click', stopMic);
+
+  // groups builder
+  function buildGroups(items: Item[]) {
+    const groups = [];
+    for (const d of GROUP_DEFS) {
+      const its = items.filter((i) => i.type === d.type);
+      if (!its.length) continue;
+      groups.push({
+        label: d.label,
+        hex: d.hex,
+        wash: d.wash,
+        iconPath: d.icon,
+        countLabel: its.length + (its.length === 1 ? ' thing' : ' things'),
+        items: its,
+      });
+    }
+    return groups;
+  }
+
+  function renderGroup(g: ReturnType<typeof buildGroups>[number]): HTMLElement {
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    const head = document.createElement('div');
+    head.className = 'group-head';
+    head.innerHTML =
+      `<span class="group-medal" style="background:${g.wash};">` +
+      `<svg viewBox="0 0 256 256" style="fill:${g.hex};"><path d="${g.iconPath}"></path></svg></span>` +
+      `<span class="group-label"></span><span class="group-count"></span>`;
+    (head.querySelector('.group-label') as HTMLElement).textContent = g.label;
+    (head.querySelector('.group-count') as HTMLElement).textContent = g.countLabel;
+    card.appendChild(head);
+    for (const it of g.items) {
+      const row = document.createElement('div');
+      row.className = 'group-row';
+      const dot = document.createElement('span');
+      dot.className = 'row-dot';
+      dot.style.background = g.hex;
+      const title = document.createElement('span');
+      title.className = 'row-title';
+      title.textContent = it.title;
+      row.appendChild(dot);
+      row.appendChild(title);
+      if (it.meta) {
+        const meta = document.createElement('span');
+        meta.className = 'row-meta';
+        meta.textContent = it.meta;
+        row.appendChild(meta);
+      }
+      card.appendChild(row);
+    }
+    return card;
+  }
+
+  function animateCounter(total: number) {
+    clearInterval(countTimer);
+    clearTimeout(countBackstop);
+    const start = performance.now(),
+      dur = 800;
+    countTimer = setInterval(() => {
+      const p = Math.min(1, (performance.now() - start) / dur);
+      counterEl.textContent = String(Math.round(p * total));
+      if (p >= 1) clearInterval(countTimer);
+    }, 50);
+    // backstop: guarantee the final value even if timers are throttled
+    countBackstop = setTimeout(() => (counterEl.textContent = String(total)), dur + 300);
+  }
+
+  async function sort() {
+    const text = ta.value.trim();
+    if (!text) {
+      setHint('Type something — or tap an example below.');
+      ta.focus();
+      return;
+    }
+    if (sorting) return;
+    sorting = true;
+    stopMic();
+    showPhase('sorting');
+    statusEl.textContent = 'Listening…';
+    quoteEl.textContent = '“' + text + '”';
+    setHint('');
+    const t0 = performance.now();
+    statusTimers.forEach(clearTimeout);
+    statusTimers = STATUS_CYCLE.map((msg, i) =>
+      setTimeout(() => (statusEl.textContent = msg), 700 * (i + 1))
+    );
+
+    let parsed = await aiParse(text);
+    const usedAI = !!(parsed && parsed.length);
+    if (!parsed || !parsed.length) parsed = localParse(text);
+    const groups = buildGroups(parsed);
+    const total = parsed.length;
+    statusTimers.forEach(clearTimeout);
+
+    const dwell = Math.max(0, DWELL_MS - (performance.now() - t0));
+    setTimeout(() => {
+      aiNoteEl.textContent = usedAI ? 'Parsed live by AI' : 'Sorted instantly';
+      youSaidEl.textContent = 'You said: “' + text + '”';
+      counterEl.textContent = '0';
+      groupsEl.innerHTML = '';
+      showPhase('result');
+      animateCounter(total);
+      groups.forEach((g, i) => setTimeout(() => groupsEl.appendChild(renderGroup(g)), 150 * i));
+      sorting = false;
+    }, dwell);
+  }
+  $('bfd-sort').addEventListener('click', sort);
+
+  $('bfd-again').addEventListener('click', () => {
+    stopMic();
+    ta.value = '';
+    setHint('');
+    syncClear();
+    showPhase('input');
+    ta.focus();
+  });
+</script>
+
+<style>
+  .bfd {
+    position: relative;
+    font-family: var(--font-body);
+    max-width: 660px;
+    margin: 0 auto;
+  }
+  .phase[hidden] {
+    display: none !important;
+  }
+  /* the display rules below would otherwise beat the hidden attribute */
+  .bfd [hidden] {
+    display: none !important;
+  }
+
+  /* ── input ── */
+  .input-card {
+    background: #fffdf8;
+    border: 1px solid #dcd2b8;
+    border-radius: 24px;
+    padding: clamp(18px, 3.5vw, 28px);
+    box-shadow: 0 30px 70px rgba(31, 26, 20, 0.16);
+  }
+  textarea {
+    width: 100%;
+    min-height: clamp(132px, 20vh, 178px);
+    resize: vertical;
+    border: 1.5px solid #dcd2b8;
+    border-radius: 16px;
+    background: #fbf6ec;
+    padding: 16px 18px;
+    font-family: var(--font-body);
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.55;
+    color: #2a2118;
+    display: block;
+  }
+  textarea::placeholder {
+    color: #b4a488;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: #7a4583;
+    box-shadow: 0 0 0 4px rgba(122, 69, 131, 0.12);
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .mic-idle,
+  .mic-on {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    border: 1.5px solid #dcd2b8;
+    background: #fbf6ec;
+    color: #5c4f3d;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .mic-idle svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    display: block;
+  }
+  .mic-idle:hover {
+    border-color: #7a4583;
+    color: #7a4583;
+  }
+  .mic-on {
+    gap: 11px;
+    border-color: #7a4583;
+    background: #ede3f0;
+    color: #7a4583;
+    font-weight: 600;
+  }
+  .waves {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 16px;
+  }
+  .waves span {
+    width: 3px;
+    height: 100%;
+    background: #7a4583;
+    border-radius: 2px;
+    transform-origin: bottom;
+    animation: bfdWave 900ms ease-in-out infinite;
+  }
+  .waves span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .waves span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .waves span:nth-child(4) {
+    animation-delay: 0.45s;
+  }
+  .clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: #9a8b72;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 4px;
+  }
+  .clear svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    display: block;
+  }
+  .clear:hover {
+    color: #a8412c;
+  }
+  .sort {
+    width: 100%;
+    margin-top: 16px;
+    border: none;
+    cursor: pointer;
+    background: #7a4583;
+    color: #fffcf4;
+    border-radius: 16px;
+    padding: clamp(15px, 2.4vw, 19px);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(18px, 2.4vw, 21px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    box-shadow: 0 10px 24px rgba(122, 69, 131, 0.28);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+  .sort svg {
+    width: 21px;
+    height: 21px;
+    fill: #fffcf4;
+    display: block;
+  }
+  .sort:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(122, 69, 131, 0.38);
+  }
+  .sort:active {
+    transform: translateY(0);
+  }
+  .sort span {
+    white-space: nowrap;
+  }
+  .hint {
+    margin-top: 11px;
+    text-align: center;
+    color: #a8412c;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+  }
+  .examples {
+    margin-top: 22px;
+  }
+  .examples-label {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #9a8b72;
+    margin-bottom: 11px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chips :global(.chip) {
+    cursor: pointer;
+    border: 1px solid #dcd2b8;
+    background: #fbf6ec;
+    color: #5c4f3d;
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .chips :global(.chip:hover) {
+    background: #f1ead9;
+    border-color: #b8a98a;
+    color: #2a2118;
+  }
+  .foot-note {
+    margin-top: 16px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #9a8b72;
+  }
+
+  /* ── sorting ── */
+  .sorting {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(24px, 4vh, 34px);
+    padding: clamp(20px, 5vh, 50px) 0 clamp(20px, 4vh, 40px);
+    animation: bfdRise 400ms ease both;
+  }
+  .pulse-stage {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    display: grid;
+    place-items: center;
+  }
+  .ring {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #7a4583;
+    animation: bfdPulse 1700ms ease-out infinite;
+  }
+  .ring2 {
+    animation-delay: 850ms;
+  }
+  .listen-mascot {
+    width: 96px;
+    aspect-ratio: 1;
+    animation: bfBreathe 2600ms cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    filter: drop-shadow(0 12px 18px rgba(31, 26, 20, 0.2));
+    position: relative;
+    z-index: 1;
+  }
+  .listen-mascot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+  .waves.big {
+    gap: 4px;
+    height: 26px;
+  }
+  .waves.big span {
+    width: 4px;
+  }
+  .waves.big .w1 {
+    background: #7a4583;
+  }
+  .waves.big .w2 {
+    background: #b8923d;
+    animation-delay: 0.15s;
+  }
+  .waves.big .w3 {
+    background: #7a4583;
+    animation-delay: 0.3s;
+  }
+  .waves.big .w4 {
+    background: #c4543a;
+    animation-delay: 0.45s;
+  }
+  .waves.big .w5 {
+    background: #3d5a52;
+    animation-delay: 0.6s;
+  }
+  .status {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(22px, 3.4vw, 28px);
+    color: #2a2118;
+  }
+  .quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(16px, 2.4vw, 19px);
+    line-height: 1.5;
+    color: #7a6b54;
+    background: #fffdf8;
+    border: 1px solid #e4dac2;
+    border-radius: 16px;
+    padding: 18px 22px;
+    max-width: 520px;
+  }
+
+  /* ── result ── */
+  #bfd-result {
+    animation: bfdRise 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .payoff {
+    text-align: center;
+    margin-bottom: clamp(22px, 4vh, 34px);
+  }
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ede3f0;
+    color: #7a4583;
+    border-radius: 999px;
+    padding: 7px 15px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .ai-badge svg {
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
+    display: block;
+  }
+  .payoff-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(30px, 5.6vw, 50px);
+    line-height: 1.05;
+    letter-spacing: -1.2px;
+    color: #2a2118;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .counter {
+    color: #7a4583;
+  }
+  .payoff-sub {
+    font-family: var(--font-body);
+    font-size: clamp(16px, 2.2vw, 19px);
+    color: #5c4f3d;
+    margin: 14px 0 0;
+  }
+  .you-said {
+    max-width: 720px;
+    margin: 0 auto clamp(20px, 3vh, 28px);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(15px, 2vw, 17px);
+    line-height: 1.5;
+    color: #8a7c64;
+    text-align: center;
+    text-wrap: pretty;
+  }
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 16px;
+  }
+  .groups :global(.group-card) {
+    background: #fffdf8;
+    border: 1px solid #e4dac2;
+    border-radius: 18px;
+    padding: 20px 22px 10px;
+    box-shadow: 0 14px 34px rgba(31, 26, 20, 0.1);
+    animation: bfdRise 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .groups :global(.group-head) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+  .groups :global(.group-medal) {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    flex: none;
+  }
+  .groups :global(.group-medal svg) {
+    width: 25px;
+    height: 25px;
+    display: block;
+  }
+  .groups :global(.group-label) {
+    flex: 1;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(19px, 2.6vw, 23px);
+    color: #2a2118;
+  }
+  .groups :global(.group-count) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #9a8b72;
+    white-space: nowrap;
+  }
+  .groups :global(.group-row) {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 12px 0;
+    border-top: 1px solid #f0e8d6;
+  }
+  .groups :global(.row-dot) {
+    width: 11px;
+    height: 11px;
+    border-radius: 4px;
+    flex: none;
+  }
+  .groups :global(.row-title) {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: clamp(15.5px, 2vw, 17px);
+    font-weight: 500;
+    color: #2a2118;
+    line-height: 1.35;
+  }
+  .groups :global(.row-meta) {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    color: #8e6e2a;
+    background: #f4ecda;
+    padding: 5px 9px;
+    border-radius: 7px;
+    white-space: nowrap;
+  }
+  .result-cta {
+    margin-top: clamp(20px, 3vh, 30px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .store-dark {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #1f1a14;
+    padding: 13px 22px;
+    border-radius: 14px;
+  }
+  .store-dark:hover {
+    opacity: 0.92;
+  }
+  .store-dark svg {
+    width: 30px;
+    height: 30px;
+    fill: #fff;
+    flex: none;
+    display: block;
+  }
+  .store-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .store-text .s1 {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 400;
+    color: #fff;
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
+  }
+  .store-text .s2 {
+    font-family: var(--font-body);
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.2px;
+  }
+  .again {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: transparent;
+    border: 1.5px solid #cfc2a6;
+    color: #5c4f3d;
+    border-radius: 14px;
+    padding: 14px 20px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .again svg {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+    display: block;
+  }
+  .again:hover {
+    border-color: #7a4583;
+    color: #7a4583;
+  }
+
+  @keyframes bfdRise {
+    from {
+      transform: translateY(18px);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes bfdWave {
+    0%,
+    100% {
+      transform: scaleY(0.35);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes bfdPulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+</style>

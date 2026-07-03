@@ -1,0 +1,647 @@
+---
+// Mac — spec: designs/BeFree Mac.dc.html.
+import Site from '../layouts/Site.astro';
+import AppWindow from '../components/AppWindow.astro';
+import StoreBadge from '../components/StoreBadge.astro';
+import DownloadCTA from '../components/DownloadCTA.astro';
+
+const windowCards = [
+  { title: 'Design review', meta: '2:00 PM', icon: 'calendar-dots', tool: 'var(--tool-event)', checkable: false },
+  { title: 'Call mum', meta: 'Tonight', icon: 'bell', tool: 'var(--tool-reminder)' },
+  { title: 'Finish Q3 report', meta: 'Today · 5 PM', icon: 'check', tool: 'var(--tool-task)', priority: 'high' as const },
+  { title: 'Coffee, oat milk', meta: 'Groceries', icon: 'basket', tool: 'var(--tool-grocery)' },
+  { title: 'Book flights', meta: 'Errand', icon: 'check', tool: 'var(--tool-task)' },
+  { title: 'Walking-meeting idea', meta: 'Note', icon: 'note', tool: 'var(--tool-note)', checkable: false },
+];
+---
+
+<Site
+  title="BeFree for Mac — The calm room, now on your desktop"
+  description="One keystroke opens a quiet capture bar over any app. Speak, and it's sorted — menu-bar capture, global hotkey, offline, synced to your iPhone."
+  active="mac"
+>
+  <!-- ══════════ HERO ══════════ -->
+  <section class="hero">
+    <div class="eyebrow">BeFree for Mac</div>
+    <h1>The calm room,<br />now on your <span class="voice">desktop.</span></h1>
+    <p>
+      A thought hits while you're deep in work. One keystroke, say it, and it's sorted — without
+      ever leaving what you're doing.
+    </p>
+    <div class="hero-cta">
+      <a href="#download" class="download-btn">
+        <i class="ph-bold ph-download-simple"></i> Download for Mac
+      </a>
+      <span class="hero-meta">Free · macOS 13+</span>
+    </div>
+  </section>
+
+  <!-- ══════════ BIG APP WINDOW ══════════ -->
+  <section class="big-window">
+    <AppWindow
+      cards={windowCards}
+      subtitle="Six things on the day — nothing urgent."
+      sidebarWidth={220}
+      minHeight={470}
+      chromeHeight={46}
+      micSize={62}
+      micImg={42}
+      todayCount={6}
+    />
+  </section>
+
+  <!-- ══════════ THREE SUPERPOWERS ══════════ -->
+  <section class="powers">
+    <div class="grid">
+      <div class="card">
+        <div class="medal" style="background: color-mix(in srgb, var(--accent) 12%, transparent);">
+          <i class="ph-bold ph-command" style="color: var(--accent);"></i>
+        </div>
+        <h3>One hotkey, from anywhere</h3>
+        <p>⌘⇧Space opens a capture bar over any app. Speak, and you're back to work before the thought escapes.</p>
+      </div>
+      <div class="card">
+        <div class="medal" style="background: color-mix(in srgb, var(--brass) 14%, transparent);">
+          <i class="ph-bold ph-list" style="color: var(--brass);"></i>
+        </div>
+        <h3>Lives in your menu bar</h3>
+        <p>The mic sits quietly up top. Click it any time to dump a thought — no window to find, no app to switch to.</p>
+      </div>
+      <div class="card">
+        <div class="medal" style="background: color-mix(in srgb, var(--tool-event) 14%, transparent);">
+          <i class="ph-bold ph-arrows-clockwise" style="color: var(--tool-event);"></i>
+        </div>
+        <h3>Synced to your iPhone</h3>
+        <p>Start on the Mac, check it off on the train. Everything lands on every device, instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ DEEP: HOTKEY ══════════ -->
+  <section class="deep">
+    <div class="bf-split split">
+      <div class="copy">
+        <div class="eyebrow">Global hotkey</div>
+        <h2>Capture without breaking stride.</h2>
+        <p>
+          Deep in a doc, a call, a code review — press <span class="kbd">⌘⇧Space</span> and a quiet
+          capture bar floats in. Say the thing, and it vanishes — sorted in the background while you
+          stay in flow.
+        </p>
+        <div class="checks">
+          <div class="check"><i class="ph-bold ph-check"></i> Works over full-screen apps</div>
+          <div class="check"><i class="ph-bold ph-check"></i> Type or talk — your choice</div>
+          <div class="check"><i class="ph-bold ph-check"></i> Remappable to any shortcut</div>
+        </div>
+      </div>
+      <!-- hotkey capture bar visual -->
+      <div class="hotkey-visual">
+        <div class="hv-grain" aria-hidden="true"></div>
+        <div class="hv-dim" aria-hidden="true"></div>
+        <div class="capture-bar">
+          <div class="cb-mascot">
+            <span class="cb-ring"></span>
+            <img src="/assets/cutemic.png" alt="" />
+          </div>
+          <div class="cb-text">
+            <div class="cb-status">Listening…</div>
+            <div class="cb-transcript">"remind me to send the deck at 4…"</div>
+          </div>
+          <span class="cb-kbd">⌘⇧Space</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ DEEP: MENU BAR ══════════ -->
+  <section class="deep menu-deep">
+    <div class="bf-split split">
+      <!-- menu bar visual -->
+      <div class="menubar-visual">
+        <div class="mb-bar">
+          <i class="ph-fill ph-apple-logo"></i>
+          <span class="mb-app">Safari</span>
+          <span class="mb-item">File</span>
+          <span class="mb-item bf-hide-sm">Edit</span>
+          <div class="mb-flex"></div>
+          <div class="mb-mic"><img src="/assets/cutemic.png" alt="" /></div>
+          <i class="ph-bold ph-wifi-high mb-wifi"></i>
+          <span class="mb-time">9:41</span>
+        </div>
+        <div class="mb-popover">
+          <div class="mb-mascot"><img src="/assets/cutemic.png" alt="" /></div>
+          <div class="mb-prompt">What's on your mind?</div>
+          <div class="mb-talk"><i class="ph-fill ph-microphone"></i> Hold to talk</div>
+        </div>
+      </div>
+      <div class="copy">
+        <div class="eyebrow">Menu bar</div>
+        <h2>Always there. Never in the way.</h2>
+        <p>
+          BeFree tucks into your menu bar as the little mic. Click it for a quick capture popover,
+          glance at what's left on your day, and close it just as fast. No dock icon shouting for
+          attention.
+        </p>
+        <div class="checks">
+          <div class="check"><i class="ph-bold ph-check"></i> A peek at today, one click away</div>
+          <div class="check"><i class="ph-bold ph-check"></i> Launches at login, stays out of the dock</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ OFFLINE / PRIVATE ══════════ -->
+  <section class="trio-section">
+    <div class="trio">
+      <div>
+        <div class="medal small" style="background: color-mix(in srgb, var(--tool-event) 14%, transparent);">
+          <i class="ph-bold ph-cloud-slash" style="color: var(--tool-event);"></i>
+        </div>
+        <h3>Works offline</h3>
+        <p>On a plane or in a dead zone, capture keeps working. It all syncs up the moment you're back.</p>
+      </div>
+      <div>
+        <div class="medal small" style="background: color-mix(in srgb, var(--accent) 12%, transparent);">
+          <i class="ph-bold ph-lock-simple" style="color: var(--accent);"></i>
+        </div>
+        <h3>Private by default</h3>
+        <p>Your brain dumps are yours. Encrypted in transit and at rest — never sold, never mined for ads.</p>
+      </div>
+      <div>
+        <div class="medal small" style="background: color-mix(in srgb, var(--brass) 14%, transparent);">
+          <i class="ph-bold ph-feather" style="color: var(--brass);"></i>
+        </div>
+        <h3>Featherweight</h3>
+        <p>A tiny native app that sips battery and memory. It's there when you need it, invisible when you don't.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ DOWNLOAD CTA ══════════ -->
+  <DownloadCTA
+    title="Get BeFree for Mac."
+    sub="Free to start. Your menu bar's about to get a lot more useful."
+    meta="Free · macOS 13 Ventura or later · Universal (Apple silicon & Intel)"
+  >
+    <StoreBadge store="mac" />
+    <a href="#" class="dmg-btn"><i class="ph-bold ph-download-simple"></i> Direct download (.dmg)</a>
+  </DownloadCTA>
+</Site>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--brass-deep);
+    margin-bottom: 16px;
+  }
+
+  /* hero */
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: clamp(40px, 7vh, 84px) clamp(18px, 4vw, 40px) clamp(24px, 3vh, 36px);
+    text-align: center;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(38px, 6.6vw, 68px);
+    line-height: 1;
+    letter-spacing: -1.8px;
+    color: var(--text);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .hero .voice {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .hero p {
+    font-family: var(--font-body);
+    font-size: clamp(18px, 2.4vw, 22px);
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: clamp(16px, 2.5vh, 22px) auto 0;
+    max-width: 580px;
+    text-wrap: pretty;
+  }
+  .hero-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: clamp(22px, 3vh, 30px);
+  }
+  .download-btn {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    padding: 15px 28px;
+    border-radius: var(--radius-input);
+    box-shadow: var(--elev-2);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+  .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elev-3);
+  }
+  .download-btn i {
+    font-size: 20px;
+  }
+  .hero-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* big window */
+  .big-window {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: clamp(10px, 2vh, 24px) clamp(18px, 4vw, 40px) clamp(30px, 5vh, 60px);
+  }
+
+  /* superpowers */
+  .powers {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: clamp(30px, 5vh, 60px) clamp(18px, 4vw, 40px);
+  }
+  .powers .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 18px;
+  }
+  .powers .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--elev-1);
+    padding: 28px;
+  }
+  .medal {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-input);
+    display: grid;
+    place-items: center;
+    margin-bottom: 18px;
+  }
+  .medal i {
+    font-size: 26px;
+  }
+  .medal.small {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 14px;
+  }
+  .medal.small i {
+    font-size: 24px;
+  }
+  .powers h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 21px;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    margin: 0 0 7px;
+  }
+  .powers p {
+    font-family: var(--font-body);
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* deep sections */
+  .deep {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: clamp(36px, 6vh, 74px) clamp(18px, 4vw, 40px);
+  }
+  .menu-deep {
+    padding: clamp(20px, 3vh, 40px) clamp(18px, 4vw, 40px);
+  }
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(28px, 5vw, 64px);
+    align-items: center;
+  }
+  .copy h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.06;
+    letter-spacing: -0.8px;
+    color: var(--text);
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .copy .eyebrow {
+    margin-bottom: 12px;
+  }
+  .copy p {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0 0 18px;
+  }
+  .kbd {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    padding: 2px 7px;
+    border-radius: var(--radius-badge);
+  }
+  .checks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 15.5px;
+    color: var(--text-secondary);
+  }
+  .check i {
+    color: var(--tool-grocery);
+    font-size: 18px;
+  }
+
+  /* hotkey visual */
+  .hotkey-visual {
+    position: relative;
+    border-radius: var(--radius-sheet);
+    overflow: hidden;
+    box-shadow: var(--elev-3);
+    border: 1px solid var(--border);
+    min-height: 300px;
+    background: linear-gradient(135deg, #c9c0ae, #dbd5c7);
+  }
+  .hv-grain {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/paper-grain.png');
+    background-size: 256px;
+    mix-blend-mode: multiply;
+    opacity: 0.3;
+  }
+  .hv-dim {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(2px);
+    background: rgba(31, 26, 20, 0.14);
+  }
+  .capture-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90%, 380px);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    box-shadow: var(--elev-4);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .cb-mascot {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    display: grid;
+    place-items: center;
+  }
+  .cb-ring {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    animation: bfPulse 1700ms ease-out infinite;
+  }
+  .cb-mascot img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    position: relative;
+  }
+  .cb-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .cb-status {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--text);
+  }
+  .cb-transcript {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cb-kbd {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    padding: 4px 8px;
+    border-radius: var(--radius-badge);
+    white-space: nowrap;
+  }
+
+  /* menu bar visual */
+  .menubar-visual {
+    border-radius: var(--radius-sheet);
+    overflow: hidden;
+    box-shadow: var(--elev-3);
+    border: 1px solid var(--border);
+    background: linear-gradient(160deg, #4a4436, #2e2a22);
+    min-height: 300px;
+    position: relative;
+    padding-top: 32px;
+  }
+  .mb-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: rgba(20, 17, 12, 0.55);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 0 14px;
+  }
+  .mb-bar > i {
+    color: #f2ead6;
+    font-size: 15px;
+  }
+  .mb-app {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #f2ead6;
+  }
+  .mb-item {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    color: #d8cfbc;
+  }
+  .mb-flex {
+    flex: 1;
+  }
+  .mb-mic {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--accent) 88%, white);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 0 0 2px rgba(230, 199, 237, 0.5);
+  }
+  .mb-mic img {
+    width: 17px;
+    height: 17px;
+    object-fit: contain;
+  }
+  .mb-wifi {
+    color: #d8cfbc !important;
+    font-size: 14px !important;
+  }
+  .mb-time {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: #d8cfbc;
+  }
+  .mb-popover {
+    position: absolute;
+    top: 38px;
+    right: 52px;
+    width: min(78%, 300px);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    box-shadow: var(--elev-4);
+    padding: 16px;
+    text-align: center;
+  }
+  .mb-mascot {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 10px;
+    animation: bfBreathe 4000ms ease-in-out infinite;
+  }
+  .mb-mascot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .mb-prompt {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .mb-talk {
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: var(--radius-input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .mb-talk i {
+    font-size: 16px;
+  }
+
+  /* offline / private trio */
+  .trio-section {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: clamp(30px, 5vh, 60px) clamp(18px, 4vw, 40px);
+  }
+  .trio {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sheet);
+    padding: clamp(28px, 5vw, 52px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 26px;
+  }
+  .trio h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--text);
+    margin: 0 0 6px;
+  }
+  .trio p {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* dmg button (inside dark CTA) */
+  .dmg-btn {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: 1.5px solid #4a4130;
+    color: #f2ead6;
+    padding: 15px 24px;
+    border-radius: 14px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .dmg-btn:hover {
+    border-color: #b583be;
+    color: #e6c7ed;
+  }
+  .dmg-btn i {
+    font-size: 18px;
+  }
+</style>

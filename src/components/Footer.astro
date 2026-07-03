@@ -1,0 +1,130 @@
+---
+// Footer — spec layout verbatim; link TARGETS wired to the real legal pages
+// (the spec had "#" placeholders + About/Blog we don't have — the Company
+// column carries the real support pages instead, same visual structure).
+---
+
+<footer>
+  <div class="cols">
+    <div class="brand">
+      <div class="lockup">
+        <img src="/assets/icon.png" alt="" width="34" height="34" />
+        <span>BeFree</span>
+      </div>
+      <p>Put down what your head is carrying, and walk out lighter.</p>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <div class="label">Product</div>
+        <a href="/#features">Features</a>
+        <a href="/mac">BeFree for Mac</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/#download">Download</a>
+      </div>
+      <div class="group">
+        <div class="label">Support</div>
+        <a href="/support">Support</a>
+        <a href="/accessibility">Accessibility</a>
+        <a href="/data-deletion">Delete data</a>
+      </div>
+      <div class="group">
+        <div class="label">Legal</div>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/subprocessors">Subprocessors</a>
+      </div>
+    </div>
+  </div>
+  <div class="bar">
+    <span>© 2026 BeFree. All rights reserved.</span>
+    <span class="voice">Made in the calm room.</span>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-subtle);
+  }
+  .cols {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: clamp(36px, 5vh, 60px) clamp(18px, 4vw, 40px) 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 36px;
+    justify-content: space-between;
+  }
+  .brand {
+    max-width: 280px;
+  }
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 12px;
+  }
+  .lockup img {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    box-shadow: var(--elev-1);
+  }
+  .lockup span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--text);
+  }
+  .brand p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .groups {
+    display: flex;
+    gap: clamp(30px, 6vw, 72px);
+    flex-wrap: wrap;
+  }
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+  .group a {
+    text-decoration: none;
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+  .group a:hover {
+    color: var(--text);
+  }
+  .bar {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 18px clamp(18px, 4vw, 40px) 34px;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .voice {
+    font-family: var(--font-display);
+    font-style: italic;
+  }
+</style>

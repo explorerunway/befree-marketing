@@ -1,0 +1,232 @@
+---
+// macOS window mockup — spec: "MAC IN CONTEXT" (Home) / "BIG APP WINDOW" (Mac).
+// Chrome bar + sidebar (Today active) + greeting + entity-card grid + floating mic.
+import EntityCard from './EntityCard.astro';
+
+interface Card {
+  title: string;
+  meta: string;
+  icon: string;
+  tool: string;
+  checkable?: boolean;
+  priority?: 'high';
+}
+interface Props {
+  cards: Card[];
+  subtitle: string;
+  sidebarWidth?: number;
+  minHeight?: number;
+  chromeHeight?: number;
+  micSize?: number;
+  micImg?: number;
+  todayCount?: number; // Mac page shows a "6" badge on the Today row
+}
+const {
+  cards,
+  subtitle,
+  sidebarWidth = 210,
+  minHeight = 440,
+  chromeHeight = 44,
+  micSize = 60,
+  micImg = 40,
+  todayCount,
+} = Astro.props;
+
+const sideRows = [
+  { icon: 'list-checks', label: 'Lists' },
+  { icon: 'calendar-dots', label: 'Calendar' },
+  { icon: 'note', label: 'Notes' },
+];
+---
+
+<div class="window">
+  <div class="chrome" style={`height:${chromeHeight}px;`}>
+    <span class="light red"></span>
+    <span class="light yellow"></span>
+    <span class="light green"></span>
+    <span class="chrome-title">BeFree</span>
+  </div>
+  <div class="split" style={`min-height:${minHeight}px;`}>
+    <div class="sidebar bf-hide-sm" style={`width:${sidebarWidth}px;`}>
+      <div class="row active">
+        <i class="ph-fill ph-calendar-blank"></i><span class="row-label on">Today</span>
+        {todayCount != null && <span class="count">{todayCount}</span>}
+      </div>
+      {
+        sideRows.map((r) => (
+          <div class="row">
+            <i class={`ph-bold ph-${r.icon}`} />
+            <span class="row-label">{r.label}</span>
+          </div>
+        ))
+      }
+      <div class="spacer"></div>
+      <div class="row">
+        <i class="ph-bold ph-gear"></i><span class="row-label">Settings</span>
+      </div>
+    </div>
+    <div class="main">
+      <div class="date">Tuesday, May 13</div>
+      <h3 class="greeting">Good morning, <span>Sarah</span>.</h3>
+      <p class="sub">{subtitle}</p>
+      <div class="grid">
+        {cards.map((c) => <EntityCard {...c} />)}
+      </div>
+      <div class="float-mic" style={`width:${micSize}px; height:${micSize}px;`}>
+        <img src="/assets/cutemic.png" alt="" style={`width:${micImg}px; height:${micImg}px;`} />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .window {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--elev-4);
+    border: 1px solid var(--border);
+  }
+  .chrome {
+    background: #ede6d6;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    position: relative;
+  }
+  .light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .red {
+    background: #e0785c;
+  }
+  .yellow {
+    background: #d4b24c;
+  }
+  .green {
+    background: #7da86a;
+  }
+  .chrome-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  .split {
+    display: flex;
+    background: var(--bg);
+  }
+  .sidebar {
+    flex: none;
+    background: var(--bg-subtle);
+    border-right: 1px solid var(--border-subtle);
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-chip);
+  }
+  .row.active {
+    background: var(--bg-card);
+    box-shadow: var(--elev-1);
+  }
+  .row i {
+    font-size: 18px;
+    color: var(--text-muted);
+  }
+  .row.active i {
+    color: var(--accent);
+  }
+  .row-label {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .row-label.on {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .count {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg-subtle);
+    padding: 1px 7px;
+    border-radius: var(--radius-badge);
+  }
+  .spacer {
+    flex: 1;
+  }
+  .main {
+    flex: 1;
+    padding: 26px clamp(18px, 3vw, 32px);
+    position: relative;
+    min-width: 0;
+  }
+  .date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .greeting {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 30px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin: 8px 0 2px;
+  }
+  .greeting span {
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  .sub {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin: 0 0 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 620px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .float-mic {
+    position: absolute;
+    right: 22px;
+    bottom: 20px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    box-shadow: var(--elev-3);
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border-subtle);
+  }
+  .float-mic img {
+    object-fit: contain;
+  }
+</style>
