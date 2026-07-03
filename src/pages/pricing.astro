@@ -1,0 +1,439 @@
+---
+// Pricing — spec: designs/BeFree Pricing.dc.html (incl. the toggle logic class:
+// state {annual:true}; Plus $4/$6, Family $8/$10, billed annually/monthly).
+import Site from '../layouts/Site.astro';
+import StoreBadge from '../components/StoreBadge.astro';
+import DownloadCTA from '../components/DownloadCTA.astro';
+
+const faqs = [
+  {
+    q: 'Is the free plan actually free?',
+    a: 'Yes — genuinely, forever. Capture, AI sorting, and all five kinds of content, synced across your devices, no card required. Pro is there when your brain-dump volume outgrows the free AI budget.',
+  },
+  {
+    q: 'Does it work on both Mac and iPhone?',
+    a: 'iPhone today. The Mac app is in development — and when it lands, your account and content will be there waiting, in sync.',
+  },
+  {
+    q: 'Do you train AI on my brain dumps?',
+    a: 'No. Your dumps are used to sort your day and nothing else — never sold, never used to train models, never mined for ads. Encrypted in transit and at rest.',
+  },
+  {
+    q: 'Can I switch or cancel whenever?',
+    a: 'Anytime, in a couple of taps. Cancel Pro and you simply drop back to Free — your content stays right where it is.',
+  },
+];
+---
+
+<Site
+  title="BeFree Pricing — Calm doesn't have to cost much"
+  description="Start free and stay free for as long as you like. Upgrade only when your life gets loud enough to need it."
+  active="pricing"
+>
+  <!-- ══════════ HERO ══════════ -->
+  <section class="hero">
+    <div class="eyebrow">Pricing</div>
+    <h1>Calm doesn't have to<br />cost much.</h1>
+    <p>
+      Start free and stay free for as long as you like. Upgrade only when your life gets loud enough
+      to need it.
+    </p>
+
+    <!-- billing toggle -->
+    <div class="toggle" role="group" aria-label="Billing period">
+      <button type="button" id="bill-monthly" class="seg">Monthly</button>
+      <button type="button" id="bill-annual" class="seg on"
+        >Annual <span class="save">SAVE 28%</span></button
+      >
+    </div>
+  </section>
+
+  <!-- ══════════ TIERS ══════════ -->
+  <section id="tiers" class="tiers">
+    <div class="grid">
+      <!-- FREE -->
+      <div class="tier">
+        <div class="tier-name">Free</div>
+        <div class="tier-tag">For getting your head clear.</div>
+        <div class="price-row">
+          <span class="price">$0</span>
+          <span class="per">forever</span>
+        </div>
+        <a href="/#download" class="tier-btn outline">Get started</a>
+        <div class="feats">
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Voice capture &amp; AI sorting</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Tasks, events, reminders, lists &amp; notes</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Sync across your devices</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Works offline</div>
+        </div>
+      </div>
+
+      <!-- PRO (highlighted) -->
+      <div class="tier plus">
+        <div class="pop">Most popular</div>
+        <div class="tier-name">Pro</div>
+        <div class="tier-tag">For when life gets loud.</div>
+        <div class="price-row tight">
+          <span class="price">$<span data-price-pro>5</span></span>
+          <span class="per">/mo</span>
+        </div>
+        <div class="bill-note" data-bill-note>billed annually — $59.99/yr</div>
+        <a href="/#download" class="tier-btn solid">Start free, upgrade in the app</a>
+        <div class="feats-label">Everything in Free, plus</div>
+        <div class="feats">
+          <div class="feat"><i class="ph-bold ph-check plum"></i> About 100× the monthly AI budget</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> Heavy brain-dump weeks never hit a wall</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> Keeps BeFree independent — no ads, ever</div>
+        </div>
+      </div>
+    </div>
+    <div class="all-note">
+      Both plans include the iPhone app, offline capture, and sync. Cancel anytime.
+    </div>
+  </section>
+
+  <!-- ══════════ VOICE MOMENT ══════════ -->
+  <section class="voice-moment">
+    <p>No pressure to upgrade. No plan you'll forget to cancel. Just calm.</p>
+  </section>
+
+  <!-- ══════════ FAQ ══════════ -->
+  <section class="faq">
+    <h2>Questions, answered plainly.</h2>
+    <div class="cards">
+      {
+        faqs.map((f) => (
+          <div class="card">
+            <div class="q">{f.q}</div>
+            <div class="a">{f.a}</div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ══════════ DOWNLOAD CTA ══════════ -->
+  <DownloadCTA
+    title="Start free. Breathe easier."
+    sub="No card, no trial timer. Just your first brain dump."
+    mascotSize={80}
+    padTop={false}
+  >
+    <StoreBadge store="mac" />
+    <StoreBadge store="ios" />
+  </DownloadCTA>
+</Site>
+
+<script>
+  // Toggle logic — the spec's state machine wired to the REAL App Store
+  // prices: Pro $6.99/mo monthly, $59.99/yr annual (≈$5/mo, 28% off).
+  const monthlyBtn = document.getElementById('bill-monthly')!;
+  const annualBtn = document.getElementById('bill-annual')!;
+  const proEl = document.querySelector('[data-price-pro]')!;
+  const notes = document.querySelectorAll('[data-bill-note]');
+
+  function apply(annual: boolean) {
+    annualBtn.classList.toggle('on', annual);
+    monthlyBtn.classList.toggle('on', !annual);
+    proEl.textContent = annual ? '5' : '6.99';
+    notes.forEach(
+      (n) => (n.textContent = annual ? 'billed annually — $59.99/yr' : 'billed monthly')
+    );
+  }
+  monthlyBtn.addEventListener('click', () => apply(false));
+  annualBtn.addEventListener('click', () => apply(true));
+</script>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--brass-deep);
+    margin-bottom: 16px;
+  }
+
+  /* hero */
+  .hero {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: clamp(40px, 7vh, 84px) clamp(18px, 4vw, 40px) clamp(20px, 3vh, 30px);
+    text-align: center;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1;
+    letter-spacing: -1.6px;
+    color: var(--text);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .hero p {
+    font-family: var(--font-body);
+    font-size: clamp(18px, 2.4vw, 22px);
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: clamp(16px, 2.5vh, 22px) auto 0;
+    max-width: 540px;
+    text-wrap: pretty;
+  }
+
+  /* toggle */
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: clamp(24px, 3.5vh, 34px);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-input);
+    padding: 4px;
+  }
+  .seg {
+    cursor: pointer;
+    border: none;
+    border-radius: var(--radius-chip);
+    padding: 9px 18px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    color: var(--text-secondary);
+    box-shadow: none;
+  }
+  .seg.on {
+    background: var(--bg-card);
+    color: var(--text);
+    box-shadow: var(--elev-1);
+  }
+  .save {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: var(--tool-grocery);
+    background: color-mix(in srgb, var(--tool-grocery) 16%, transparent);
+    padding: 2px 6px;
+    border-radius: var(--radius-badge);
+    margin-left: 4px;
+  }
+
+  /* tiers */
+  .tiers {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: clamp(20px, 3vh, 36px) clamp(18px, 4vw, 40px) clamp(30px, 5vh, 50px);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+    gap: 18px;
+    align-items: start;
+    /* two tiers — cap the row so the cards keep the spec's ~330px proportions */
+    max-width: 740px;
+    margin: 0 auto;
+  }
+  .tier {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--elev-1);
+    padding: 30px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  .tier.plus {
+    border: 2px solid var(--accent);
+    box-shadow: var(--elev-3);
+    position: relative;
+  }
+  .pop {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--radius-badge);
+    white-space: nowrap;
+  }
+  .tier-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .tier-tag {
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 22px;
+  }
+  .price-row.tight {
+    margin-bottom: 0;
+  }
+  .price {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 46px;
+    letter-spacing: -1px;
+    color: var(--text);
+  }
+  .per {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+  .bill-note {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    margin-bottom: 22px;
+  }
+  .tier-btn {
+    text-decoration: none;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 13px;
+    border-radius: var(--radius-input);
+    margin-bottom: 24px;
+  }
+  .tier-btn.outline {
+    border: 1.5px solid var(--border-strong);
+    color: var(--text);
+  }
+  .tier-btn.outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .tier-btn.solid {
+    background: var(--accent);
+    color: var(--on-accent);
+    box-shadow: var(--elev-1);
+    transition: transform 0.15s;
+  }
+  .tier-btn.solid:hover {
+    transform: translateY(-1px);
+  }
+  .feats-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .feats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .feat {
+    display: flex;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+  .feat i {
+    font-size: 17px;
+    flex: none;
+  }
+  .feat i.olive {
+    color: var(--tool-grocery);
+  }
+  .feat i.plum {
+    color: var(--accent);
+  }
+  .feat i.brass {
+    color: var(--brass);
+  }
+  .all-note {
+    text-align: center;
+    margin-top: 22px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  /* voice moment */
+  .voice-moment {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vh, 50px) clamp(18px, 4vw, 40px);
+    text-align: center;
+  }
+  .voice-moment p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(22px, 3.2vw, 32px);
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  /* faq */
+  .faq {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vh, 48px) clamp(18px, 4vw, 40px) clamp(40px, 6vh, 70px);
+  }
+  .faq h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(26px, 3.8vw, 38px);
+    letter-spacing: -0.6px;
+    color: var(--text);
+    margin: 0 0 24px;
+    text-align: center;
+  }
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--elev-1);
+    padding: 22px 24px;
+  }
+  .q {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 7px;
+  }
+  .a {
+    font-family: var(--font-body);
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+</style>

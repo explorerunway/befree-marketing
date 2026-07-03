@@ -1,0 +1,306 @@
+/* BeFree design tokens — vendored VERBATIM from the design handoff
+ * (design-tokens/*.css). Single source of truth for the marketing site;
+ * the web app (Phase 2) imports this same file. Do not hand-edit values —
+ * they mirror constants/theme.ts in the app repo. Fonts load via <link>
+ * in Site.astro (fonts.css @import intentionally omitted). */
+
+/* BeFree color tokens — "The Calm Room."
+ * Single source of truth mirrored from constants/theme.ts.
+ * Light = "Aged paper", Dark = "Walnut at midnight".
+ * Base values + semantic aliases. Default accent is PLUM (handoff default).
+ *
+ * Usage: link styles.css and target these vars. Dark mode is opt-in via
+ * [data-theme="dark"] on any ancestor (default is light). */
+
+:root,
+[data-theme="light"] {
+  --mode: light; /* @kind other */
+
+  /* ── Punch — brand accent (default plum). Used SPARINGLY. ── */
+  --accent: #7A4583;          /* plum */
+  --accent-subtle: #EDE3F0;   /* plum wash */
+  --on-accent: #FFFCF4;       /* WCAG-AA fg on accent fill */
+
+  /* ── Brass — warm metal, never primary ── */
+  --brass: #B8923D;
+  --brass-deep: #8E6E2A;
+
+  /* ── Surfaces — clean warm linen hierarchy (flat, no grain) ── */
+  --bg: #FBF6EC;              /* clean warm linen page */
+  --bg-subtle: #F1EAD9;       /* inset / deeper field */
+  --bg-card: #FFFDF8;         /* raised card — lifts by value + shadow */
+  --bg-raised: #FFFEFB;       /* sheets, modals — brightest */
+  --bg-inverse: #1F1A14;      /* walnut */
+
+  /* ── Borders — parchment hairlines ── */
+  --border: #CFC2A6;
+  --border-strong: #B8A98A;
+  --border-subtle: #DCD2B8;
+
+  /* ── Ink — text hierarchy ── */
+  --text: #2A2118;
+  --text-secondary: #5C4F3D;
+  --text-muted: #9A8B72;
+  --text-inverse: #FAF6EC;
+  --text-danger: #A8412C;
+
+  /* ── State (warm-shifted) ── */
+  --success: #5B7A4F;         /* olive */
+  --warning: #D4914B;         /* amber */
+  --danger: #A8412C;          /* deep terracotta */
+  --info: #3D5A7A;            /* ink blue */
+
+  /* ── Task type colors (warm) ── */
+  --task-work: #3D5A52;       /* deep teal */
+  --task-personal: #5B7A4F;   /* olive */
+  --task-health: #A8412C;     /* deep terracotta */
+  --task-social: #7E5C8C;     /* muted plum */
+  --task-errand: #B8923D;     /* brass */
+
+  /* ── Priority — terracotta-led ── */
+  --priority-urgent: #A8412C;
+  --priority-high: #C4543A;
+  --priority-normal: #9A8B72;
+  --priority-low: #C4B89D;
+
+  /* ── Type accents (warm-shifted, shared across modes) ── */
+  --blue: #3D5A7A;    --blue-light: #D9DEE6;
+  --coral: #C4543A;   --coral-light: #E8C9BD;
+  --teal: #3D5A52;    --teal-light: #CDD8D4;
+  --amber: #B8923D;   --amber-light: #E8DAB8;
+  --violet: #7E5C8C;
+
+  /* ── Shadow / overlay ── */
+  --shadow: #1F1A14;
+  --shadow-opacity: 0.08;
+  --overlay: rgba(31, 26, 20, 0.42);
+}
+
+[data-theme="dark"] {
+  --mode: dark; /* @kind other */
+
+  --accent: #B583BE;          /* plum, dark */
+  --accent-subtle: #2D1A33;
+  --on-accent: #0A0604;
+
+  --brass: #D4914B;
+  --brass-deep: #A87C30;
+
+  --bg: #17130D;             /* deep walnut — darker so cards lift off it */
+  --bg-subtle: #211B13;
+  --bg-card: #2E2719;        /* raised wood — clearly lighter than bg */
+  --bg-raised: #3A3121;      /* sheets / elevated */
+  --bg-inverse: #FAF6EC;
+
+  --border: #4A4130;
+  --border-strong: #675C48;
+  --border-subtle: #3A3226;  /* visible hairline in dark */
+
+  --text: #F2EAD6;
+  --text-secondary: #C4B89D;
+  --text-muted: #7E725F;
+  --text-inverse: #2A2118;
+  --text-danger: #FF6961;
+
+  --success: #7AA06B;
+  --warning: #E8AD6B;
+  --danger: #E07555;
+  --info: #5B7A9A;
+
+  --task-work: #5C8579;
+  --task-personal: #7AA06B;
+  --task-health: #E07555;
+  --task-social: #A283B0;
+  --task-errand: #D4914B;
+
+  --priority-urgent: #A8412C;
+  --priority-high: #C4543A;
+  --priority-normal: #9A8B72;
+  --priority-low: #C4B89D;
+
+  --blue: #5B7A9A;    --blue-light: #1A2535;
+  --coral: #E07555;   --coral-light: #3A1F1A;
+  --teal: #5C8579;    --teal-light: #1A2D24;
+  --amber: #D4914B;   --amber-light: #332419;
+  --violet: #A283B0;
+
+  --shadow: #000000;
+  --shadow-opacity: 0.42;
+  --overlay: rgba(0, 0, 0, 0.78);
+}
+/* BeFree tool + entity palettes.
+ * tool.*  — one color per "kind of thing" (medallion tints, section accents,
+ *           summary-card eyebrows). Sourced from constants/theme.ts.
+ * entityHue — single 8-swatch set for every "pick a color" surface
+ *             (tags, projects, lists). Ends per-screen palette drift. */
+
+:root {
+  /* Tool palette — one hue per kind. All muted to sit in one aged-earth
+   * chroma band so no single kind pops out of the paper. Hues are spread
+   * around the wheel so no two kinds read as siblings at glyph scale. */
+  --tool-event: #4E7269;     /* pine — cool teal-green (CAL) */
+  --tool-reminder: #C4543A;  /* terracotta (REM) */
+  --tool-task: #7E5A93;      /* plum (TASK) — softened into the earth band */
+  --tool-grocery: #83A24C;   /* olive — warm yellow-green (LIST) */
+  --tool-note: #3D5A7A;      /* ink blue (NOTE) */
+  --tool-setting: #6F6A5C;   /* stone — warm neutral, so 'system' reads apart
+                                from the brand's brass metal (SET / NAV) */
+
+  /* Voice capture shares the calendar pine — alias, not a second hue. */
+  --tool-capture: var(--tool-event);
+
+  /* Entity hue — the 8 pickable accents (also the accent options) */
+  --hue-terracotta: #C4543A;
+  --hue-forest: #2F6B4A;
+  --hue-denim: #3F6BAA;
+  --hue-plum: #7A4583;
+  --hue-sand: #A8763C;
+  --hue-midnight: #1F2A40;
+  --hue-amber: #D4840F;
+  --hue-violet: #9B5CF6;
+}
+
+/* Dark mode — the fixed tool hues go muddy on walnut, so brighten each so
+ * the bare kind glyphs stay legible on dark cards. */
+[data-theme="dark"] {
+  --tool-event: #74A096;     /* pine, brightened for walnut */
+  --tool-reminder: #E0785C;
+  --tool-task: #A883B3;      /* softened plum, brightened for walnut */
+  --tool-grocery: #A6C06C;   /* warm olive, brightened */
+  --tool-note: #6E95C6;
+  --tool-setting: #9A9384;   /* stone, brightened */
+  --tool-capture: var(--tool-event);
+}
+/* BeFree typography tokens — mirrors components/ui/Text.tsx variants.
+ * Three families: Fraunces (display serif + italic "voice"), Geist (body),
+ * JetBrains Mono (eyebrow/timestamp). Sizes are the Text.tsx VARIANTS. */
+
+:root {
+  /* Families */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;  /* headings, titles, buttons, hero, entity-card titles */
+  --font-body: 'Geist', -apple-system, 'SF Pro Text', system-ui, sans-serif; /* UI chrome, body, captions */
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace; /* eyebrows, timestamps, counts */
+  /* "voice" register = Fraunces italic — set font-style: italic on --font-display */
+
+  /* Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Type scale — {size}/{line-height}. Named after Text.tsx variants. */
+  --type-display: 44px;        --lh-display: 52px;        /* Fraunces 700, -0.8 */
+  --type-large-title: 34px;    --lh-large-title: 40px;   /* Fraunces 700, -0.6 */
+  --type-title: 28px;          --lh-title: 34px;         /* Fraunces 600, -0.4 */
+  --type-title2: 22px;         --lh-title2: 28px;        /* Fraunces 600, -0.3 */
+  --type-title3: 20px;         --lh-title3: 26px;        /* Geist 600, -0.2 */
+  --type-headline: 17px;       --lh-headline: 22px;      /* Geist 600, -0.4 */
+  --type-card-title: 17px;     --lh-card-title: 22px;    /* Fraunces 600, -0.3 — entity-card titles */
+  --type-body: 17px;           --lh-body: 24px;          /* Geist 400, -0.3 */
+  --type-callout: 16px;        --lh-callout: 22px;       /* Geist 500, -0.3 */
+  --type-button: 14px;         --lh-button: 18px;        /* Fraunces 600, +0.3 */
+  --type-footnote: 13px;       --lh-footnote: 18px;      /* Geist 400, -0.1 */
+  --type-caption: 12px;        --lh-caption: 16px;       /* Geist 500, 0 */
+  --type-caption2: 11px;       --lh-caption2: 14px;      /* Geist 500, +0.4 */
+  --type-mono: 13px;           --lh-mono: 18px;          /* JetBrains Mono 400 */
+  --type-eyebrow: 10px;        --lh-eyebrow: 14px;       /* Mono 400, +1.6, uppercase */
+  --type-voice: 28px;          --lh-voice: 38px;         /* Fraunces italic 600, -0.1 */
+  --type-voice-title: 22px;    --lh-voice-title: 32px;   /* Fraunces italic 600 */
+  --type-voice-body: 17px;     --lh-voice-body: 26px;    /* Fraunces italic 500 */
+}
+/* BeFree spacing — 4pt grid (constants/theme.ts spacing). */
+:root {
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;   /* card outer margins, screen padding */
+  --space-3xl: 32px;
+  --space-4xl: 40px;
+
+  /* Screen conventions */
+  --card-margin-h: 24px;      /* entity-card outer margin (matches segmented top nav) */
+  --card-pad-v: 16px;         /* 16–18 */
+  --card-pad-h: 18px;         /* 18–22 */
+}
+/* BeFree shape ladder — six discrete radii, each with ONE job.
+ * From docs/design-language.md "Shape vocabulary". New surfaces stop at
+ * one of these steps; never invent a new radius. */
+:root {
+  --radius-badge: 6px;      /* tiny status badges, count chips, calendar dots */
+  --radius-pill: 8px;       /* status pills, sheet close-X press surface */
+  --radius-medallion: 10px; /* 32×32 icon medallions */
+  --radius-chip: 12px;      /* chips, segmented segments, calendar cells */
+  --radius-input: 14px;     /* inputs, buttons, two-icon header pill */
+  --radius-card: 16px;      /* cards (NotchCard, entity cards, grids) */
+  --radius-sheet: 20px;     /* bottom sheets (every modal) */
+  --radius-full: 9999px;    /* genuine pills — search bar, PriorityPill, Toast, circular buttons */
+}
+/* BeFree elevation — real walnut-warm shadows (constants/theme.ts elevation).
+ * e1 = cards, e3 = sheets. Never use ad-hoc shadows. */
+:root {
+  --elev-0: none;
+  --elev-1: 0 2px 6px rgba(31, 26, 20, 0.10);
+  --elev-2: 0 6px 16px rgba(31, 26, 20, 0.14);
+  --elev-3: 0 14px 32px rgba(31, 26, 20, 0.18);
+  --elev-4: 0 26px 60px rgba(31, 26, 20, 0.24);
+}
+[data-theme="dark"] {
+  --elev-1: 0 2px 6px rgba(0, 0, 0, 0.42);
+  --elev-2: 0 6px 16px rgba(0, 0, 0, 0.48);
+  --elev-3: 0 14px 32px rgba(0, 0, 0, 0.54);
+  --elev-4: 0 26px 60px rgba(0, 0, 0, 0.6);
+}
+/* BeFree motion — durations + springs. Mascot breathing (~4s) sets the
+ * brand tempo; functional motion is faster. (constants/theme.ts motion) */
+:root {
+  --dur-fast: 150ms;    /* @kind other */ /* touch feedback, color transitions */
+  --dur-medium: 250ms;  /* @kind other */ /* sheet open/close, card expand */
+  --dur-slow: 400ms;    /* @kind other */ /* mascot reactions, success affirmations */
+  --dur-breathe: 4000ms;/* @kind other */ /* mascot idle loop */
+
+  /* Easing — calm, no aggressive bounce. iOS-standard spring feel. */
+  --ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+}
+/* BeFree base resets + helper utilities shared by cards and kits.
+ * Kept minimal — most styling is per-component. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Paper grain overlay — drop as first child of a screen root.
+ * Uses assets/paper-grain.png (256×256 seamless tile). Adjust --grain-opacity. */
+.paper-grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--paper-grain-url, url('/assets/paper-grain.png') /* path adapted for site */);
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  opacity: var(--grain-opacity, 0.42);
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] .paper-grain { mix-blend-mode: screen; opacity: var(--grain-opacity, 0.3); }
+
+/* Eyebrow label — mono, uppercase, tracked. */
+.bf-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── site-specific wiring (not from the handoff) ── */
+:root { --paper-grain-url: url('/assets/paper-grain.png'); }

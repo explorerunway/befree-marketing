@@ -1,0 +1,106 @@
+---
+// EntityCard — the one canonical silhouette for all five kinds
+// (README "Entity card" + verified against screenshots/04-home.png):
+//   checkable kinds → leading ink checkbox + trailing bare tool-color glyph
+//   non-checkable (events, notes) → leading 32×32 medallion (12% wash), no checkbox
+//   priority="high" → small terracotta dot before the title
+interface Props {
+  title: string;
+  meta: string;
+  icon: string; // phosphor name, e.g. "calendar-dots"
+  tool: string; // css var reference, e.g. "var(--tool-event)"
+  checkable?: boolean;
+  priority?: 'high';
+}
+const { title, meta, icon, tool, checkable = true, priority } = Astro.props;
+---
+
+<div class="card">
+  {
+    checkable ? (
+      <span class="checkbox" aria-hidden="true" />
+    ) : (
+      <span class="medallion" style={`background: color-mix(in srgb, ${tool} 12%, transparent);`}>
+        <i class={`ph-bold ph-${icon}`} style={`color: ${tool};`} />
+      </span>
+    )
+  }
+  <span class="body">
+    <span class="title">
+      {priority === 'high' && <span class="dot" aria-label="high priority" />}
+      {title}
+    </span>
+    <span class="meta">{meta}</span>
+  </span>
+  {checkable && <i class={`ph-bold ph-${icon} trailing`} style={`color: ${tool};`} />}
+</div>
+
+<style>
+  .card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--elev-1);
+    padding: 12px 14px;
+    min-height: 66px;
+    min-width: 0;
+  }
+  .checkbox {
+    width: 23px;
+    height: 23px;
+    flex: none;
+    border: 1.5px solid var(--text-secondary);
+    border-radius: 7px;
+    background: transparent;
+  }
+  .medallion {
+    width: 32px;
+    height: 32px;
+    flex: none;
+    border-radius: var(--radius-medallion);
+    display: grid;
+    place-items: center;
+  }
+  .medallion i {
+    font-size: 17px;
+  }
+  .body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--priority-high);
+    margin-right: 7px;
+    vertical-align: 2px;
+  }
+  .meta {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .trailing {
+    flex: none;
+    font-size: 20px;
+  }
+</style>
