@@ -210,9 +210,12 @@ const windowCards = [
   <DownloadCTA
     title="Put your head down."
     sub="Free on iPhone. Your first brain dump is thirty seconds away."
-    meta="Free · iPhone · Mac in development"
+    meta="Free · iPhone &amp; browser · Mac in development"
   >
     <StoreBadge store="ios" />
+    <a href="https://app.heybefree.app" class="web-cta">
+      <i class="ph-bold ph-globe"></i> Use it in your browser — no install
+    </a>
   </DownloadCTA>
 </Site>
 
@@ -634,5 +637,29 @@ const windowCards = [
   }
   .teaser .secondary:hover {
     color: var(--accent);
+  }
+
+  /* browser-app CTA (inside the dark download panel) — the "install
+     nothing" door for locked-down work laptops */
+  .web-cta {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: 1.5px solid #4a4130;
+    color: #f2ead6;
+    padding: 15px 24px;
+    border-radius: 14px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .web-cta:hover {
+    border-color: #b583be;
+    color: #e6c7ed;
+  }
+  .web-cta i {
+    font-size: 18px;
   }
 </style>
