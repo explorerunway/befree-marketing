@@ -192,6 +192,32 @@
   .kvr{display:flex; justify-content:space-between; gap:12px; font-size:13px; padding-bottom:7px; border-bottom:1px solid var(--line)}
   .kvr:last-child{border-bottom:none; padding-bottom:0}
   .kvr .k{color:var(--muted)} .kvr .v{font-family:var(--mono); font-variant-numeric:tabular-nums}
+  /* trends & reports */
+  .segbar{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface-2)}
+  .segbar button{border:none;background:transparent;color:var(--muted);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:7px 13px;cursor:pointer}
+  .segbar button.on{background:var(--accent);color:#fff}
+  .mtabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 12px}
+  .mtab{font-family:var(--mono);font-size:11px;padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2);color:var(--muted);cursor:pointer}
+  .mtab.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+  .trendchart{display:flex;align-items:flex-end;gap:2px;height:150px;overflow-x:auto;padding-top:12px;border-bottom:1px solid var(--line)}
+  .tbar{flex:1 0 5px;min-height:2px;background:var(--accent);border-radius:2px 2px 0 0;cursor:pointer;opacity:.82;transition:opacity .15s}
+  .tbar:hover{opacity:1} .tbar.sel{background:var(--brass);opacity:1}
+  table.trend{border-collapse:collapse;width:100%;min-width:640px}
+  table.trend th,table.trend td{padding:8px 11px;font-size:12px;white-space:nowrap;border-bottom:1px solid var(--line)}
+  table.trend th{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:right}
+  table.trend th:first-child{text-align:left}
+  table.trend tbody tr{cursor:pointer} table.trend tbody tr:hover{background:var(--surface-2)}
+  table.trend tr.sel{background:var(--accent-soft)}
+  table.trend td.who{font-weight:600}
+  .drill{margin-top:16px;border:1px solid var(--accent);border-radius:14px;padding:16px 17px;background:var(--accent-soft);display:none}
+  .drill.on{display:block}
+  .drill .dhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px}
+  .drill .dclose{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 10px;cursor:pointer}
+  .drillgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:700px){.drillgrid{grid-template-columns:1fr}}
+  .dlist{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .dlist .di{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;border-bottom:1px solid var(--line);padding-bottom:5px}
+  .dlist .di:last-child{border-bottom:none} .dlist .di.dmuted{opacity:.5}
   #app{display:none}
   .fade{animation:fade .4s ease}
   @keyframes fade{from{opacity:0; transform:translateY(4px)}to{opacity:1; transform:none}}
@@ -225,6 +251,8 @@ var SUPA = "https://vicddpzvanjndlqzglue.supabase.co";
 var TOKEN = null;
 var REFRESH = null;
 var TIMER = null, AGE = null, lastAt = 0;
+var SERIES = null, CURGRAN = 'day', CURMETRIC = 'dumps', DRILL = null;
+var METRICS = [['dumps','Dumps'],['signups','Signups'],['active','Active users'],['activations','Activations'],['entities','Items created'],['spend','Spend'],['errors','Errors']];
 
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
@@ -328,7 +356,7 @@ function render(d, viewer){
     + '<p class="thesis">One live view of the base, the funnel, spend and the money. Numbers recompute from Supabase on every load. <b>' + U.external_identified + ' genuine external users</b>, <b>' + R.pro_external_paying + ' paying</b>, spend still trivial.</p>'
     + '</div><div class="controls">'
     + '<span class="live"><span class="dot"></span>LIVE · updated <span id="age">just now</span></span>'
-    + '<button class="chip" onclick="refreshData()">↻ Refresh</button>'
+    + '<button class="chip" onclick="manualRefresh()">↻ Refresh</button>'
     + '<button class="chip" onclick="toggleTheme()">◐ Theme</button>'
     + '<button class="chip" onclick="signOut()">Sign out</button>'
     + '</div></header>');
@@ -346,6 +374,14 @@ function render(d, viewer){
     + kpi('var(--brass)','Paying subscribers', R.pro_external_paying, '<span class="pill neut">'+R.pro_comped+' comped</span>', R.paying_annual_external+' annual · '+R.paying_monthly_external+' monthly')
     + kpi('var(--good)','AI spend · all-time', money(AI.spend_all), '<span class="pill good dot">'+AI.ok_rate+'% ok</span>', money(AI.spend_mtd)+' this month · no cap pressure')
     + '</section>');
+
+  // ── trends & reports ──
+  H.push('<section class="card" id="trendsCard"><div class="head"><div><span class="eyebrow" style="color:var(--accent)">Explore</span><h2 style="margin-top:6px">Trends &amp; reports</h2><p style="color:var(--muted);font-size:12.5px;margin-top:3px">pick a metric &amp; granularity · click any bar or row to drill into that period (UTC)</p></div>'
+    + '<div class="segbar" id="granSeg"><button data-g="day" class="on">Daily</button><button data-g="week">Weekly</button><button data-g="month">Monthly</button></div></div>'
+    + '<div class="mtabs" id="metricTabs"></div>'
+    + '<div class="trendchart" id="trendChart"></div>'
+    + '<div style="overflow-x:auto;margin-top:14px" id="trendTableWrap"></div>'
+    + '<div class="drill" id="drill"></div></section>');
 
   // ── funnel + weekly ──
   var fmax = F.signups||1;
@@ -530,6 +566,7 @@ function render(d, viewer){
 
   $('page').innerHTML = H.join('');
   document.getElementById('app').classList.add('fade');
+  initTrends();
 }
 
 // render helpers (strings only)
@@ -540,6 +577,78 @@ function kvr(k,v){ return '<div class="kvr"><span class="k">'+esc(k)+'</span><sp
 function pick(models,name,field){ for(var i=0;i<models.length;i++){ if(new RegExp(name,'i').test(models[i].model)) return models[i][field]; } return 0; }
 function shortErr(m){ m=String(m||''); if(/aborted/i.test(m)) return '"Request was aborted" — user cancelled mid-dump. Expected, not a failure.'; if(/credit balance/i.test(m)) return '"Credit balance too low" — the Jun 1 Anthropic funding gap, since resolved.'; if(/cache_control/i.test(m)) return '"Max 4 cache_control blocks" — the cache bug fixed in May.'; if(/unknown/i.test(m)) return 'Unlabelled early failure (pre-instrumentation).'; return m.slice(0,90); }
 function fmtDate(s){ try{ var d=new Date(s); return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return s; } }
+
+// ── trends & reports ──
+async function apiGet(qs){
+  var r=await fetch(SUPA + '/functions/v1/signal?data=1&' + qs, {headers:{authorization:'Bearer '+TOKEN, apikey:ANON}});
+  if(r.status===401){ if(await tryRefresh()){ return apiGet(qs); } throw {auth:true}; }
+  if(!r.ok){ throw new Error('server '+r.status); }
+  return r.json();
+}
+async function fetchSeries(){ var res=await apiGet('kind=series'); SERIES=res.data; }
+function fmtVal(k,v){ return k==='spend' ? money(v) : fmt(v); }
+
+function initTrends(){
+  var mt=$('metricTabs'); if(!mt) return;
+  mt.innerHTML = METRICS.map(function(m){ return '<span class="mtab'+(m[0]===CURMETRIC?' on':'')+'" data-m="'+m[0]+'">'+esc(m[1])+'</span>'; }).join('');
+  mt.querySelectorAll('.mtab').forEach(function(el){ el.addEventListener('click', function(){ CURMETRIC=el.getAttribute('data-m'); initTrends(); }); });
+  var gs=$('granSeg');
+  if(gs){ gs.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-g')===CURGRAN);
+    b.addEventListener('click', function(){ if(CURGRAN!==b.getAttribute('data-g')){ CURGRAN=b.getAttribute('data-g'); DRILL=null; closeDrill(); } initTrends(); }); }); }
+  if(!SERIES){ $('trendChart').innerHTML='<div style="color:var(--faint);font-family:var(--mono);font-size:12px;padding:24px 4px">loading time-series…</div>';
+    fetchSeries().then(function(){ renderTrends(); if(DRILL) openDrill(DRILL.iso); }).catch(function(e){ if(e&&e.auth){ boot(); } }); }
+  else { renderTrends(); }
+}
+
+function renderTrends(){
+  if(!SERIES){ return; }
+  var rows = SERIES[CURGRAN] || [];
+  var mx=0; rows.forEach(function(r){ mx=Math.max(mx, Number(r[CURMETRIC])||0); });
+  var bars = rows.map(function(r){
+    var v=Number(r[CURMETRIC])||0; var h=mx? Math.max(2, Math.round(v/mx*128)) : 2;
+    var sel=(DRILL && DRILL.iso===r.iso)?' sel':'';
+    return '<div class="tbar'+sel+'" style="height:'+h+'px" title="'+esc(r.label)+' · '+esc(fmtVal(CURMETRIC,v))+'" data-iso="'+esc(r.iso)+'"></div>';
+  }).join('');
+  var tc=$('trendChart'); if(!tc) return;
+  tc.innerHTML = bars || '<div style="color:var(--faint);padding:24px">no data in range</div>';
+  tc.querySelectorAll('.tbar').forEach(function(b){ b.addEventListener('click', function(){ openDrill(b.getAttribute('data-iso')); }); });
+  var recent = rows.slice(-24).reverse();
+  var th='<tr><th>Period</th>'+METRICS.map(function(m){ return '<th>'+esc(m[1])+'</th>'; }).join('')+'</tr>';
+  var body = recent.map(function(r){
+    var sel=(DRILL && DRILL.iso===r.iso)?' class="sel"':'';
+    return '<tr'+sel+' data-iso="'+esc(r.iso)+'"><td class="who">'+esc(r.label)+'</td>'+METRICS.map(function(m){ return '<td class="n">'+esc(fmtVal(m[0], Number(r[m[0]])||0))+'</td>'; }).join('')+'</tr>';
+  }).join('');
+  $('trendTableWrap').innerHTML = '<table class="trend"><thead>'+th+'</thead><tbody>'+body+'</tbody></table>';
+  $('trendTableWrap').querySelectorAll('tbody tr').forEach(function(tr){ tr.addEventListener('click', function(){ openDrill(tr.getAttribute('data-iso')); }); });
+}
+
+async function openDrill(iso){
+  DRILL={ gran:CURGRAN, iso:iso };
+  renderTrends();
+  var el=$('drill'); if(!el) return;
+  el.className='drill on'; el.innerHTML='<div style="color:var(--faint);font-family:var(--mono);font-size:12px">loading period…</div>';
+  try{
+    var res=await apiGet('kind=report&bucket='+encodeURIComponent(CURGRAN)+'&start='+encodeURIComponent(iso));
+    var d=res.data; if(!d){ el.innerHTML='<div style="color:var(--crit)">No data.</div>'; return; }
+    var t=d.totals||{}, sign=d.signups_list||[], dump=d.dumpers||[], ent=d.entities||[];
+    var signHtml = sign.length ? sign.map(function(s){ return '<div class="di'+(s.internal?' dmuted':'')+'"><span>'+esc(s.label)+(s.internal?' <span class="pill neut">test</span>':'')+'</span><span style="color:var(--muted)">'+esc(s.provider)+'</span></div>'; }).join('') : '<div class="di" style="color:var(--faint)">no signups this period</div>';
+    var dumpHtml = dump.length ? dump.map(function(x){ return '<div class="di"><span>'+esc(x.label)+'</span><span class="num">'+x.dumps+' dumps · '+money(x.spend)+'</span></div>'; }).join('') : '<div class="di" style="color:var(--faint)">no captures this period</div>';
+    var entHtml = ent.length ? ent.map(function(x){ return '<div class="di"><span>'+esc(x.kind)+'</span><span class="num">'+x.count+'</span></div>'; }).join('') : '<div class="di" style="color:var(--faint)">nothing created</div>';
+    el.innerHTML =
+      '<div class="dhead"><div><span class="eyebrow" style="color:var(--accent)">Drill-down · '+esc(d.bucket)+'</span><h3 style="margin-top:4px;font-size:16px">'+esc(d.label)+'</h3></div><button class="dclose" onclick="closeDrill()">✕ close</button></div>'
+      + '<div class="health" style="margin-bottom:14px">'
+      + scell(fmt(t.dumps||0), (t.dumps_ok||0)+' ok · '+(t.errors||0)+' err')
+      + scell(fmt(t.signups||0), 'signups')
+      + scell(fmt(t.active||0), 'active users')
+      + scell(money(t.spend||0), 'AI spend')
+      + '</div><div class="drillgrid">'
+      + '<div><h3 style="font-size:13px">Signed up ('+sign.length+')</h3><div class="dlist">'+signHtml+'</div></div>'
+      + '<div><h3 style="font-size:13px">Top capturers</h3><div class="dlist">'+dumpHtml+'</div></div>'
+      + '</div><h3 style="font-size:13px;margin-top:16px">Items created</h3><div class="dlist" style="max-width:340px">'+entHtml+'</div>';
+  }catch(e){ if(e&&e.auth){ boot(); return; } el.innerHTML='<div style="color:var(--crit);font-size:13px">Could not load this period.</div>'; }
+}
+function closeDrill(){ DRILL=null; var el=$('drill'); if(el){ el.className='drill'; el.innerHTML=''; } if(SERIES) renderTrends(); }
+function manualRefresh(){ SERIES=null; refreshData(); }
 
 // wire login UI
 $('loginBtn').addEventListener('click', doPasswordLogin);
