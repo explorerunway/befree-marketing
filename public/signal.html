@@ -344,10 +344,20 @@ function statusPill(s){
   if(s==='never') return '<span class="pill neut">never dumped</span>';
   return '<span class="pill neut">churned</span>';
 }
+function subStatusPill(s){
+  if(s==='paying') return '<span class="pill good dot">paying</span>';
+  if(s==='paid-cancelling') return '<span class="pill warn dot">paid · cancelling</span>';
+  if(s==='trial-active') return '<span class="pill" style="background:var(--accent-soft);color:var(--accent)">trial</span>';
+  if(s==='trial-cancelling') return '<span class="pill warn dot">trial · won&#39;t renew</span>';
+  if(s==='expired') return '<span class="pill neut">expired</span>';
+  return '<span class="pill neut">'+esc(s)+'</span>';
+}
+function subEventName(t){ return ({INITIAL_PURCHASE:'New trial / purchase',RENEWAL:'Renewal',CANCELLATION:'Cancellation',EXPIRATION:'Expiration',BILLING_ISSUE:'Billing issue',PRODUCT_CHANGE:'Plan change',UNCANCELLATION:'Reactivated'})[t] || t; }
 
 function render(d, viewer){
   var H=[];
   var U=d.users, F=d.funnel, A=d.activity, R=d.revenue, AI=d.ai, G=d.governance;
+  var SUB=d.subscriptions||{}, SF=SUB.funnel||{};
 
   // ── topbar ──
   H.push('<header class="top"><div>'
@@ -371,7 +381,7 @@ function render(d, viewer){
     + kpi('var(--accent)','Genuine external', U.external_identified, '<span class="pill neut">of '+U.total+' · '+U.anon+' anon</span>', U.provider_apple+' Apple · '+U.provider_google+' Google · '+U.provider_email+' email')
     + kpi('var(--good)','Activated', F.activated+'<small> / '+F.ever_dumped+'</small>', '<span class="pill good dot">'+actRate+'% of signups</span>', 'ran ≥1 successful dump')
     + kpi('var(--warn)','Active · 7d (captures)', A.dumped_7d, '<span class="pill warn dot">'+A.external_active_7d+' external</span>', A.opens_7d+' opened the app (sign-in)')
-    + kpi('var(--brass)','Paying subscribers', R.pro_external_paying, '<span class="pill neut">'+R.pro_comped+' comped</span>', R.paying_annual_external+' annual · '+R.paying_monthly_external+' monthly')
+    + kpi('var(--brass)','Paying customers', (SF.paying_now||0), '<span class="pill '+((SF.active_trials||0)>0?'warn dot':'neut')+'">'+(SF.active_trials||0)+' in trial</span>', money(SF.mrr_usd||0)+' MRR · '+(SF.trials||0)+' trials all-time')
     + kpi('var(--good)','AI spend · all-time', money(AI.spend_all), '<span class="pill good dot">'+AI.ok_rate+'% ok</span>', money(AI.spend_mtd)+' this month · no cap pressure')
     + '</section>');
 
@@ -461,17 +471,31 @@ function render(d, viewer){
     + scell(PR.apple_reminders_synced, 'Apple reminders synced')
     + '</div><p class="note" style="border:none;padding-top:10px;font-size:11px">'+PR.task_completion_pct+'% of tasks completed and '+PR.calendar_synced_events+' events two-way calendar-synced — depth beyond the brain-dump.</p></section>');
 
-  // ── revenue + governance ──
-  var arrAnnual = R.paying_annual_external * 59.99;
-  var mrr = R.paying_monthly_external * 6.99 + R.paying_annual_external * (59.99/12);
-  H.push('<div class="grid2"><section class="card"><div class="head"><h2>Subscriptions</h2><p>who is actually paying</p></div><div class="kv">'
-    + kvr('Paying externals', R.pro_external_paying + '')
-    + kvr('· annual ($59.99/yr)', R.paying_annual_external + '')
-    + kvr('· monthly ($6.99/mo)', R.paying_monthly_external + '')
-    + kvr('Comped / bootstrapped Pro', R.pro_comped + '')
-    + kvr('Est. MRR', money(mrr))
-    + kvr('Est. ARR (annual subs)', money(arrAnnual))
-    + '</div><p class="note" style="border:none;padding-top:12px">Real subscription revenue is early — <b>'+R.pro_external_paying+' paying external</b> vs <b>'+R.pro_comped+' comped</b>. The RC → webhook → tier chain is verified live; the number just needs demand.</p></section>');
+  // ── subscriptions & revenue (full width) ──
+  var SUBp=SUB.production||{}, SUBa=SUB.access||{}, SUBx=SUB.sandbox||{};
+  var custs=SUB.customers||[], tl=SUB.timeline||[];
+  var convPct=(SF.trials||0)?Math.round(100*(SF.converted||0)/(SF.trials||0)):0;
+  H.push('<section class="card"><div class="head"><div><span class="eyebrow" style="color:var(--brass)">Money</span><h2 style="margin-top:6px">Subscriptions &amp; revenue</h2><p style="color:var(--muted);font-size:12.5px;margin-top:3px">live from RevenueCat events · owner/test excluded from the funnel</p></div></div>'
+    + '<div class="health">'
+    + scell(fmt(SF.trials||0), 'trials started (external)')
+    + scell(fmt(SF.converted||0), 'converted to paid')
+    + scell(convPct+'%', 'trial → paid rate')
+    + scell(fmt(SF.paying_now||0), 'paying now')
+    + scell(fmt(SF.active_trials||0), 'in trial now')
+    + scell(money(SF.mrr_usd||0), 'MRR')
+    + scell(money(SF.arr_usd||0), 'ARR')
+    + scell(money(SUBp.revenue_usd||0), 'cash collected')
+    + '</div>'
+    + '<p class="note" style="border:none;padding-top:12px"><b>Pro access ('+(SUBa.pro_total||0)+')</b> is not the same as paying — it includes free trials + <b>'+(SUBa.comped||0)+' comped/owner</b> grants. So far <b>'+(SF.trials||0)+' external trial'+((SF.trials||0)===1?'':'s')+'</b>, <b>'+(SF.cancelled_in_trial||0)+' cancelled</b> during trial, <b>'+(SF.converted||0)+' converted</b>. Real cash collected: <b>'+money(SUBp.revenue_usd||0)+'</b>.'+((SF.internal_trials||0)>0?' ('+(SF.internal_trials||0)+' owner test trial excluded.)':'')+((SUBx.events||0)>0?' ('+(SUBx.events||0)+' sandbox test events excluded.)':'')+'</p>');
+  if(custs.length){
+    var crows=custs.map(function(c){ return '<tr'+(c.internal?' class="internal"':'')+'><td class="who">'+esc(c.label)+(c.internal?' <span class="pill neut">test</span>':'')+'</td><td>'+esc(c.plan)+'</td><td>'+subStatusPill(c.status)+'</td><td class="n">'+money(c.revenue)+'</td><td class="n">'+esc(c.started)+'</td></tr>'; }).join('');
+    H.push('<h3 style="margin:18px 0 8px">Subscribers &amp; trials</h3><div class="tablewrap"><table><thead><tr><th>User</th><th>Plan</th><th>Status</th><th>Paid</th><th>Started</th></tr></thead><tbody>'+crows+'</tbody></table></div>');
+  }
+  if(tl.length){
+    var trows=tl.map(function(e){ return '<div class="di'+(e.internal?' dmuted':'')+'"><span>'+esc(e.at)+' · <b>'+esc(subEventName(e.type))+'</b> '+esc(e.plan)+(e.period==='TRIAL'?' <span class="pill neut">trial</span>':'')+'</span><span class="num">'+esc(e.label)+(Number(e.price)>0?' · '+money(e.price):'')+'</span></div>'; }).join('');
+    H.push('<h3 style="margin:18px 0 8px">Recent subscription events</h3><div class="dlist">'+trows+'</div>');
+  }
+  H.push('</section>');
 
   var hard=G.hard_pause_usd||290, freeP=G.free_pause_usd||250, cap=G.anthropic_cap_usd||300;
   var gpct=Math.min(100, 100*G.spend_mtd/cap);
@@ -481,7 +505,7 @@ function render(d, viewer){
     + '<div class="gmark warn" style="left:'+(100*freeP/cap)+'%" title="free pause"></div>'
     + '<div class="gmark" style="left:'+(100*hard/cap)+'%" title="hard pause"></div></div>'
     + '<div class="glabels"><span>$0</span><span>free-pause '+money(freeP)+'</span><span>hard '+money(hard)+'</span></div></div>'
-    + '<p class="note" style="border:none;padding-top:12px">Month-to-date global spend is <b>'+(G.spend_mtd/cap*100).toFixed(1)+'%</b> of the Anthropic cap. The tiered pause never trips at this volume. Every gate fails open (the $300 cap is the true backstop).</p></section></div>');
+    + '<p class="note" style="border:none;padding-top:12px">Month-to-date global spend is <b>'+(G.spend_mtd/cap*100).toFixed(1)+'%</b> of the Anthropic cap. The tiered pause never trips at this volume. Every gate fails open (the $300 cap is the true backstop).</p></section>');
 
   // ── AI engine health ──
   var models=d.models||[], mtot=0; models.forEach(function(m){ mtot+=m.runs; });
