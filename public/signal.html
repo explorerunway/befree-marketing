@@ -211,18 +211,6 @@
       <label class="fl" for="pw">Password</label>
       <input id="pw" type="password" autocomplete="current-password" placeholder="••••••••">
       <button class="primary" id="loginBtn">Sign in</button>
-      <div class="altauth"><a id="toOtp">Use a one-time email code instead</a></div>
-    </div>
-    <div id="otpbox" style="display:none">
-      <label class="fl" for="otpEmail">Email</label>
-      <input id="otpEmail" type="email" autocomplete="username" placeholder="you@heybefree.app">
-      <button class="primary" id="sendCode">Email me a code</button>
-      <div id="codewrap" style="display:none">
-        <label class="fl" for="otpCode">6-digit code</label>
-        <input id="otpCode" inputmode="numeric" placeholder="123456">
-        <button class="primary" id="verifyCode">Verify &amp; sign in</button>
-      </div>
-      <div class="altauth"><a id="toPw">Back to password</a></div>
     </div>
     <div id="gateErr" class="err"></div>
     <p class="hint">Restricted to BeFree owner accounts. Sign in with your app email &amp; password (e.g. your <b>vranaau@gmail.com</b> login). Data is read-only and never leaves your session.</p>
@@ -267,31 +255,6 @@ async function doPasswordLogin(){
     saveTokens(j);
     await boot();
   }catch(e){ showErr(e.message||'Sign-in failed'); btn.disabled=false; btn.textContent='Sign in'; }
-}
-
-async function sendOtp(){
-  clearErr();
-  var email=$('otpEmail').value.trim();
-  if(!email){ showErr('Enter your email.'); return; }
-  var b=$('sendCode'); b.disabled=true; b.textContent='Sending…';
-  try{
-    var r=await fetch(SUPA+'/auth/v1/otp', {method:'POST', headers:{apikey:ANON,'content-type':'application/json'}, body:JSON.stringify({email:email, create_user:false})});
-    var j=await r.json();
-    if(!r.ok){ throw new Error(j.error_description||j.msg||j.error||'Could not send code'); }
-    $('codewrap').style.display='block'; b.textContent='Code sent — check email';
-  }catch(e){ showErr(e.message); b.disabled=false; b.textContent='Email me a code'; }
-}
-async function verifyOtp(){
-  clearErr();
-  var email=$('otpEmail').value.trim(), code=$('otpCode').value.trim();
-  if(!code){ showErr('Enter the code.'); return; }
-  var b=$('verifyCode'); b.disabled=true; b.textContent='Verifying…';
-  try{
-    var r=await fetch(SUPA+'/auth/v1/verify', {method:'POST', headers:{apikey:ANON,'content-type':'application/json'}, body:JSON.stringify({email:email, token:code, type:'email'})});
-    var j=await r.json();
-    if(!r.ok){ throw new Error(j.error_description||j.msg||j.error||'Invalid code'); }
-    saveTokens(j); await boot();
-  }catch(e){ showErr(e.message); b.disabled=false; b.textContent='Verify & sign in'; }
 }
 
 async function tryRefresh(){
@@ -581,10 +544,6 @@ function fmtDate(s){ try{ var d=new Date(s); return d.toLocaleString('en-US',{mo
 // wire login UI
 $('loginBtn').addEventListener('click', doPasswordLogin);
 $('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') doPasswordLogin(); });
-$('toOtp').addEventListener('click', function(){ $('pwbox').style.display='none'; $('otpbox').style.display='block'; clearErr(); });
-$('toPw').addEventListener('click', function(){ $('otpbox').style.display='none'; $('pwbox').style.display='block'; clearErr(); });
-$('sendCode').addEventListener('click', sendOtp);
-$('verifyCode').addEventListener('click', verifyOtp);
 window.addEventListener('focus', function(){ if(TOKEN) refreshData(); });
 
 // auto-resume a stored session
