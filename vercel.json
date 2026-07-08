@@ -3,6 +3,9 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/signal", "destination": "https://vicddpzvanjndlqzglue.supabase.co/functions/v1/signal" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
