@@ -5,8 +5,12 @@ interface Props {
   active: 'home' | 'mac' | 'pricing';
 }
 const { active } = Astro.props;
-const ctaHref = active === 'pricing' ? '#tiers' : '#download';
-const ctaLabel = active === 'pricing' ? 'Get started' : 'Download';
+// The persistent nav CTA drives straight into the web app (instant one-tap
+// Google/Apple account) — the fastest path from site to using BeFree. On
+// /pricing it scrolls to the plans instead.
+const WEB_APP = 'https://app.heybefree.app';
+const ctaHref = active === 'pricing' ? '#tiers' : WEB_APP;
+const ctaLabel = active === 'pricing' ? 'Get started' : 'Start free';
 ---
 
 <div class="navbar">

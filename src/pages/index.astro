@@ -69,6 +69,13 @@ const windowCards = [
       BeFree is the voice-first app that turns a messy brain dump into tasks, reminders, calendar
       events, lists, and notes. You just talk — it sorts the rest.
     </p>
+    <div class="hero-cta">
+      <a href="https://app.heybefree.app" class="hero-start">
+        Start free in your browser <i class="ph-bold ph-arrow-right"></i>
+      </a>
+      <a href="#download" class="hero-alt">Or get the iPhone &amp; Mac app</a>
+    </div>
+    <div class="hero-cta-note">No download · One tap with Google or Apple · Syncs everywhere</div>
   </section>
 
   <!-- ══════════ LIVE DEMO ══════════ -->
@@ -80,9 +87,9 @@ const windowCards = [
       <BrainDumpDemo />
     </div>
     <div class="trust-row">
-      <span>Free on the App Store</span>
+      <span>Free forever</span>
       <span class="sep"></span>
-      <span>No account needed</span>
+      <span>Runs in your browser</span>
       <span class="sep"></span>
       <span>Private by default</span>
     </div>
@@ -212,14 +219,14 @@ const windowCards = [
   <!-- ══════════ DOWNLOAD CTA ══════════ -->
   <DownloadCTA
     title="Put your head down."
-    sub="Free on iPhone and Mac. Your first brain dump is thirty seconds away."
+    sub="Free on iPhone, Mac, and the web. Your first brain dump is thirty seconds away."
     meta="Free · iPhone, Mac &amp; browser"
   >
+    <a href="https://app.heybefree.app" class="web-cta primary-web">
+      <i class="ph-bold ph-globe"></i> Start free in your browser
+    </a>
     <StoreBadge store="ios" />
     <StoreBadge store="mac" />
-    <a href="https://app.heybefree.app" class="web-cta">
-      <i class="ph-bold ph-globe"></i> Use it in your browser — no install
-    </a>
   </DownloadCTA>
 </Site>
 
@@ -276,6 +283,61 @@ const windowCards = [
     margin: clamp(16px, 2.5vh, 24px) auto 0;
     max-width: 600px;
     text-wrap: pretty;
+  }
+  .hero-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: clamp(22px, 3.2vh, 32px);
+  }
+  .hero-start {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    padding: 15px 28px;
+    border-radius: var(--radius-input);
+    box-shadow: var(--elev-2);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+  .hero-start:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elev-3);
+  }
+  .hero-start i {
+    font-size: 18px;
+    transition: transform 0.15s;
+  }
+  .hero-start:hover i {
+    transform: translateX(3px);
+  }
+  .hero-alt {
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+  .hero-alt:hover {
+    color: var(--accent);
+  }
+  .hero-cta-note {
+    margin-top: 14px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
 
   /* demo */
@@ -670,5 +732,18 @@ const windowCards = [
   }
   .web-cta i {
     font-size: 18px;
+  }
+  /* Browser is now the lead conversion path — fill it as the primary action
+     inside the dark download panel. */
+  .web-cta.primary-web {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  .web-cta.primary-web:hover {
+    border-color: var(--accent);
+    color: var(--on-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--elev-2);
   }
 </style>
