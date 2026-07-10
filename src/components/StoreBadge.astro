@@ -1,11 +1,13 @@
 ---
 // Black App Store / Mac App Store badge — spec: "DOWNLOAD CTA" sections.
-// Real listing URL (the spec's /app/befree placeholder swapped for the live id).
+// Universal purchase: iOS + Mac share one App Store record (id6763826891).
+// The Mac badge appends ?platform=mac so it deep-links the desktop build.
 interface Props {
   store: 'ios' | 'mac';
   href?: string;
 }
-const { store, href = 'https://apps.apple.com/app/id6763826891' } = Astro.props;
+const APP_STORE = 'https://apps.apple.com/app/id6763826891';
+const { store, href = store === 'mac' ? `${APP_STORE}?platform=mac` : APP_STORE } = Astro.props;
 const line2 = store === 'mac' ? 'Mac App Store' : 'App Store';
 ---
 

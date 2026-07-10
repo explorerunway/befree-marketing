@@ -63,7 +63,7 @@ const windowCards = [
     <div class="mascot">
       <img src="/assets/cutemic.png" alt="BeFree mascot" />
     </div>
-    <div class="eyebrow">Now on iPhone — Mac on the way</div>
+    <div class="eyebrow">Now on iPhone, Mac &amp; the web</div>
     <h1>Put it all down.<br /><span class="voice">Walk out lighter.</span></h1>
     <p>
       BeFree is the voice-first app that turns a messy brain dump into tasks, reminders, calendar
@@ -162,11 +162,11 @@ const windowCards = [
   <!-- ══════════ MAC IN CONTEXT ══════════ -->
   <section class="mac-context">
     <div class="section-head">
-      <div class="eyebrow">Coming soon — BeFree for Mac</div>
+      <div class="eyebrow">New — BeFree for Mac</div>
       <h2>Right where you already work.</h2>
       <p class="section-sub">
         A thought hits mid-email. Hit one hotkey, say it, and get back to work. That's BeFree for
-        Mac — in development now, with menu-bar capture and instant iPhone sync built in.
+        Mac — on the Mac App Store now, with menu-bar capture and instant iPhone sync built in.
       </p>
     </div>
     <div class="window-wrap">
@@ -176,6 +176,9 @@ const windowCards = [
       <div class="pill"><i class="ph-bold ph-command" style="color: var(--accent);"></i> Global hotkey capture</div>
       <div class="pill"><i class="ph-bold ph-list" style="color: var(--brass);"></i> Menu-bar quick capture</div>
       <div class="pill"><i class="ph-bold ph-arrows-clockwise" style="color: var(--tool-event);"></i> Instant iPhone sync</div>
+    </div>
+    <div class="mac-actions">
+      <StoreBadge store="mac" />
     </div>
     <div class="explore">
       <a href="/mac">Explore BeFree for Mac <i class="ph-bold ph-arrow-right"></i></a>
@@ -209,10 +212,11 @@ const windowCards = [
   <!-- ══════════ DOWNLOAD CTA ══════════ -->
   <DownloadCTA
     title="Put your head down."
-    sub="Free on iPhone. Your first brain dump is thirty seconds away."
-    meta="Free · iPhone &amp; browser · Mac in development"
+    sub="Free on iPhone and Mac. Your first brain dump is thirty seconds away."
+    meta="Free · iPhone, Mac &amp; browser"
   >
     <StoreBadge store="ios" />
+    <StoreBadge store="mac" />
     <a href="https://app.heybefree.app" class="web-cta">
       <i class="ph-bold ph-globe"></i> Use it in your browser — no install
     </a>
@@ -515,9 +519,14 @@ const windowCards = [
   .pill i {
     font-size: 16px;
   }
+  .mac-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
+  }
   .explore {
     text-align: center;
-    margin-top: 26px;
+    margin-top: 16px;
   }
   .explore a {
     text-decoration: none;
