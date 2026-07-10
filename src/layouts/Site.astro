@@ -101,6 +101,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       grid-template-columns: 1fr !important;
     }
   }
+  /* Respect reduced-motion: stop the infinite mascot/pulse loops entirely. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 </style>
 
 <style>
@@ -109,7 +120,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     overflow-x: hidden;
   }
   .grain {
-    position: fixed;
+    /* absolute (scrolls with the page), NOT fixed. A fixed full-viewport
+       mix-blend-mode layer forces the browser to re-blend the whole screen on
+       every scroll frame — the main source of scroll jank. Letting it scroll
+       with the content lets the compositor cache the blended layer. Visually
+       identical for a fine noise texture. */
+    position: absolute;
     inset: 0;
     background-image: url('/assets/paper-grain.png');
     background-size: 256px 256px;
