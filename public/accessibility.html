@@ -96,7 +96,7 @@
   <ul>
     <li>BeFree's primary input is your voice. You can capture an entire brain dump without typing, tapping a small target, or remembering a tap-and-hold gesture.</li>
     <li>The mic button is a single, large, persistent target on every primary screen.</li>
-    <li>Speech-to-text runs <strong>on-device</strong>. Your voice never leaves your phone.</li>
+    <li>Speech-to-text is handled by <strong>Apple's speech recognition</strong> — on your device or on Apple's servers, depending on your device and language. BeFree never receives or stores your audio; only the resulting text reaches BeFree.</li>
     <li>Capture also works through <strong>Hey Siri</strong> ("Hey Siri, BeFree…") with no need to open the app.</li>
   </ul>
 
@@ -139,7 +139,7 @@
 
   <h2>What we use</h2>
   <ul>
-    <li><strong>Apple Speech framework</strong> for on-device speech recognition.</li>
+    <li><strong>Apple Speech framework</strong> for speech recognition (on-device or on Apple's servers, per your device's configuration — BeFree never receives the audio).</li>
     <li><strong>iOS native</strong> components wherever possible so VoiceOver, Switch Control, Voice Control, and Full Keyboard Access work the way you expect.</li>
     <li><strong>System Text Size</strong> and <strong>Reduce Motion</strong> are read directly from iOS settings — no separate in-app toggle to forget.</li>
   </ul>

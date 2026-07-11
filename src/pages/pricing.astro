@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: 'Do you train AI on my brain dumps?',
-    a: 'No. Your dumps are used to sort your day and nothing else — never sold, never used to train models, never mined for ads. Encrypted in transit and at rest.',
+    a: 'No. BeFree never trains AI on your dumps, and they are never sold or mined for ads — they sort your day and nothing else. Our language-model provider is contractually barred from training on your content, and our privacy policy spells out exactly how each AI provider handles your data. Encrypted in transit and at rest.',
   },
   {
     q: 'Can I switch or cancel whenever?',
@@ -43,7 +43,7 @@ const faqs = [
     <div class="toggle" role="group" aria-label="Billing period">
       <button type="button" id="bill-monthly" class="seg">Monthly</button>
       <button type="button" id="bill-annual" class="seg on"
-        >Annual <span class="save">SAVE 28%</span></button
+        >Annual <span class="save">SAVE 40%</span></button
       >
     </div>
   </section>
@@ -74,10 +74,10 @@ const faqs = [
         <div class="tier-name">Pro</div>
         <div class="tier-tag">For when life gets loud.</div>
         <div class="price-row tight">
-          <span class="price">$<span data-price-pro>5</span></span>
+          <span class="price">$<span data-price-pro>4.17</span></span>
           <span class="per">/mo</span>
         </div>
-        <div class="bill-note" data-bill-note>billed annually — $59.99/yr</div>
+        <div class="bill-note" data-bill-note>billed annually — $49.99/yr</div>
         <a href="#download" class="tier-btn solid">Start free, upgrade in the app</a>
         <div class="feats-label">Everything in Free, plus</div>
         <div class="feats">
@@ -128,7 +128,7 @@ const faqs = [
 
 <script>
   // Toggle logic — the spec's state machine wired to the REAL App Store
-  // prices: Pro $6.99/mo monthly, $59.99/yr annual (≈$5/mo, 28% off).
+  // prices: Pro $6.99/mo monthly, $49.99/yr annual (≈$4.17/mo, 40% off).
   const monthlyBtn = document.getElementById('bill-monthly')!;
   const annualBtn = document.getElementById('bill-annual')!;
   const proEl = document.querySelector('[data-price-pro]')!;
@@ -137,9 +137,9 @@ const faqs = [
   function apply(annual: boolean) {
     annualBtn.classList.toggle('on', annual);
     monthlyBtn.classList.toggle('on', !annual);
-    proEl.textContent = annual ? '5' : '6.99';
+    proEl.textContent = annual ? '4.17' : '6.99';
     notes.forEach(
-      (n) => (n.textContent = annual ? 'billed annually — $59.99/yr' : 'billed monthly')
+      (n) => (n.textContent = annual ? 'billed annually — $49.99/yr' : 'billed monthly')
     );
   }
   monthlyBtn.addEventListener('click', () => apply(false));
