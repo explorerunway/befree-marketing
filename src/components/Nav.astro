@@ -2,7 +2,7 @@
 // Sticky blurred nav — spec: designs/BeFree*.dc.html "NAV" section.
 // Active page gets weight 600 + accent (and ph-fill for the Mac glyph).
 interface Props {
-  active: 'home' | 'mac' | 'pricing';
+  active: 'home' | 'mac' | 'pricing' | 'android';
 }
 const { active } = Astro.props;
 // The persistent nav CTA drives straight into the web app (instant one-tap
@@ -23,6 +23,9 @@ const ctaLabel = active === 'pricing' ? 'Get started' : 'Start free';
       <a href="/#features" class="link bf-hide-sm">Features</a>
       <a href="/mac" class:list={['link', 'mac', { active: active === 'mac' }]}>
         <i class={active === 'mac' ? 'ph-fill ph-desktop' : 'ph-bold ph-desktop'}></i> Mac
+      </a>
+      <a href="/android" class:list={['link', 'mac', { active: active === 'android' }]}>
+        <i class={active === 'android' ? 'ph-fill ph-android-logo' : 'ph-bold ph-android-logo'}></i> Android
       </a>
       <a href="/pricing" class:list={['link', { active: active === 'pricing' }]}>Pricing</a>
       <a href={ctaHref} class="cta">{ctaLabel}</a>
