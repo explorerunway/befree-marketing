@@ -373,7 +373,7 @@ function render(d, viewer){
 
   // ── hero callout ──
   H.push('<div class="callout"><span class="big">' + U.total + '&nbsp;→&nbsp;' + U.external_identified + '</span>'
-    + '<p>Of <b>' + U.total + ' accounts</b>, <b>' + U.anon + ' are anonymous</b> throwaway/dev sessions and <b>' + U.internal + ' are owner/test accounts</b>. The genuine external base is <b>' + U.external_identified + ' identified people</b> — of whom <b>' + A.external_active_7d + '</b> captured something in the last 7 days.</p></div>');
+    + '<p>Of <b>' + U.total + ' accounts</b>, <b>' + U.anon + ' are anonymous</b> throwaway/dev sessions and <b>' + U.internal + ' are owner/test/bot</b> accounts. The genuine external base is <b>' + U.external_identified + ' identified people</b> — of whom <b>' + A.external_active_7d + '</b> captured something in the last 7 days.</p></div>');
 
   // ── KPI row ──
   var actRate = F.signups? Math.round(100*F.activated/F.signups):0;
@@ -415,10 +415,11 @@ function render(d, viewer){
   var totU=U.total||1;
   H.push('<div class="grid2"><section class="card"><div class="head"><h2>Who signed up</h2><p>composition of '+U.total+'</p></div><div class="split"><div class="splitbar">'
     + '<div class="seg-anon" style="width:'+(100*U.anon/totU)+'%">'+U.anon+' anon</div>'
-    + '<div class="seg-int" style="width:'+(100*U.internal/totU)+'%">'+U.internal+' test</div>'
+    + '<div class="seg-int" style="width:'+(100*U.internal/totU)+'%">'+U.internal+' test/bot</div>'
     + '<div class="seg-id" style="width:'+(100*U.external_identified/totU)+'%">'+U.external_identified+' real</div></div>'
     + '<div class="prov"><span class="chipn"><b>'+U.provider_apple+'</b> Apple</span><span class="chipn"><b>'+U.provider_google+'</b> Google</span><span class="chipn"><b>'+U.provider_email+'</b> email</span><span class="chipn"><b>'+U.apple_relay+'</b> Apple relay</span><span class="chipn"><b>'+U.reachable+'</b> reachable</span></div>'
-    + '<p class="note" style="border:none;padding:0;margin-top:2px">Anonymous users <b>can\'t be emailed</b>. Apple private-relay forwards, so the reachable audience is the <b>'+U.reachable+' identified externals</b>.</p></div></section>');
+    + '<div class="prov" style="margin-top:8px"><span class="chipn" style="border-color:var(--brass);color:var(--brass)">platform</span><span class="chipn"><b>'+(U.platform_web||0)+'</b> web</span><span class="chipn"><b>'+(U.platform_ios||0)+'</b> iOS</span><span class="chipn"><b>'+(U.platform_mac||0)+'</b> Mac</span><span class="chipn"><b>'+(U.platform_android||0)+'</b> Android</span><span class="chipn dmuted"><b>'+(U.platform_unknown||0)+'</b> untagged</span></div>'
+    + '<p class="note" style="border:none;padding:0;margin-top:8px">The <b>'+U.internal+' excluded</b> = '+(U.owner||0)+' owner/test + <b>'+(U.bots||0)+' bot/monitor</b>. Anonymous users can\'t be emailed; Apple relay forwards, so reachable = <b>'+U.reachable+' identified externals</b>. Platform tags populate as each app stamps them — web stamping ships in this update; iOS/Mac need the same one-liner.</p></div></section>');
 
   var mix=d.entity_mix||[], mmax=1, tot=0; mix.forEach(function(m){ mmax=Math.max(mmax,m.count); tot+=m.count; });
   var mrows='';
