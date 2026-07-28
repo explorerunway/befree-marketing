@@ -419,13 +419,38 @@ function render(d, viewer){
     + '<div class="seg-id" style="width:'+(100*U.external_identified/totU)+'%">'+U.external_identified+' real</div></div>'
     + '<div class="prov"><span class="chipn"><b>'+U.provider_apple+'</b> Apple</span><span class="chipn"><b>'+U.provider_google+'</b> Google</span><span class="chipn"><b>'+U.provider_email+'</b> email</span><span class="chipn"><b>'+U.apple_relay+'</b> Apple relay</span><span class="chipn"><b>'+U.reachable+'</b> reachable</span></div>'
     + '<div class="prov" style="margin-top:8px"><span class="chipn" style="border-color:var(--brass);color:var(--brass)">platform</span><span class="chipn"><b>'+(U.platform_web||0)+'</b> web</span><span class="chipn"><b>'+(U.platform_ios||0)+'</b> iOS</span><span class="chipn"><b>'+(U.platform_mac||0)+'</b> Mac</span><span class="chipn"><b>'+(U.platform_android||0)+'</b> Android</span><span class="chipn dmuted"><b>'+(U.platform_unknown||0)+'</b> untagged</span></div>'
-    + '<p class="note" style="border:none;padding:0;margin-top:8px">The <b>'+U.internal+' excluded</b> = '+(U.owner||0)+' owner/test + <b>'+(U.bots||0)+' bot/monitor</b>. Anonymous users can\'t be emailed; Apple relay forwards, so reachable = <b>'+U.reachable+' identified externals</b>. Platform tags populate as each app stamps them — web stamping ships in this update; iOS/Mac need the same one-liner.</p></div></section>');
+    + '<div class="prov" style="margin-top:8px"><span class="chipn" style="border-color:var(--plum);color:var(--plum)">heard from</span>'+(Object.keys(U.heard_from||{}).length  ? Object.keys(U.heard_from).map(function(k){ return '<span class="chipn"><b>'+U.heard_from[k]+'</b> '+esc(k)+'</span>'; }).join('')  : '<span class="chipn dmuted">no answers yet &mdash; the chip is built but unshipped; it populates from iOS build 109</span>')+'</div>'
+    + '<p class="note" style="border:none;padding:0;margin-top:8px">The <b>'+U.internal+' excluded</b> = '+(U.owner||0)+' owner/test + <b>'+(U.bots||0)+' bot/monitor</b>. Anonymous users can\'t be emailed; Apple relay forwards, so reachable = <b>'+U.reachable+' identified externals</b>. Platform tags populate as each app stamps them: <b>only iOS stamps today</b> — web, Mac and Android do not, so the untagged are pre-tagging accounts plus every unstamped surface.</p></div></section>');
 
   var mix=d.entity_mix||[], mmax=1, tot=0; mix.forEach(function(m){ mmax=Math.max(mmax,m.count); tot+=m.count; });
   var mrows='';
   mix.forEach(function(m){ mrows += '<div class="mrow"><span class="ml">'+esc(m.kind)+'</span><div class="track"><div class="fill" style="width:'+(100*m.count/mmax)+'%"></div><div class="fill ai" style="width:'+(100*m.ai/mmax)+'%"></div></div><span class="mv">'+m.count+' <span style="color:var(--brass)">·'+m.ai+'</span></span></div>'; });
   H.push('<section class="card"><div class="head"><h2>What people capture</h2><p>'+tot+' items · <span style="color:var(--brass)">brass = AI-parsed</span></p></div><div class="mix">'+mrows+'</div>'
     + '<p class="note" style="border:none;padding:0;margin-top:12px">Capture spreads across all five types — the parser is doing its job across the board.</p></section></div>');
+
+  // ── the north star: does a dump actually file something, and does a
+  //    resurfaced commitment get closed? Both were computable-but-invisible
+  //    until 0078 — a metric nobody can see does not change behaviour.
+  var CO=d.capture_outcomes||{}, SL=d.shelf_loop||{};
+  var byOut=CO.by_outcome||{}, bySurf=CO.by_surface||{};
+  function chips(o){ var ks=Object.keys(o||{}); if(!ks.length) return '<span class="chipn dmuted">none yet</span>';
+    ks.sort(function(a,b){ return o[b]-o[a]; });
+    return ks.map(function(k){ return '<span class="chipn"><b>'+o[k]+'</b> '+esc(k)+'</span>'; }).join(''); }
+  H.push('<section class="card" style="border-color:var(--brass)"><div class="head"><div><span class="eyebrow" style="color:var(--brass)">north star</span>'
+    + '<h2 style="margin-top:6px">Capture outcomes &amp; loop closure</h2></div><p style="max-width:36ch">Does a dump file something? Does a resurfaced commitment get closed?</p></div>'
+    + '<div class="grid3">'
+    + scell((CO.file_rate===null||CO.file_rate===undefined?'&mdash;':CO.file_rate+'%'), 'file rate · 30d (excl. answers)')
+    + scell((byOut.note_fallback||0), 'saved by the capture floor')
+    + scell((byOut.asked||0), 'asked a question, filed nothing')
+    + scell((SL.resurfaced||0), 'commitments resurfaced · 30d')
+    + scell((SL.closed||0), 'closed (done or let go)')
+    + scell((SL.closure_rate===null||SL.closure_rate===undefined?'&mdash;':SL.closure_rate+'%'), 'loop-closure rate')
+    + '</div>'
+    + '<div class="prov" style="margin-top:10px"><span class="chipn" style="border-color:var(--brass);color:var(--brass)">outcome</span>'+chips(byOut)+'</div>'
+    + '<div class="prov" style="margin-top:8px"><span class="chipn" style="border-color:var(--brass);color:var(--brass)">surface</span>'+chips(bySurf)+'</div>'
+    + '<p class="note" style="border:none;padding:0;margin-top:10px">Read this carefully before quoting it. <b>'+(CO.unstamped||0)+'</b> runs predate the outcome column (0073) and are excluded from the rate, not counted as failures. '
+    + 'Today essentially all stamped traffic is <b>synthetic-monitor</b> — the server\'s own golden transcripts — so the file rate measures the pipeline, not real users; client surfaces start stamping at iOS build 109. '
+    + 'Loop closure stays &mdash; while <b>shelf_review_day</b> defaults to <b>never</b> (consent decision #341) and the slip predicate matches ~4 rows in the whole database.</p></section>');
 
   // ── activity opens-vs-captures + daily spark ──
   H.push('<div class="grid2"><section class="card"><div class="head"><h2>Opens vs. captures</h2><p>the engagement gap</p></div><div class="stat2">'
@@ -550,7 +575,7 @@ function render(d, viewer){
 
   // ── re-engagement ──
   var S=d.segments||{}, na=S.never_activated||{count:0,sample:[]}, dp=(S.dormant_power||[])[0], rp=(S.recent_pro||[])[0];
-  H.push('<section class="card" style="border-color:var(--accent)"><div class="head"><div><span class="eyebrow" style="color:var(--accent)">The gap</span><h2 style="margin-top:6px">Re-engagement loop</h2></div><p style="max-width:34ch">No channel exists yet to reach a churned user — every notification is on-device only.</p></div>'
+  H.push('<section class="card" style="border-color:var(--accent)"><div class="head"><div><span class="eyebrow" style="color:var(--accent)">The gap</span><h2 style="margin-top:6px">Re-engagement loop</h2></div><p style="max-width:34ch">The email channel now exists but runs <b>DRY-RUN</b> — it segments and renders and delivers nothing. Still no remote push: no APNs key, no token capture.</p></div>'
     + '<p style="font-size:14px;color:var(--muted);max-width:80ch;margin-bottom:16px">Every BeFree notification is <b style="color:var(--ink)">local</b>. There is <b style="color:var(--ink)">no remote push</b> (no APNs token capture) and <b style="color:var(--ink)">no email/lifecycle machinery</b>. The moment someone stops opening the app, you have no way to say "come back." Building that channel is the unlock.</p>'
     + '<h3 style="margin-bottom:10px">Segments that need it now</h3><div class="seg">');
   if(rp) H.push('<div class="segrow" data-sev="crit"><span class="sn" style="color:var(--crit)">1</span><div class="st"><b>Recent Pro — protect the conversion</b><p>'+esc(rp.label)+(rp.email?' ('+esc(rp.email)+')':'')+' started an <b>'+esc(rp.pro_period)+'</b> Pro plan recently and is dumping ('+rp.dumps+' so far). Confirm the trial converts, not cancels.</p></div><span class="pill crit dot">watch</span></div>');
@@ -565,7 +590,7 @@ function render(d, viewer){
     + '<div class="step"><span class="n">04 · MEASURE</span><h3>Attribute</h3><p>Tag the deep link so re-opens and the next dump attribute back. Kill what doesn\'t work.</p></div></div>');
 
   var tzSet=d.infra.timezone_set, tzTot=d.infra.profiles;
-  H.push('<div class="dep"><b>Dependency check (live):</b> to send at a sane local hour the loop needs each user\'s timezone — and right now <b>'+tzSet+' of '+tzTot+' profiles</b> have a non-UTC timezone set. '+(tzSet===0?'The <b>profiles.timezone</b> backfill (PR #240) has not populated a single row yet — step 02 is blocked until it does.':'Backfill is underway.')+'</div></section>');
+  H.push('<div class="dep"><b>Dependency check (live):</b> to send at a sane local hour the loop needs each user\'s timezone — and right now <b>'+tzSet+' of '+tzTot+' profiles</b> have a non-UTC timezone set. '+(tzSet===0?'Not one row is populated — step 02 is blocked until that changes.':'There is deliberately <b>no backfill</b>: no honest way exists to infer a dormant account\'s zone, and a wrong zone is worse than UTC because two edge functions do user-facing date math with it. Migration 0076 grants the client UPDATE on this column, so it is stamped at sign-in only — it climbs as people open the app.')+'</div></section>');
 
   // ── AI accuracy + brand studio + infra ──
   var FB=d.feedback||{by_signal:[],total:0,ai_entities:0}; var corrPct = FB.ai_entities? (100*FB.total/FB.ai_entities):0;
@@ -575,7 +600,7 @@ function render(d, viewer){
     + sigRows
     + kvr('vs AI-created entities', FB.ai_entities+'')
     + kvr('Correction rate', corrPct.toFixed(0)+'%')
-    + '</div><p class="note" style="border:none;padding-top:10px;font-size:11px">Mostly <b>delete</b> signals — users clearing test/AI items. Low edit/recategorize = classification is landing.</p></section>');
+    + '</div><p class="note" style="border:none;padding-top:10px;font-size:11px">Mostly <b>delete</b> — but a delete is indistinguishable from \'wrong item, binned it\', and four Postgres triggers write it on <i>any</i> sub-24h soft-delete anywhere in the app. This is <b>not</b> evidence classification is landing; read the capture-outcome card above instead.</p></section>');
   H.push('<section class="card"><div class="head"><h2>Brand Studio</h2><p>marketing engine</p></div><div class="kv">'
     + kvr('Posts', BS.posts+'') + kvr('Published', BS.published+'') + kvr('Variants', BS.variants+'') + kvr('Live seeds', BS.seeds+'')
     + kvr('Last activity', BS.last_activity? fmtDate(BS.last_activity):'—')
