@@ -1,43 +1,41 @@
 ---
-// Android — founding-tester recruitment landing for the Google Play closed test.
+// Android — early-access recruitment while Play distribution is being prepared.
 // Mirrors the calm-room system used on pricing.astro / mac.astro.
 import Site from '../layouts/Site.astro';
 
 // Tracked link (Brand Studio /l redirect) → the Google Group join page.
 // Generic 'android' slug so website joins are attributed separately from social.
 const JOIN = 'https://befree-brand-studio.vercel.app/l/android';
-const OPTIN = 'https://play.google.com/apps/testing/app.befree';
-
 const perks = [
-  { icon: 'ph-bold ph-sparkle', tone: 'plum', title: 'Early access', body: 'The Android build, before it hits the store.' },
+  { icon: 'ph-bold ph-sparkle', tone: 'plum', title: 'Early access', body: 'Be first to know when the Android preview is ready to install.' },
   { icon: 'ph-bold ph-star', tone: 'brass', title: '1 year of Pro, free', body: 'Founding testers get a full year on us — no card.' },
   { icon: 'ph-bold ph-chat-teardrop-dots', tone: 'olive', title: 'A direct line to the makers', body: 'Your feedback lands with us and shapes each build.' },
   { icon: 'ph-bold ph-seal-check', tone: 'plum', title: 'Founding badge', body: 'You helped build it — your name in the credits.' },
 ];
 
 const steps = [
-  { n: '1', title: 'Join the tester group', body: 'Tap the button below and hit “Join group.” One tap, no forms.' },
-  { n: '2', title: 'Open the opt-in link', body: 'On your Android phone, open the link you’ll get and tap “Become a tester,” then install BeFree.' },
-  { n: '3', title: 'Speak your first brain dump', body: 'Say the messy thing out loud — BeFree sorts it into tasks, reminders, groceries and notes.' },
+  { n: '1', title: 'Join the early-access list', body: 'Tap the button below and join the Android community.' },
+  { n: '2', title: 'Get the launch note', body: 'We’ll send the official install instructions after the Play preview is ready.' },
+  { n: '3', title: 'Help shape the release', body: 'Try your real brain dumps and tell us what should feel easier.' },
 ];
 ---
 
 <Site
   title="BeFree for Android — build it with us"
-  description="Join the first Android closed test. Founding testers get a free year of Pro and a direct line to the makers. Limited spots."
+  description="Join the BeFree Android early-access list. Founding testers get a free year of Pro and a direct line to the makers."
   active="android"
 >
   <!-- ══════════ HERO ══════════ -->
   <section class="hero">
-    <div class="eyebrow">Android · Closed test</div>
+    <div class="eyebrow">Android · Early access</div>
     <h1>Build the Android<br />version with us.</h1>
     <p>
-      BeFree is coming to Android — and we’re opening the first closed test to a small founding crew.
+      BeFree is coming to Android — and we’re preparing a Play preview for a small founding crew.
       You talk; it sorts your tasks, reminders, groceries and notes.
     </p>
     <div class="cta-row">
-      <a href={JOIN} class="btn-solid">Join the closed test</a>
-      <span class="cta-meta">Google Play closed test · limited spots</span>
+      <a href={JOIN} class="btn-solid">Join Android early access</a>
+      <span class="cta-meta">We’ll send install instructions when the preview is ready</span>
     </div>
   </section>
 
@@ -73,9 +71,7 @@ const steps = [
         ))
       }
     </div>
-    <p class="fineprint">
-      Already joined the group? Open <a href={OPTIN}>the opt-in link</a> on your Android phone to finish.
-    </p>
+    <p class="fineprint">No install is available yet. Joining the list reserves your place for the first Play preview.</p>
   </section>
 
   <!-- ══════════ VOICE MOMENT ══════════ -->
@@ -91,7 +87,7 @@ const steps = [
         <div class="mascot"><img src="/assets/cutemic.png" alt="" /></div>
         <h2>Grab a founding seat.</h2>
         <p>A free year of Pro, a direct line to us, and a build you helped shape.</p>
-        <a href={JOIN} class="btn-light">Join the closed test</a>
+        <a href={JOIN} class="btn-light">Join Android early access</a>
         <div class="meta">Limited spots · Android only</div>
       </div>
     </div>

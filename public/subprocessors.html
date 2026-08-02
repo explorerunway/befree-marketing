@@ -91,7 +91,7 @@
 <div class="wrap">
   <p class="crumb"><a href="/">← BeFree</a></p>
   <h1>Subprocessors</h1>
-  <p class="last">Last updated July 11, 2026</p>
+  <p class="last">Last updated August 2, 2026</p>
 
   <p>BeFree uses the following service providers ("subprocessors") to operate the app. This page lists each provider, what role they play, and where their data centers are. We update this list when we change a provider.</p>
 
@@ -107,7 +107,7 @@
       <tr><td><strong>Anthropic</strong></td><td>AI language-model processing for brain-dump parsing. When Google Calendar is connected, receives upcoming-event title + start/end times as context (not description or location).</td><td>US</td></tr>
       <tr><td><strong>Voyage AI</strong></td><td>Embedding generation for in-app search and retrieval. When Google Calendar is connected, receives event title + description + location to build the search embedding.</td><td>US</td></tr>
       <tr><td><strong>Apple</strong></td><td>App distribution (App Store), in-app purchase processing, push notifications, Sign in with Apple, speech recognition for voice capture (may process audio on Apple's servers depending on device/language)</td><td>US / EU</td></tr>
-      <tr><td><strong>Google</strong></td><td>Google Calendar two-way sync (only when you connect Google in Settings &rarr; Sources). OAuth tokens stay on your device; Google sees only calendar read/write API calls.</td><td>US / EU</td></tr>
+      <tr><td><strong>Google</strong></td><td>Google Calendar two-way sync (only when you connect Google in You &rarr; Connections). OAuth tokens are stored in the device Keychain; an expired refresh token is sent over TLS only to BeFree's private Supabase token-refresh function for exchange with Google and is not persisted server-side.</td><td>US / EU</td></tr>
       <tr><td><strong>RevenueCat</strong></td><td>Subscription entitlement management</td><td>US</td></tr>
       <tr><td><strong>Sentry</strong></td><td>Crash diagnostics (only when "Help improve BeFree" is enabled)</td><td>US / EU</td></tr>
       <tr><td><strong>PostHog</strong></td><td>Product analytics (only when "Help improve BeFree" is enabled)</td><td>US</td></tr>
@@ -117,7 +117,7 @@
   <h2>How we vet providers</h2>
   <p>Before we add a subprocessor, we check that:</p>
   <ol>
-    <li>They offer a Data Processing Agreement (DPA) covering confidentiality, security, and how BeFree user data may be used. For AI providers, we additionally seek terms or settings that keep BeFree user data out of provider model training. Where that stands today: Anthropic's commercial terms contractually prohibit training on BeFree user content; Voyage AI's standard terms allow training on customer content by default, and BeFree's organization-level opt-out is pending confirmation — until it is confirmed, we do not claim that data sent to Voyage is excluded from its model training (see the AI-processing section of our <a href="/privacy.html">Privacy Policy</a>).</li>
+    <li>They offer a Data Processing Agreement (DPA) covering confidentiality, security, and how BeFree user data may be used. For AI providers, we additionally require terms or settings that keep BeFree user data out of provider model training. Anthropic's commercial terms contractually prohibit training on BeFree user content, and BeFree has enabled Voyage AI's organization-level training opt-out (see the AI-processing section of our <a href="/privacy.html">Privacy Policy</a>).</li>
     <li>They commit to a defined data-retention window for prompts and intermediate data.</li>
     <li>They support encryption in transit and at rest.</li>
     <li>They commit to notifying us of security incidents within a defined window.</li>

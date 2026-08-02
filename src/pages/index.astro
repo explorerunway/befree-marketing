@@ -44,6 +44,44 @@ const features = [
   },
 ];
 
+// Capabilities that already ship but were invisible on this page — every claim
+// here is checked against the app: Apple read + opt-in write-back
+// (APPLE_CALENDAR_WRITE_ENABLED / APPLE_REMINDERS_WRITE_ENABLED, build #94),
+// any-language parsing in ai-dump + 5 shipped UI locales (lib/i18n/locales),
+// hybrid keyword+semantic search (services/search.ts), and JSON + iCal export
+// (services/exports.ts). Google Calendar is deliberately ABSENT — it stays
+// behind GOOGLE_CALENDAR_ENABLED=false until OAuth verification lands.
+const connects = [
+  {
+    icon: 'calendar-check',
+    tool: 'var(--tool-event)',
+    tint: 12,
+    title: 'Your calendar, still yours',
+    body: 'BeFree reads your Apple Calendar and Reminders, so your real day shows up beside what you capture. Switch on two-way sync and what you say lands back in Apple’s apps too.',
+  },
+  {
+    icon: 'translate',
+    tool: 'var(--accent)',
+    tint: 14,
+    title: 'Talk in any language',
+    body: 'Speak whichever language you actually think in — BeFree parses it. The app itself reads in English, German, Spanish, French, and Japanese.',
+  },
+  {
+    icon: 'magnifying-glass',
+    tool: 'var(--tool-note)',
+    tint: 12,
+    title: 'Find the half-remembered thing',
+    body: 'Search goes by meaning, not spelling. Ask for “that dentist thing” and the appointment you never properly named comes back.',
+  },
+  {
+    icon: 'export',
+    tool: 'var(--brass)',
+    tint: 16,
+    title: 'Your data can leave',
+    body: 'Export everything to JSON, and your events to iCal, whenever you like. No lock-in, no hostage-taking — and deleting it all is just as easy.',
+  },
+];
+
 const windowCards = [
   { title: 'Design review', meta: '2:00 PM', icon: 'calendar-dots', tool: 'var(--tool-event)', checkable: false },
   { title: 'Call mum', meta: 'Tonight', icon: 'bell', tool: 'var(--tool-reminder)' },
@@ -163,6 +201,30 @@ const windowCards = [
           </p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════ WHAT IT CONNECTS TO ══════════ -->
+  <section id="connects" class="features">
+    <div class="section-head">
+      <div class="eyebrow">Not a walled garden</div>
+      <h2>It fits the life<br />you already have.</h2>
+    </div>
+    <div class="grid">
+      {
+        connects.map((f) => (
+          <div class="feature">
+            <div
+              class="feature-medal"
+              style={`background: color-mix(in srgb, ${f.tool} ${f.tint}%, transparent);`}
+            >
+              <i class={`ph-bold ph-${f.icon}`} style={`color: ${f.tool};`} />
+            </div>
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+          </div>
+        ))
+      }
     </div>
   </section>
 
