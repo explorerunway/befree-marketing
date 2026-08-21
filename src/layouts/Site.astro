@@ -7,11 +7,12 @@ import '@phosphor-icons/web/bold';
 import '@phosphor-icons/web/fill';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title: string;
   description: string;
-  active: 'home' | 'mac' | 'pricing' | 'android';
+  active: 'home' | 'mac' | 'pricing' | 'android' | 'none';
 }
 const { title, description, active } = Astro.props;
 // vercel.json sets cleanUrls + trailingSlash:false, so /mac answers 200 and
@@ -59,6 +60,31 @@ const ogImage = new URL('/og-card.png', Astro.site);
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Geist:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+
+    <script is:inline>
+      // Vercel Web Analytics reads this GLOBAL rather than a prop: the Astro
+      // component's Props type omits `beforeSend` and picks up
+      // window.webAnalyticsBeforeSend instead, which the generic docs don't
+      // say. Must be `is:inline` so it runs during parse — the <Analytics />
+      // script is a bundled module and therefore deferred, so the global is
+      // always set before it reads it.
+      //
+      // What it does: drops every query string except the campaign `ref`, so a
+      // future campaign URL can never carry an email, token or address into
+      // analytics. `ref` is kept deliberately — it is the one param the funnel
+      // needs, and it is a campaign label, not a person.
+      window.webAnalyticsBeforeSend = function (event) {
+        try {
+          var u = new URL(event.url);
+          var ref = u.searchParams.get('ref');
+          u.search = ref ? '?ref=' + encodeURIComponent(ref.slice(0, 64)) : '';
+          return Object.assign({}, event, { url: u.toString() });
+        } catch (e) {
+          return event;
+        }
+      };
+    </script>
+    <Analytics />
   </head>
   <body>
     <div class="page">
@@ -70,6 +96,47 @@ const ogImage = new URL('/og-card.png', Astro.site);
       </div>
     </div>
     <script is:inline>
+      // Campaign attribution pass-through. A video/creator link lands here as
+      // heybefree.app/adhd?ref=TT-SPRING; the signup happens one hop later on
+      // app.heybefree.app, a DIFFERENT origin, so the code has to ride the
+      // link across. The web app captures it at first load and stamps it on
+      // the profile after sign-in (webapp/src/lib/attribution.ts).
+      //
+      // Deliberately `ref` and never `code` — `code` is Supabase's PKCE
+      // auth-code parameter, and colliding with it would break sign-in.
+      // Only web-app links get the param: an App Store URL would just carry a
+      // stray query string, and Apple campaign attribution is a different
+      // mechanism (pt/ct) that has to be minted in App Store Connect.
+      (function () {
+        try {
+          var ref = new URLSearchParams(window.location.search).get('ref');
+          if (!ref) return;
+          ref = ref.trim().toUpperCase().slice(0, 32);
+          if (!/^[A-Z0-9_-]{1,32}$/.test(ref)) return;
+          // Two kinds of link get the param: the web-app door (where the code
+          // is actually consumed) and same-origin internal links (so the code
+          // survives /adhd → /pricing → Get BeFree instead of dying on the
+          // first navigation). Store links, mailto:, and the Google/Play
+          // tester links are all left exactly as authored.
+          var here = window.location.origin;
+          document.querySelectorAll('a[href]').forEach(function (a) {
+            try {
+              var u = new URL(a.href, here);
+              var isWebApp = u.hostname === 'app.heybefree.app';
+              var isInternal = u.origin === here;
+              if (!isWebApp && !isInternal) return;
+              if (u.protocol !== 'http:' && u.protocol !== 'https:') return;
+              if (!u.searchParams.has('ref')) u.searchParams.set('ref', ref);
+              a.href = u.toString();
+            } catch (e) {
+              /* leave the link exactly as authored */
+            }
+          });
+        } catch (e) {
+          /* attribution is best-effort; never break a link over it */
+        }
+      })();
+
       // Smart "Get BeFree" (owner, 2026-08-21): every a[data-get-befree]
       // routes to the visitor's own platform door. The markup default href is
       // the web app, so no-JS and unknown platforms still land somewhere real.
