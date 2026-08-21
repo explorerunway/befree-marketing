@@ -159,10 +159,11 @@ const windowCards = [
       brings each one back at the right moment.
     </p>
     <div class="hero-cta">
-      <a href="https://app.heybefree.app" class="hero-start">
-        Start free in your browser <i class="ph-bold ph-arrow-right"></i>
+      <a href="https://app.heybefree.app" class="hero-start" data-get-befree>
+        Get BeFree <i class="ph-bold ph-arrow-right"></i>
       </a>
     </div>
+    <div class="hero-free">Free · no card</div>
   </section>
 
   <!-- ══════════ LIVE DEMO ══════════ -->
@@ -400,7 +401,7 @@ const windowCards = [
         </p>
       </div>
       <div class="actions">
-        <a href="#download" class="primary">Get BeFree free</a>
+        <a href="https://app.heybefree.app" class="primary" data-get-befree>Get BeFree</a>
         <a href="/pricing" class="secondary">Compare plans →</a>
       </div>
     </div>
@@ -417,6 +418,9 @@ const windowCards = [
     </a>
     <StoreBadge store="ios" />
     <StoreBadge store="mac" />
+    <a href="/android" class="web-cta">
+      <i class="ph-bold ph-android-logo"></i> Android early access
+    </a>
   </DownloadCTA>
 </Site>
 
@@ -512,6 +516,14 @@ const windowCards = [
   }
   .hero-start:hover i {
     transform: translateX(3px);
+  }
+  .hero-free {
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
   /* demo */
   .demo-section {

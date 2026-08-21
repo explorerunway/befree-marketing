@@ -13,11 +13,13 @@ const { active } = Astro.props;
 const WEB_APP = 'https://app.heybefree.app';
 // Universal-purchase App Store record (same id as StoreBadge.astro).
 const APP_STORE = 'https://apps.apple.com/app/id6763826891';
-// The persistent nav CTA drives straight into the web app (instant one-tap
-// Google/Apple account) — the fastest path from site to using BeFree. On
-// /pricing it scrolls to the plans instead.
-const ctaHref = active === 'pricing' ? '#tiers' : WEB_APP;
-const ctaLabel = active === 'pricing' ? 'Get started' : 'Start free';
+// The persistent nav CTA is the smart "Get BeFree" button — the Site layout
+// script rewrites its href to the visitor's platform door (App Store / Mac
+// App Store / Android tester flow), with the web app as the no-JS default.
+// On /pricing it scrolls to the plans instead.
+const smartCta = active !== 'pricing';
+const ctaHref = smartCta ? WEB_APP : '#tiers';
+const ctaLabel = smartCta ? 'Get BeFree' : 'Get started';
 ---
 
 <div class="navbar">
@@ -40,7 +42,7 @@ const ctaLabel = active === 'pricing' ? 'Get started' : 'Start free';
         <i class="ph-bold ph-globe"></i> Web
       </a>
       <a href="/pricing" class:list={['link', { active: active === 'pricing' }]}>Pricing</a>
-      <a href={ctaHref} class="cta">{ctaLabel}</a>
+      <a href={ctaHref} class="cta" data-get-befree={smartCta ? '' : undefined}>{ctaLabel}</a>
     </div>
   </div>
 </div>

@@ -32,6 +32,51 @@ const windowCards = [
       <StoreBadge store="mac" />
       <span class="hero-meta">Free · macOS 13+</span>
     </div>
+
+    <!-- Platform-aware helper (owner, 2026-08-21): a Mac gets told the badge
+         opens the store; an iPhone gets the universal-purchase fact; anything
+         else gets copy-for-later + the browser door. Hidden without JS. -->
+    <div class="smart-note" id="mac-note" hidden>
+      <span id="mac-note-text"></span>
+      <a id="mac-note-link" href="https://app.heybefree.app" hidden></a>
+      <button type="button" id="mac-copy" class="copy-chip" hidden>Copy the Mac link</button>
+    </div>
+    <script is:inline>
+      (function () {
+        var note = document.getElementById('mac-note');
+        var text = document.getElementById('mac-note-text');
+        var link = document.getElementById('mac-note-link');
+        var copy = document.getElementById('mac-copy');
+        if (!note || !text || !link || !copy) return;
+        var ua = navigator.userAgent;
+        var iPad = /iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+        var isIOS = /iPhone|iPod/.test(ua) || iPad;
+        var isMac = /Macintosh/.test(ua) && !iPad;
+        if (isMac) {
+          text.textContent = 'You’re on a Mac — the badge above opens the Mac App Store.';
+        } else if (isIOS) {
+          text.textContent = 'On your iPhone? BeFree is one purchase across devices — get it on the App Store and the Mac app is included.';
+          link.textContent = 'Open the App Store';
+          link.href = 'https://apps.apple.com/app/id6763826891';
+          link.hidden = false;
+        } else {
+          text.textContent = 'Not at your Mac right now? Take the link with you — or start in your browser.';
+          link.textContent = 'Use BeFree in your browser';
+          link.hidden = false;
+          copy.hidden = false;
+          copy.addEventListener('click', function () {
+            var url = 'https://heybefree.app/mac';
+            var ok = function () { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy the Mac link'; }, 2000); };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(url).then(ok, function () { window.prompt('Copy this link:', url); });
+            } else {
+              window.prompt('Copy this link:', url);
+            }
+          });
+        }
+        note.hidden = false;
+      })();
+    </script>
   </section>
 
   <!-- ══════════ BIG APP WINDOW ══════════ -->
@@ -265,6 +310,42 @@ const windowCards = [
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--text-muted);
+  }
+  .smart-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 16px auto 0;
+    max-width: 560px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+  .smart-note a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .smart-note a:hover {
+    text-decoration: underline;
+  }
+  .copy-chip {
+    cursor: pointer;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-chip);
+    padding: 7px 13px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .copy-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   /* big window */

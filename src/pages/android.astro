@@ -1,41 +1,46 @@
 ---
-// Android — early-access recruitment while Play distribution is being prepared.
-// Mirrors the calm-room system used on pricing.astro / mac.astro.
+// Android — a WORKING founding-tester enrollment flow, not a mailing-list
+// pitch (owner, 2026-08-21). The Play Alpha track's tester source is the
+// public Google Group (approved + live since 2026-07-12), so enrollment is
+// genuinely self-serve: Google's own signed-in session authenticates each
+// step, which is why every step is one tap and none can be done FOR the
+// user by this site. Links verified live 2026-08-21:
+//   group page 200 (public, "Join group" one-tap) · opt-in URL exists ·
+//   the Play listing 404s for NON-testers — which is why the flow must run
+//   in this exact order and step 3 warns about Google's registration lag.
+// The tracked /l/android slug stays for SOCIAL posts; this page links the
+// group directly so a future slug repoint can't loop the flow back here.
 import Site from '../layouts/Site.astro';
 
-// Tracked link (Brand Studio /l redirect) → the Google Group join page.
-// Generic 'android' slug so website joins are attributed separately from social.
-const JOIN = 'https://befree-brand-studio.vercel.app/l/android';
+const GROUP = 'https://groups.google.com/g/befree-android-testers';
+const OPT_IN = 'https://play.google.com/apps/testing/app.befree';
+const PLAY = 'https://play.google.com/store/apps/details?id=app.befree';
+
 const perks = [
-  { icon: 'ph-bold ph-sparkle', tone: 'plum', title: 'Early access', body: 'Be first to know when the Android preview is ready to install.' },
+  { icon: 'ph-bold ph-sparkle', tone: 'plum', title: 'The real app, today', body: 'The tester build is the full BeFree — capture, AI sorting, widgets, the lot.' },
   { icon: 'ph-bold ph-star', tone: 'brass', title: '1 year of Pro, free', body: 'Founding testers get a full year on us — no card.' },
   { icon: 'ph-bold ph-chat-teardrop-dots', tone: 'olive', title: 'A direct line to the makers', body: 'Your feedback lands with us and shapes each build.' },
   { icon: 'ph-bold ph-seal-check', tone: 'plum', title: 'Founding badge', body: 'You helped build it — your name in the credits.' },
 ];
-
-const steps = [
-  { n: '1', title: 'Join the early-access list', body: 'Tap the button below and join the Android community.' },
-  { n: '2', title: 'Get the launch note', body: 'We’ll send the official install instructions after the Play preview is ready.' },
-  { n: '3', title: 'Help shape the release', body: 'Try your real brain dumps and tell us what should feel easier.' },
-];
 ---
 
 <Site
-  title="BeFree for Android — build it with us"
-  description="Join the BeFree Android early-access list. Founding testers get a free year of Pro and a direct line to the makers."
+  title="BeFree for Android — install it today as a founding tester"
+  description="BeFree for Android is installable now through Google Play early access. Three taps: join the tester group, turn on testing, install. Founding testers get a free year of Pro."
   active="android"
 >
   <!-- ══════════ HERO ══════════ -->
   <section class="hero">
     <div class="eyebrow">Android · Early access</div>
-    <h1>Build the Android<br />version with us.</h1>
+    <h1>On your phone<br />in three taps.</h1>
     <p>
-      BeFree is coming to Android — and we’re preparing a Play preview for a small founding crew.
-      You talk; it sorts your tasks, reminders, groceries and notes.
+      BeFree for Android is real and installable today — it ships through Google Play’s
+      early-access program while we clear Play’s launch requirements. Join as a founding tester:
+      a year of Pro on us, and your fingerprints on every release.
     </p>
     <div class="cta-row">
-      <a href={JOIN} class="btn-solid">Join Android early access</a>
-      <span class="cta-meta">We’ll send install instructions when the preview is ready</span>
+      <a href="#become-tester" class="btn-solid">Become a tester</a>
+      <span class="cta-meta">Three taps · Free · No forms — your Google account is the sign-up</span>
     </div>
   </section>
 
@@ -55,23 +60,82 @@ const steps = [
     </div>
   </section>
 
-  <!-- ══════════ HOW TO JOIN ══════════ -->
-  <section class="how">
-    <h2>How to join</h2>
-    <div class="steps">
-      {
-        steps.map((s) => (
-          <div class="step">
-            <div class="num">{s.n}</div>
-            <div>
-              <div class="step-title">{s.title}</div>
-              <div class="step-body">{s.body}</div>
-            </div>
-          </div>
-        ))
-      }
+  <!-- ══════════ BECOME A TESTER — the live flow ══════════ -->
+  <section class="how" id="become-tester">
+    <h2>Become a tester, right here.</h2>
+    <p class="how-sub">
+      Google runs the tester program, so your Google account is the whole sign-up — each step is
+      one tap if you’re signed in. Use the same account your phone’s Play Store uses.
+    </p>
+
+    <div class="device-note" id="at-device" hidden>
+      <i class="ph-bold ph-device-mobile" aria-hidden="true"></i>
+      <span id="at-device-text"></span>
+      <button type="button" id="at-copy" class="copy-btn" hidden>Copy link</button>
     </div>
-    <p class="fineprint">No install is available yet. Joining the list reserves your place for the first Play preview.</p>
+
+    <ol class="flow" id="at-flow">
+      <li class="fstep" id="at-s1">
+        <div class="fnum" aria-hidden="true"><span class="n">1</span><i class="ph-bold ph-check"></i></div>
+        <div class="fbody">
+          <div class="ftitle">Join the tester group</div>
+          <div class="ftext">
+            This puts you on the official tester list — Google recognises you the moment you join.
+            One tap on “Join group”, then come back here.
+          </div>
+          <div class="factions">
+            <a class="btn-solid faction" data-step="1" href={GROUP} target="_blank" rel="noopener">
+              Join the group <i class="ph-bold ph-arrow-square-out"></i>
+            </a>
+            <button class="fdone" data-step="1" type="button">I’ve joined</button>
+          </div>
+        </div>
+      </li>
+
+      <li class="fstep locked" id="at-s2">
+        <div class="fnum" aria-hidden="true"><span class="n">2</span><i class="ph-bold ph-check"></i></div>
+        <div class="fbody">
+          <div class="ftitle">Turn on testing for your account</div>
+          <div class="ftext">
+            Google shows one button — “Become a tester”. Tap it and you’re enrolled.
+          </div>
+          <div class="factions">
+            <a class="btn-solid faction" data-step="2" href={OPT_IN} target="_blank" rel="noopener">
+              Become a tester <i class="ph-bold ph-arrow-square-out"></i>
+            </a>
+            <button class="fdone" data-step="2" type="button">Done</button>
+          </div>
+        </div>
+      </li>
+
+      <li class="fstep locked" id="at-s3">
+        <div class="fnum" aria-hidden="true"><span class="n">3</span><i class="ph-bold ph-check"></i></div>
+        <div class="fbody">
+          <div class="ftitle">Install BeFree from Google Play</div>
+          <div class="ftext">
+            The store listing is visible to testers only. If Play says the app isn’t found, give it
+            a few minutes — Google can take a moment to register new testers — and check you’re
+            signed into the same account.
+          </div>
+          <div class="factions">
+            <a class="btn-solid faction" data-step="3" href={PLAY} target="_blank" rel="noopener">
+              Get it on Google Play <i class="ph-bold ph-arrow-square-out"></i>
+            </a>
+            <button class="fdone" data-step="3" type="button">Installed</button>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="flow-foot">
+      <span class="flow-status" id="at-status" aria-live="polite"></span>
+      <button type="button" id="at-reset" class="flow-reset" hidden>Start over</button>
+    </div>
+
+    <p class="fineprint">
+      Free · the tester build is the full app · you can leave the program any time. Once you’re in,
+      say hello in the group — that’s the direct line.
+    </p>
   </section>
 
   <!-- ══════════ VOICE MOMENT ══════════ -->
@@ -87,11 +151,103 @@ const steps = [
         <div class="mascot"><img src="/assets/cutemic.png" alt="" /></div>
         <h2>Grab a founding seat.</h2>
         <p>A free year of Pro, a direct line to us, and a build you helped shape.</p>
-        <a href={JOIN} class="btn-light">Join Android early access</a>
-        <div class="meta">Limited spots · Android only</div>
+        <a href="#become-tester" class="btn-light">Become a tester</a>
+        <div class="meta">Founding seats · Android only</div>
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    // The tester flow is sequential BY GOOGLE'S DESIGN (group → opt-in →
+    // install; the store listing 404s for non-testers), so state is a single
+    // "steps completed" integer. Clicking a step's action optimistically
+    // marks it done — the user comes back from Google's tab with the next
+    // step lit. The done-buttons exist for people who already did a step
+    // elsewhere, and double as Undo on a completed step.
+    (function () {
+      var KEY = 'bf-android-tester-step';
+      var TOTAL = 3;
+      var state = 0;
+      try { state = Math.min(TOTAL, Math.max(0, parseInt(localStorage.getItem(KEY) || '0', 10) || 0)); } catch (e) {}
+
+      function save() { try { localStorage.setItem(KEY, String(state)); } catch (e) {} }
+
+      function render() {
+        for (var i = 1; i <= TOTAL; i++) {
+          var li = document.getElementById('at-s' + i);
+          if (!li) continue;
+          var done = state >= i;
+          var active = state === i - 1;
+          li.classList.toggle('done', done);
+          li.classList.toggle('locked', !done && !active);
+          li.querySelectorAll('a.faction').forEach(function (a) {
+            a.setAttribute('aria-disabled', !done && !active ? 'true' : 'false');
+            a.tabIndex = !done && !active ? -1 : 0;
+          });
+          var btn = li.querySelector('button.fdone');
+          if (btn) {
+            btn.textContent = done ? 'Undo' : btn.getAttribute('data-label') || btn.textContent;
+            if (!btn.getAttribute('data-label')) btn.setAttribute('data-label', btn.textContent);
+          }
+        }
+        var status = document.getElementById('at-status');
+        var reset = document.getElementById('at-reset');
+        if (status) {
+          status.textContent =
+            state === 0 ? 'Three taps between you and BeFree.' :
+            state === 1 ? 'One down — now turn on testing.' :
+            state === 2 ? 'Almost — Play is registering you. Install away.' :
+            'You’re in. Welcome aboard, founding tester.';
+          status.classList.toggle('celebrate', state === TOTAL);
+        }
+        if (reset) reset.hidden = state === 0;
+      }
+
+      document.querySelectorAll('#at-flow a.faction').forEach(function (a) {
+        a.addEventListener('click', function (ev) {
+          var n = parseInt(a.getAttribute('data-step'), 10);
+          if (a.getAttribute('aria-disabled') === 'true') { ev.preventDefault(); return; }
+          if (state < n) { state = n; save(); render(); }
+        });
+      });
+      document.querySelectorAll('#at-flow button.fdone').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var n = parseInt(b.getAttribute('data-step'), 10);
+          state = state >= n ? n - 1 : n; // toggle: complete, or undo back to before this step
+          save(); render();
+        });
+      });
+      var resetBtn = document.getElementById('at-reset');
+      if (resetBtn) resetBtn.addEventListener('click', function () { state = 0; save(); render(); });
+
+      // Device awareness: the flow works anywhere, but installing needs the
+      // Android phone — so off-Android we lead with getting the link there.
+      var note = document.getElementById('at-device');
+      var text = document.getElementById('at-device-text');
+      var copy = document.getElementById('at-copy');
+      if (note && text) {
+        var onAndroid = /Android/.test(navigator.userAgent);
+        text.textContent = onAndroid
+          ? 'You’re on your Android — perfect. Do the three taps right here.'
+          : 'You’re not on your Android right now. The steps work here with your Google account, but the install lands on the phone — easiest is to open this page there.';
+        note.hidden = false;
+        if (!onAndroid && copy) {
+          copy.hidden = false;
+          copy.addEventListener('click', function () {
+            var url = 'https://heybefree.app/android';
+            var ok = function () { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy link'; }, 2000); };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(url).then(ok, function () { window.prompt('Copy this link:', url); });
+            } else {
+              window.prompt('Copy this link:', url);
+            }
+          });
+        }
+      }
+
+      render();
+    })();
+  </script>
 </Site>
 
 <style>
@@ -227,18 +383,68 @@ const steps = [
     color: var(--text-secondary);
   }
 
-  /* how */
+  /* become-a-tester flow */
   .how {
     max-width: 720px;
     margin: 0 auto;
     padding: clamp(24px, 4vh, 48px) clamp(18px, 4vw, 40px);
+    /* the hero + nav CTAs deep-link here — land with air above the heading */
+    scroll-margin-top: 80px;
   }
-  .steps {
+  .how-sub {
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    max-width: 540px;
+    margin: -8px auto 22px;
+  }
+  .device-note {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: var(--accent-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    padding: 13px 16px;
+    margin-bottom: 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text-secondary);
+  }
+  .device-note i {
+    color: var(--accent);
+    font-size: 18px;
+    flex: none;
+  }
+  .copy-btn {
+    flex: none;
+    margin-left: auto;
+    cursor: pointer;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-chip);
+    padding: 7px 13px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .copy-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 14px;
   }
-  .step {
+  .fstep {
     display: flex;
     gap: 16px;
     align-items: flex-start;
@@ -247,8 +453,15 @@ const steps = [
     border-radius: var(--radius-card);
     box-shadow: var(--elev-1);
     padding: 20px 22px;
+    transition: opacity 0.2s;
   }
-  .num {
+  .fstep.locked {
+    opacity: 0.45;
+  }
+  .fstep.locked .factions {
+    pointer-events: none;
+  }
+  .fnum {
     flex: none;
     width: 32px;
     height: 32px;
@@ -262,18 +475,98 @@ const steps = [
     align-items: center;
     justify-content: center;
   }
-  .step-title {
+  .fnum i {
+    display: none;
+    font-size: 16px;
+  }
+  .fstep.done .fnum {
+    background: var(--tool-grocery);
+  }
+  .fstep.done .fnum .n {
+    display: none;
+  }
+  .fstep.done .fnum i {
+    display: block;
+  }
+  .fbody {
+    flex: 1;
+    min-width: 0;
+  }
+  .ftitle {
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 17px;
     color: var(--text);
     margin-bottom: 3px;
   }
-  .step-body {
+  .ftext {
     font-family: var(--font-body);
     font-size: 14.5px;
     line-height: 1.5;
     color: var(--text-secondary);
+  }
+  .factions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 13px;
+  }
+  .faction {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    padding: 11px 20px;
+  }
+  .faction i {
+    font-size: 14px;
+  }
+  .fdone {
+    cursor: pointer;
+    background: transparent;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-chip);
+    padding: 9px 15px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+  .fdone:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .flow-foot {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+  .flow-status {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 16.5px;
+    color: var(--text-secondary);
+  }
+  .flow-status.celebrate {
+    color: var(--accent);
+  }
+  .flow-reset {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: var(--text-muted);
+    text-decoration: underline;
+  }
+  .flow-reset:hover {
+    color: var(--accent);
   }
   .fineprint {
     text-align: center;
