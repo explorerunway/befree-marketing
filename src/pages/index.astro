@@ -45,20 +45,15 @@ const features = [
 ];
 
 // Capabilities that already ship but were invisible on this page — every claim
-// here is checked against the app: Apple read + opt-in write-back
-// (APPLE_CALENDAR_WRITE_ENABLED / APPLE_REMINDERS_WRITE_ENABLED, build #94),
-// any-language parsing in ai-dump + 5 shipped UI locales (lib/i18n/locales),
-// hybrid keyword+semantic search (services/search.ts), and JSON + iCal export
-// (services/exports.ts). Google Calendar is deliberately ABSENT — it stays
-// behind GOOGLE_CALENDAR_ENABLED=false until OAuth verification lands.
+// here is checked against the app: any-language parsing in ai-dump + 5 shipped
+// UI locales (lib/i18n/locales), hybrid keyword+semantic search
+// (services/search.ts), and JSON + iCal export (services/exports.ts). The
+// Apple Calendar/Reminders read + opt-in write-back claims moved to the
+// dedicated "lands" section above. Google Calendar API sync is deliberately
+// ABSENT — it stays behind GOOGLE_CALENDAR_ENABLED=false until OAuth
+// verification lands (the EventKit route in the lands section is how Google
+// calendars already show up on iPhone).
 const connects = [
-  {
-    icon: 'calendar-check',
-    tool: 'var(--tool-event)',
-    tint: 12,
-    title: 'Your calendar, still yours',
-    body: 'BeFree reads your Apple Calendar and Reminders, so your real day shows up beside what you capture. Switch on two-way sync and what you say lands back in Apple’s apps too.',
-  },
   {
     icon: 'translate',
     tool: 'var(--accent)',
@@ -82,6 +77,60 @@ const connects = [
   },
 ];
 
+// Every capture surface below is shipped and verified in the current builds:
+// the Siri overlay intent (BeFreeBrainDumpIntent, openAppWhenRun=false — no
+// app launch), Lock Screen capture tiles + the interactive Next-up tile
+// (LockWidgets.swift; tasks complete in place, events display-only), the
+// interactive home-screen Today widget, the Mac ⌘⇧Space capture bar, and the
+// browser app. Android deliberately links to /android — it is early-access
+// recruitment, not a store link.
+const places = [
+  {
+    icon: 'waveform',
+    tool: 'var(--accent)',
+    tint: 12,
+    title: '“Hey Siri, talk to BeFree”',
+    body: "Say it hands-free. Siri asks what's on your mind, BeFree files it and confirms out loud — the app never has to open.",
+  },
+  {
+    icon: 'lock-simple',
+    tool: 'var(--tool-reminder)',
+    tint: 12,
+    title: 'From your Lock Screen',
+    body: 'Mic and quick-type tiles sit under the clock — and the next task due can be checked off right there.',
+  },
+  {
+    icon: 'squares-four',
+    tool: 'var(--tool-task)',
+    tint: 12,
+    title: 'Widgets that do the work',
+    body: 'Today at a glance on your Home Screen, with tasks you can mark done without launching anything.',
+  },
+  {
+    icon: 'command',
+    tool: 'var(--brass)',
+    tint: 16,
+    title: 'Anywhere on your Mac',
+    body: "⌘⇧Space floats a capture bar over whatever you're doing. Say the thing, get back to work.",
+  },
+  {
+    icon: 'globe',
+    tool: 'var(--tool-event)',
+    tint: 12,
+    title: 'In any browser',
+    body: 'Locked-down work laptop? The full app runs at app.heybefree.app — nothing to install.',
+  },
+  {
+    icon: 'android-logo',
+    tool: 'var(--tool-grocery)',
+    tint: 14,
+    title: 'Android, in early access',
+    body: 'The Android build is taking founding testers — a year of Pro free, and a direct line to us.',
+    href: '/android',
+    linkLabel: 'Join early access',
+  },
+];
+
 const windowCards = [
   { title: 'Design review', meta: '2:00 PM', icon: 'calendar-dots', tool: 'var(--tool-event)', checkable: false },
   { title: 'Call mum', meta: 'Tonight', icon: 'bell', tool: 'var(--tool-reminder)' },
@@ -92,28 +141,28 @@ const windowCards = [
 ---
 
 <Site
-  title="BeFree — Put it all down. Walk out lighter."
-  description="BeFree is the voice-first app that turns a messy brain dump into tasks, reminders, calendar events, lists, and notes. You just talk — it sorts the rest."
+  title="BeFree — the brain dump app. Tell it once, it makes sure it happens."
+  description="Say the messy thing once. BeFree turns it into tasks, reminders, events, lists and notes, brings each one back at the right moment — and can send them straight to Apple Reminders and Calendar. Free on iPhone, Mac and the web."
   active="home"
 >
   <!-- ══════════ HERO ══════════ -->
+  <!-- One message, one CTA (owner, 2026-08-21): nothing else stands between
+       the visitor and understanding. Platforms live in the nav; the demo two
+       scrolls down is the proof. -->
   <section class="hero">
     <div class="mascot">
       <img src="/assets/cutemic.png" alt="BeFree mascot" />
     </div>
-    <div class="eyebrow">Now on iPhone, Mac &amp; the web</div>
-    <h1>Put it all down.<br /><span class="voice">Walk out lighter.</span></h1>
+    <h1>Tell BeFree once.<br /><span class="voice">It makes sure it happens.</span></h1>
     <p>
-      BeFree is the voice-first app that turns a messy brain dump into tasks, reminders, calendar
-      events, lists, and notes. You just talk — it sorts the rest.
+      Say the messy thing — BeFree turns it into tasks, reminders, events, lists and notes, and
+      brings each one back at the right moment.
     </p>
     <div class="hero-cta">
       <a href="https://app.heybefree.app" class="hero-start">
         Start free in your browser <i class="ph-bold ph-arrow-right"></i>
       </a>
-      <a href="#download" class="hero-alt">Or get the iPhone &amp; Mac app</a>
     </div>
-    <div class="hero-cta-note">No download · One tap with Google or Apple · Syncs everywhere</div>
   </section>
 
   <!-- ══════════ LIVE DEMO ══════════ -->
@@ -167,6 +216,49 @@ const windowCards = [
     </div>
   </section>
 
+  <!-- ══════════ IT LANDS WHERE YOU LOOK ══════════ -->
+  <section class="lands">
+    <div class="section-head">
+      <div class="eyebrow">Not another inbox</div>
+      <h2>It ends up where you<br />already look.</h2>
+      <p class="section-sub">
+        BeFree isn't a second system to keep checking. Flip on two-way sync and what you say lands
+        in Apple Reminders and Apple Calendar — the right day, the right time, beside everything
+        else in your life.
+      </p>
+    </div>
+    <div class="lands-stage">
+      <div class="lands-quote">
+        <i class="ph-fill ph-quotes"></i>
+        <span>“Grab Dad's prescription tomorrow at nine — oh, and lunch with Priya on Friday at one.”</span>
+      </div>
+      <div class="lands-arrow"><i class="ph-bold ph-arrow-down"></i></div>
+      <div class="lands-rows">
+        <div class="lands-row">
+          <div class="lr-medal reminder"><i class="ph-bold ph-bell"></i></div>
+          <div class="lr-text">
+            <div class="lr-title">Grab Dad's prescription</div>
+            <div class="lr-meta">Tomorrow · 9:00 AM</div>
+          </div>
+          <div class="lr-dest">→ Apple Reminders</div>
+        </div>
+        <div class="lands-row">
+          <div class="lr-medal event"><i class="ph-bold ph-calendar-dots"></i></div>
+          <div class="lr-text">
+            <div class="lr-title">Lunch with Priya</div>
+            <div class="lr-meta">Friday · 1:00 PM</div>
+          </div>
+          <div class="lr-dest">→ Apple Calendar</div>
+        </div>
+      </div>
+    </div>
+    <div class="lands-checks">
+      <span class="lands-check"><i class="ph-bold ph-check"></i> Reads the calendars your iPhone already shows — Google accounts included</span>
+      <span class="lands-check"><i class="ph-bold ph-check"></i> Off until you switch it on — one toggle in Connections</span>
+      <span class="lands-check"><i class="ph-bold ph-check"></i> Everything still syncs across iPhone, Mac &amp; web</span>
+    </div>
+  </section>
+
   <!-- ══════════ FEATURES ══════════ -->
   <section id="features" class="features">
     <div class="section-head">
@@ -201,6 +293,41 @@ const windowCards = [
           </p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════ CAPTURE FROM ANYWHERE ══════════ -->
+  <section class="anywhere">
+    <div class="section-head">
+      <div class="eyebrow">Capture from anywhere</div>
+      <h2>The thought never waits<br />for the app.</h2>
+      <p class="section-sub">
+        Wherever the thought lands — locked phone, deep in a doc, someone else's laptop — BeFree is
+        one tap or one sentence away.
+      </p>
+    </div>
+    <div class="grid">
+      {
+        places.map((p) => (
+          <div class="place">
+            <div
+              class="place-medal"
+              style={`background: color-mix(in srgb, ${p.tool} ${p.tint}%, transparent);`}
+            >
+              <i class={`ph-bold ph-${p.icon}`} style={`color: ${p.tool};`} />
+            </div>
+            <div class="place-body">
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+              {p.href && (
+                <a href={p.href} class="place-link">
+                  {p.linkLabel} <i class="ph-bold ph-arrow-right" />
+                </a>
+              )}
+            </div>
+          </div>
+        ))
+      }
     </div>
   </section>
 
@@ -257,7 +384,7 @@ const windowCards = [
   <!-- ══════════ VOICE MOMENT ══════════ -->
   <section class="voice-moment">
     <i class="ph-fill ph-quotes"></i>
-    <p>Say the messy thing. We'll make it a day.</p>
+    <p>Put it all down. Walk out lighter.</p>
   </section>
 
   <!-- ══════════ PRICING TEASER ══════════ -->
@@ -267,8 +394,9 @@ const windowCards = [
         <div class="eyebrow">Pricing</div>
         <h2>Start free. Go Pro when life gets loud.</h2>
         <p>
-          Everything's included free — capture, AI sorting, sync, widgets. Pro raises your monthly
-          AI budget about 5× so heavy weeks never hit a wall.
+          Everything's included free — capture, AI sorting, sync, widgets, Siri. Pro adds a bigger
+          AI allowance, pooled over the whole year so loud seasons never hit a wall — US$3.49 a
+          month, or US$24.99 a year.
         </p>
       </div>
       <div class="actions">
@@ -280,7 +408,7 @@ const windowCards = [
 
   <!-- ══════════ DOWNLOAD CTA ══════════ -->
   <DownloadCTA
-    title="Put your head down."
+    title="Tell it once."
     sub="Free on iPhone, Mac, and the web. Your first brain dump is thirty seconds away."
     meta="Free · iPhone, Mac &amp; browser"
   >
@@ -385,26 +513,6 @@ const windowCards = [
   .hero-start:hover i {
     transform: translateX(3px);
   }
-  .hero-alt {
-    text-decoration: none;
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 15px;
-    color: var(--text-secondary);
-  }
-  .hero-alt:hover {
-    color: var(--accent);
-  }
-  .hero-cta-note {
-    margin-top: 14px;
-    text-align: center;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
   /* demo */
   .demo-section {
     max-width: 800px;
@@ -532,6 +640,194 @@ const windowCards = [
     color: var(--text-secondary);
     margin: 0 auto;
     max-width: 300px;
+  }
+
+  /* it lands where you already look */
+  .lands {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: clamp(40px, 6vh, 80px) clamp(18px, 4vw, 40px) clamp(24px, 4vh, 44px);
+  }
+  .lands-stage {
+    max-width: 680px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sheet);
+    box-shadow: var(--elev-2);
+    padding: clamp(22px, 4vw, 36px);
+  }
+  .lands-quote {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(17px, 2.4vw, 21px);
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .lands-quote i {
+    color: var(--accent);
+    font-size: 22px;
+    flex: none;
+    margin-top: 2px;
+  }
+  .lands-arrow {
+    text-align: center;
+    margin: 14px 0;
+    color: var(--text-muted);
+    font-size: 18px;
+  }
+  .lands-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lands-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 13px;
+    background: var(--bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    padding: 13px 16px;
+  }
+  .lr-medal {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-input);
+    display: grid;
+    place-items: center;
+    flex: none;
+  }
+  .lr-medal i {
+    font-size: 20px;
+  }
+  .lr-medal.reminder {
+    background: color-mix(in srgb, var(--tool-reminder) 14%, transparent);
+  }
+  .lr-medal.reminder i {
+    color: var(--tool-reminder);
+  }
+  .lr-medal.event {
+    background: color-mix(in srgb, var(--tool-event) 14%, transparent);
+  }
+  .lr-medal.event i {
+    color: var(--tool-event);
+  }
+  .lr-text {
+    flex: 1;
+    min-width: 160px;
+  }
+  .lr-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text);
+  }
+  .lr-meta {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .lr-dest {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: var(--brass-deep);
+    white-space: nowrap;
+  }
+  .lands-checks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 22px;
+    margin-top: 22px;
+  }
+  .lands-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .lands-check i {
+    color: var(--tool-grocery);
+    font-size: 15px;
+    flex: none;
+  }
+
+  /* capture from anywhere */
+  .anywhere {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: clamp(40px, 6vh, 80px) clamp(18px, 4vw, 40px);
+  }
+  .anywhere .section-head {
+    margin-bottom: clamp(28px, 4vh, 48px);
+  }
+  .anywhere .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
+    gap: 16px;
+  }
+  .place {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--elev-1);
+    padding: 20px 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .place-medal {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-input);
+    display: grid;
+    place-items: center;
+    flex: none;
+  }
+  .place-medal i {
+    font-size: 22px;
+  }
+  .place-body h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 17.5px;
+    letter-spacing: -0.2px;
+    color: var(--text);
+    margin: 0 0 4px;
+  }
+  .place-body p {
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .place-link {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 9px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--accent);
+  }
+  .place-link i {
+    font-size: 13px;
+  }
+  .place-link:hover {
+    gap: 10px;
   }
 
   /* features */

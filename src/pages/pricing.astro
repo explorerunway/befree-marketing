@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: 'Does it work on both Mac and iPhone?',
-    a: 'Yes — both, free on the App Store, plus a browser app. Your account and content stay in sync across iPhone, Mac, and the web.',
+    a: 'Yes — both, free on the App Store, plus a browser app at app.heybefree.app. Android is in early access. Your account and content stay in sync across every device.',
   },
   {
     q: 'Do you train AI on my brain dumps?',
@@ -63,6 +63,8 @@ const faqs = [
         <div class="feats">
           <div class="feat"><i class="ph-bold ph-check olive"></i> Voice capture &amp; AI sorting</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Tasks, events, reminders, lists &amp; notes</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Siri, widgets &amp; Lock Screen capture</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> Two-way Apple Reminders &amp; Calendar sync</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Sync across your devices</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Works offline</div>
         </div>
@@ -74,15 +76,15 @@ const faqs = [
         <div class="tier-name">Pro</div>
         <div class="tier-tag">For when life gets loud.</div>
         <div class="price-row tight">
-          <span class="price">$<span data-price-pro>4.17</span></span>
+          <span class="price">$<span data-price-pro>2.08</span></span>
           <span class="per">/mo</span>
         </div>
-        <div class="bill-note" data-bill-note>billed annually — $49.99/yr</div>
+        <div class="bill-note" data-bill-note>billed annually — US$24.99/yr</div>
         <a href="#download" class="tier-btn solid">Start free, upgrade in the app</a>
         <div class="feats-label">Everything in Free, plus</div>
         <div class="feats">
-          <div class="feat"><i class="ph-bold ph-check plum"></i> About 5× the monthly AI budget</div>
-          <div class="feat"><i class="ph-bold ph-check plum"></i> Heavy brain-dump weeks never hit a wall</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> More than double the AI budget, pooled across the whole year</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> Loud weeks borrow from quiet ones — no wall mid-season</div>
           <div class="feat"><i class="ph-bold ph-check plum"></i> Keeps BeFree independent — no ads, ever</div>
         </div>
       </div>
@@ -91,6 +93,10 @@ const faqs = [
       Both plans include the iPhone and Mac apps, the <a href="https://app.heybefree.app"
         >browser app</a
       >, offline capture, and sync. Cancel anytime.
+    </div>
+    <div class="currency-note">
+      Prices in US dollars — the App Store bills in your local currency. In Australia: A$4.99/mo or
+      A$39.99/yr.
     </div>
   </section>
 
@@ -128,7 +134,9 @@ const faqs = [
 
 <script>
   // Toggle logic — the spec's state machine wired to the REAL App Store
-  // prices: Pro $6.99/mo monthly, $49.99/yr annual (≈$4.17/mo, 40% off).
+  // prices (halved 2026-08-16 per decision 016): Pro US$3.49/mo monthly,
+  // US$24.99/yr annual (≈US$2.08/mo, 40% off). Apple bills local currency —
+  // Australia is A$4.99 / A$39.99, set by hand, not equalised.
   const monthlyBtn = document.getElementById('bill-monthly')!;
   const annualBtn = document.getElementById('bill-annual')!;
   const proEl = document.querySelector('[data-price-pro]')!;
@@ -137,9 +145,9 @@ const faqs = [
   function apply(annual: boolean) {
     annualBtn.classList.toggle('on', annual);
     monthlyBtn.classList.toggle('on', !annual);
-    proEl.textContent = annual ? '4.17' : '6.99';
+    proEl.textContent = annual ? '2.08' : '3.49';
     notes.forEach(
-      (n) => (n.textContent = annual ? 'billed annually — $49.99/yr' : 'billed monthly')
+      (n) => (n.textContent = annual ? 'billed annually — US$24.99/yr' : 'billed monthly')
     );
   }
   monthlyBtn.addEventListener('click', () => apply(false));
@@ -376,6 +384,14 @@ const faqs = [
     margin-top: 22px;
     font-family: var(--font-body);
     font-size: 14px;
+    color: var(--text-muted);
+  }
+  .currency-note {
+    text-align: center;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.3px;
     color: var(--text-muted);
   }
   .all-note a {
