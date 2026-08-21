@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Release copy verified against BeFree app revision f6e0806 on 2026-08-02. -->
+<!-- Release copy verified against BeFree 2.0.2 (build #154) on 2026-08-21. -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -7,7 +7,7 @@
 <title>Support — BeFree</title>
 <meta name="description" content="How to get help with BeFree, the brain dump app that organises what you share." />
 <link rel="icon" type="image/png" href="/favicon.png" />
-<link rel="apple-touch-icon" href="/favicon.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -104,10 +104,20 @@
   <h2>Common Help</h2>
 
   <h3>Voice capture is not starting</h3>
-  <p>Check <strong>iOS Settings → Privacy &amp; Security → Microphone</strong> and <strong>Speech Recognition</strong>, then make sure BeFree is allowed.</p>
+  <ul>
+    <li><strong>iPhone:</strong> Settings &rarr; Privacy &amp; Security &rarr; Microphone, and Speech Recognition &mdash; make sure BeFree is allowed in both.</li>
+    <li><strong>Mac:</strong> System Settings &rarr; Privacy &amp; Security &rarr; Microphone, and Speech Recognition.</li>
+    <li><strong>Browser:</strong> your browser blocks the mic per site. In Chrome, click the icon at the left of the address bar &rarr; Microphone &rarr; Allow, then reload. Safari asks each visit unless you allow it in Settings for This Website.</li>
+  </ul>
+  <p>If the mic starts and stops within a second, that is usually another app holding the microphone &mdash; end any call or recording and try again.</p>
 
   <h3>Reminders are not firing</h3>
-  <p>Check <strong>iOS Settings → Notifications → BeFree</strong> and confirm notifications are allowed.</p>
+  <ul>
+    <li><strong>iPhone:</strong> Settings &rarr; Notifications &rarr; BeFree, and confirm notifications are allowed.</li>
+    <li><strong>Mac:</strong> System Settings &rarr; Notifications &rarr; BeFree.</li>
+    <li>Then check <strong>quiet hours</strong> inside BeFree. Anything due inside your quiet window is deliberately held until the window ends rather than buzzing you at night.</li>
+  </ul>
+  <p>The browser app does not send reminders &mdash; it is a place to capture and review, and your iPhone or Mac does the notifying.</p>
 
   <h3>Widgets look empty</h3>
   <p>Open BeFree once after installing or updating. The app writes a fresh widget snapshot when it becomes active and when it moves to the background.</p>
@@ -117,9 +127,13 @@
 
   <h3>Purchases or Pro status are missing</h3>
   <p>Open BeFree &rarr; <strong>You &rarr; Account &rarr; Restore purchases</strong>. If the issue continues, email support with your BeFree account email and the approximate purchase time.</p>
+  <p>Pro bought on your iPhone <strong>also unlocks the Mac app</strong> &mdash; they are one purchase on one App Store record &mdash; and it applies to your account in the browser too. You do not buy it twice.</p>
 
   <h3>Export or delete account</h3>
   <p>Open BeFree &rarr; <strong>You</strong> &rarr; the <strong>settings button</strong> (top right) &rarr; <strong>Privacy &amp; Data</strong>. You can export your data or delete your account from there. See the full <a href="/data-deletion.html">Data Deletion</a> guide for details.</p>
+
+  <h3>BeFree on Android</h3>
+  <p>Android is in early access through Google Play rather than on the public store yet. The three steps to install it &mdash; and the free year of Pro for founding testers &mdash; are on the <a href="/android">Android page</a>. If Play says the app cannot be found after you opt in, give it a few minutes: Google takes a moment to register a new tester, and the listing is visible to testers only.</p>
 
   <h2>Status</h2>
   <p>Status notices for ongoing incidents will be posted here at <code>https://heybefree.app/support</code> until a dedicated status page exists.</p>

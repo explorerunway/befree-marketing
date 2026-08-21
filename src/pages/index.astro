@@ -42,6 +42,17 @@ const features = [
     title: 'Notes, kept whole',
     body: "Half-formed thoughts and ideas stay intact — captured as notes, not forced into a checkbox they don't fit.",
   },
+  // The Shelf: shipped, ungated on the live build (inbox-predicates.ts slip
+  // predicates carry no capability check), and the clearest answer to "what
+  // happens when I don't do it". The weekly nudge is OPT-IN — shelf_review_day
+  // defaults to 'never' — so this describes the screen, not a cadence.
+  {
+    icon: 'archive-tray',
+    tool: 'var(--brass)',
+    tint: 16,
+    title: 'A shelf for what slipped',
+    body: "Something passed without getting done? It goes on the Shelf, one at a time, with one question: does this still matter? Move it, or let it go — letting go counts as an answer.",
+  },
 ];
 
 // Capabilities that already ship but were invisible on this page — every claim
