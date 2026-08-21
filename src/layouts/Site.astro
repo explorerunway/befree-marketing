@@ -14,7 +14,16 @@ interface Props {
   active: 'home' | 'mac' | 'pricing' | 'android';
 }
 const { title, description, active } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+// vercel.json sets cleanUrls + trailingSlash:false, so /mac answers 200 and
+// /mac/ 308-redirects. Astro's pathname carries the trailing slash, which
+// would make every subpage declare a canonical that is itself a redirect —
+// strip it (but keep the bare "/" for the home page).
+const path = Astro.url.pathname.replace(/(.)\/$/, '$1');
+const canonical = new URL(path, Astro.site);
+// Share card: 1200x630, fully opaque, carries the one message. The old
+// og:image was the 316x318 transparent mascot, which every platform either
+// shrank to a thumbnail or cropped and upscaled.
+const ogImage = new URL('/og-card.png', Astro.site);
 ---
 
 <!doctype html>
@@ -30,15 +39,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="apple-touch-icon" href="/favicon.png" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BeFree" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content="https://heybefree.app/mascot.png" />
-    <meta property="og:image:alt" content="BeFree's kawaii mic mascot" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="BeFree — tell it once, it makes sure it happens" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://heybefree.app/mascot.png" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="BeFree — tell it once, it makes sure it happens" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

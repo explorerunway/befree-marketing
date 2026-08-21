@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Owner-only operator dashboard — not a public page. It holds no metrics
+# itself (everything loads after sign-in), but it shouldn't appear in results
+# for the brand. The matching <meta name="robots" content="noindex"> in
+# signal.html is what actually prevents indexing-by-reference.
+Disallow: /signal
+
+Sitemap: https://heybefree.app/sitemap.xml

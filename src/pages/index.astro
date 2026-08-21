@@ -19,7 +19,7 @@ const features = [
     tool: 'var(--tool-reminder)',
     tint: 12,
     title: 'Reminders, on time',
-    body: 'Say "remind me to call mum tonight" and BeFree nudges you at the right moment — recurring ones included.',
+    body: 'Say "remind me to call mum tonight" and BeFree nudges you at the right moment — recurring ones included. Quiet hours mean it never buzzes you at midnight.',
   },
   {
     icon: 'calendar-dots',
@@ -59,7 +59,7 @@ const connects = [
     tool: 'var(--accent)',
     tint: 14,
     title: 'Talk in any language',
-    body: 'Speak whichever language you actually think in — BeFree parses it. The app itself reads in English, German, Spanish, French, and Japanese.',
+    body: 'Speak whichever language you actually think in — BeFree parses it. The app itself speaks English, German, Spanish, French, and Japanese.',
   },
   {
     icon: 'magnifying-glass',
@@ -69,11 +69,18 @@ const connects = [
     body: 'Search goes by meaning, not spelling. Ask for “that dentist thing” and the appointment you never properly named comes back.',
   },
   {
+    icon: 'eye',
+    tool: 'var(--tool-reminder)',
+    tint: 12,
+    title: 'It shows you what it knows',
+    body: 'BeFree picks up a little about your life so sorting fits it. Ask “what do you know about me” and it lists every fact in your own words — delete any of them, any time.',
+  },
+  {
     icon: 'export',
     tool: 'var(--brass)',
     tint: 16,
     title: 'Your data can leave',
-    body: 'Export everything to JSON, and your events to iCal, whenever you like. No lock-in, no hostage-taking — and deleting it all is just as easy.',
+    body: 'Export your tasks, events, notes and lists to JSON, and your events to iCal, whenever you like. No lock-in, no hostage-taking — and deleting it all is just as easy.',
   },
 ];
 
@@ -142,9 +149,46 @@ const windowCards = [
 
 <Site
   title="BeFree — the brain dump app. Tell it once, it makes sure it happens."
-  description="Say the messy thing once. BeFree turns it into tasks, reminders, events, lists and notes, brings each one back at the right moment — and can send them straight to Apple Reminders and Calendar. Free on iPhone, Mac and the web."
+  description="Say it once — BeFree turns messy thoughts into tasks, reminders, events, lists and notes, and brings each one back on time. Free on iPhone, Mac and the web."
   active="home"
 >
+  <!-- Structured data. Deliberately NO aggregateRating/review: the listing has
+       two ratings, and Google's software-app rich result requires ratings it
+       would be dishonest to synthesise. This block states the offers and the
+       platforms machine-readably; that is all it is for. -->
+  <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "BeFree - Brain Dump",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "iOS, macOS, Web",
+      "url": "https://heybefree.app",
+      "description": "Say it once — BeFree turns messy thoughts into tasks, reminders, events, lists and notes, and brings each one back on time.",
+      "downloadUrl": "https://apps.apple.com/app/id6763826891",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Free",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        {
+          "@type": "Offer",
+          "name": "Pro (annual)",
+          "price": "24.99",
+          "priceCurrency": "USD"
+        },
+        {
+          "@type": "Offer",
+          "name": "Pro (monthly)",
+          "price": "3.49",
+          "priceCurrency": "USD"
+        }
+      ]
+    }
+  </script>
+
   <!-- ══════════ HERO ══════════ -->
   <!-- One message, one CTA (owner, 2026-08-21): nothing else stands between
        the visitor and understanding. Platforms live in the nav; the demo two
@@ -177,9 +221,9 @@ const windowCards = [
     <div class="trust-row">
       <span>Free forever</span>
       <span class="sep"></span>
-      <span>Runs in your browser</span>
+      <span>Nothing saved</span>
       <span class="sep"></span>
-      <span>Private by default</span>
+      <span>Never trains on your words</span>
     </div>
   </section>
 
@@ -254,8 +298,8 @@ const windowCards = [
       </div>
     </div>
     <div class="lands-checks">
-      <span class="lands-check"><i class="ph-bold ph-check"></i> Reads the calendars your iPhone already shows — Google accounts included</span>
-      <span class="lands-check"><i class="ph-bold ph-check"></i> Off until you switch it on — one toggle in Connections</span>
+      <span class="lands-check"><i class="ph-bold ph-check"></i> Reads your iPhone's calendars — Google accounts included</span>
+      <span class="lands-check"><i class="ph-bold ph-check"></i> Off until you switch it on — a switch per app, in Connections</span>
       <span class="lands-check"><i class="ph-bold ph-check"></i> Everything still syncs across iPhone, Mac &amp; web</span>
     </div>
   </section>
@@ -367,7 +411,7 @@ const windowCards = [
       </p>
     </div>
     <div class="window-wrap">
-      <AppWindow cards={windowCards} subtitle="Six things on the day." />
+      <AppWindow cards={windowCards} subtitle="Four things on the day." />
     </div>
     <div class="pills">
       <div class="pill"><i class="ph-bold ph-command" style="color: var(--accent);"></i> Global hotkey capture</div>
@@ -396,8 +440,8 @@ const windowCards = [
         <h2>Start free. Go Pro when life gets loud.</h2>
         <p>
           Everything's included free — capture, AI sorting, sync, widgets, Siri. Pro adds a bigger
-          AI allowance, pooled over the whole year so loud seasons never hit a wall — US$3.49 a
-          month, or US$24.99 a year.
+          AI allowance, pooled over the whole year so a loud month borrows from the quiet ones —
+          US$3.49 a month, or US$24.99 a year.
         </p>
       </div>
       <div class="actions">

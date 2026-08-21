@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: 'Do you train AI on my brain dumps?',
-    a: 'No. BeFree never trains AI on your dumps, and they are never sold or mined for ads — they sort your day and nothing else. Our language-model provider is contractually barred from training on your content, and our privacy policy spells out exactly how each AI provider handles your data. Encrypted in transit and at rest.',
+    a: 'No. BeFree never trains AI on your dumps, and they are never sold or mined for ads — they sort your day and nothing else. Our language-model provider is contractually barred from training on your content, and our privacy policy spells out exactly how each AI provider handles your data. Everything travels over encrypted connections.',
   },
   {
     q: 'Can I switch or cancel whenever?',
@@ -26,8 +26,8 @@ const faqs = [
 ---
 
 <Site
-  title="BeFree Pricing — Calm doesn't have to cost much"
-  description="Start free and stay free for as long as you like. Upgrade only when your life gets loud enough to need it."
+  title="BeFree Pricing — free brain dump app, Pro from US$2.08/mo"
+  description="BeFree is free forever: voice capture, AI sorting, sync, widgets and Siri. Pro adds a bigger AI allowance — US$3.49 a month or US$24.99 a year. No card to start."
   active="pricing"
 >
   <!-- ══════════ HERO ══════════ -->
@@ -102,7 +102,7 @@ const faqs = [
 
   <!-- ══════════ VOICE MOMENT ══════════ -->
   <section class="voice-moment">
-    <p>No pressure to upgrade. No plan you'll forget to cancel. Just calm.</p>
+    <p>No pressure to upgrade. No trial timer that flips to paid. Just calm.</p>
   </section>
 
   <!-- ══════════ FAQ ══════════ -->
@@ -134,7 +134,8 @@ const faqs = [
 
 <script>
   // Toggle logic — the spec's state machine wired to the REAL App Store
-  // prices (halved 2026-08-16 per decision 016): Pro US$3.49/mo monthly,
+  // prices (halved by the 90-day settlement of 2026-08-14, effective
+  // 2026-08-16, ASC-verified 2026-08-17): Pro US$3.49/mo monthly,
   // US$24.99/yr annual (≈US$2.08/mo, 40% off). Apple bills local currency —
   // Australia is A$4.99 / A$39.99, set by hand, not equalised.
   const monthlyBtn = document.getElementById('bill-monthly')!;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Hand-written on purpose. With four pages this is simpler than a build
+  integration, and it guarantees the URLs match the canonical form Vercel
+  actually serves: cleanUrls + trailingSlash:false, so /mac answers 200 and
+  /mac/ 308-redirects. @astrojs/sitemap would emit the trailing-slash form.
+  Legal pages are deliberately excluded — they are support surface, not
+  search surface, and they carry their own links from every page footer.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://heybefree.app</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://heybefree.app/pricing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://heybefree.app/mac</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://heybefree.app/android</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

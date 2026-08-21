@@ -1,0 +1,144 @@
+---
+// 404 — Astro emits dist/404.html and Vercel serves a root-level 404.html
+// with a 404 status on static deployments, so no vercel.json change is needed.
+// Exists because every stale social link and mistyped bio link used to dead-end
+// on Vercel's raw plain-text NOT_FOUND response.
+import Site from '../layouts/Site.astro';
+---
+
+<Site
+  title="Page not found — BeFree"
+  description="That page isn't here. BeFree is the brain dump app — say it once, and it makes sure it happens."
+  active="home"
+>
+  <section class="lost">
+    <div class="mascot"><img src="/assets/cutemic.png" alt="" /></div>
+    <div class="code">404</div>
+    <h1>That one got away.</h1>
+    <p>
+      The page you're after isn't here — a stale link, or a typo. Which is roughly the problem
+      BeFree exists to solve, so: here's the way back.
+    </p>
+    <div class="ways">
+      <a href="/" class="primary">Back to BeFree</a>
+      <a href="https://app.heybefree.app" class="secondary" data-get-befree>Get BeFree →</a>
+    </div>
+    <div class="links">
+      <a href="/pricing">Pricing</a>
+      <span class="dot"></span>
+      <a href="/mac">Mac</a>
+      <span class="dot"></span>
+      <a href="/android">Android</a>
+      <span class="dot"></span>
+      <a href="/support">Support</a>
+    </div>
+  </section>
+</Site>
+
+<style>
+  .lost {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: clamp(50px, 10vh, 110px) clamp(18px, 4vw, 40px) clamp(60px, 12vh, 130px);
+    text-align: center;
+  }
+  .mascot {
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 20px;
+    /* deliberately still — a lost page is not the place for the breathing loop */
+    filter: drop-shadow(0 14px 20px rgba(31, 26, 20, 0.16));
+    opacity: 0.9;
+  }
+  .mascot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(34px, 6vw, 54px);
+    line-height: 1.05;
+    letter-spacing: -1.4px;
+    color: var(--text);
+    margin: 0;
+    text-wrap: balance;
+  }
+  p {
+    font-family: var(--font-body);
+    font-size: clamp(16px, 2vw, 18.5px);
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 16px auto 0;
+    max-width: 460px;
+    text-wrap: pretty;
+  }
+  .ways {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+  .primary {
+    text-decoration: none;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 17px;
+    padding: 14px 28px;
+    border-radius: var(--radius-input);
+    box-shadow: var(--elev-1);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+  .primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elev-2);
+  }
+  .secondary {
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--accent);
+  }
+  .secondary:hover {
+    text-decoration: underline;
+  }
+  .links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 34px;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+  }
+  .links a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .links a:hover {
+    color: var(--text);
+  }
+  .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+</style>

@@ -83,7 +83,7 @@
 <div class="wrap">
   <p class="crumb"><a href="/">← BeFree</a></p>
   <h1>Accessibility</h1>
-  <p class="last">Last updated May 9, 2026</p>
+  <p class="last">Last updated August 21, 2026</p>
 
   <p>BeFree is built for people who think out loud — including people who use assistive technology to do it. This page describes how BeFree supports accessibility today, what we're working on, and how to reach us if something doesn't work.</p>
 
@@ -97,19 +97,19 @@
     <li>BeFree's primary input is your voice. You can capture an entire brain dump without typing, tapping a small target, or remembering a tap-and-hold gesture.</li>
     <li>The mic button is a single, large, persistent target on every primary screen.</li>
     <li>Speech-to-text is handled by <strong>Apple's speech recognition</strong> — on your device or on Apple's servers, depending on your device and language. BeFree never receives or stores your audio; only the resulting text reaches BeFree.</li>
-    <li>Capture also works through <strong>Hey Siri</strong> ("Hey Siri, BeFree…") with no need to open the app.</li>
+    <li>Capture also works hands-free through <strong>Siri</strong> — say "Hey Siri, talk to BeFree", and Siri asks what's on your mind and files your answer without opening the app. BeFree can also help you set up a shorter trained phrase in its Hands-free screen.</li>
   </ul>
 
   <h3>Screen reader support (VoiceOver)</h3>
   <ul>
     <li>Every interactive element has a labelled role and accessible name.</li>
     <li>Card and sheet titles are announced as headings.</li>
-    <li>Status changes (capture starting, AI thinking, item created) are announced through ARIA-style live regions.</li>
+    <li>Capture status (listening, thinking, saved) is shown as visible text on labelled controls throughout. Spoken VoiceOver announcements for those transitions are a known gap and are in progress — see below.</li>
   </ul>
 
   <h3>Dynamic Type</h3>
   <ul>
-    <li>BeFree respects the system Text Size preference, including the larger accessibility sizes.</li>
+    <li>BeFree scales with your system Text Size setting, up to a per-element ceiling that keeps controls operable and labels legible. Body and reading text scales furthest; compact labels and buttons scale less so they don't collide or clip.</li>
     <li>Layouts are tested at the largest accessibility size — no clipped labels, no overlapping rows.</li>
   </ul>
 
@@ -133,7 +133,7 @@
 
   <h3>Lock-screen and widget capture</h3>
   <ul>
-    <li>Capture from the lock screen via the BeFree mic widget — no need to unlock, find the app, and tap a target.</li>
+    <li>Capture from the lock screen via the BeFree mic tile — one tap opens BeFree already listening (Face ID unlocks it on the way), instead of unlocking, finding the app, and hitting a small target. For genuinely no-unlock capture, use "Hey Siri, talk to BeFree".</li>
     <li>Widget tap-to-mark-done on iOS 17+ lets you complete a task without opening the app.</li>
   </ul>
 
@@ -147,10 +147,20 @@
   <h2>Known gaps</h2>
   <p>We're honest about what isn't done:</p>
   <ul>
-    <li><strong>iPad layout</strong> is not optimised for iPad in v1; we ship iPhone-only.</li>
+    <li><strong>Spoken status announcements</strong> — capture state changes are visible on screen but are not yet announced to VoiceOver. This is the gap we consider most worth closing.</li>
+    <li><strong>iPad layout</strong> is not optimised for iPad; the iPhone layout runs on it.</li>
     <li><strong>Voice Control on iOS</strong> works for basic commands ("tap mic", "tap submit") but isn't fully tuned — some custom gestures don't have a verbal name yet.</li>
     <li><strong>Older devices</strong> (iPhone 8, SE 1st gen) may experience reduced animation framerates. Reduce Motion is the recommended workaround.</li>
     <li>We don't yet ship a high-contrast theme beyond what dark mode provides.</li>
+  </ul>
+
+  <h2>The other places BeFree runs</h2>
+  <p>This statement was written for the iPhone app, which is still where the most accessibility work has gone. In brief, for the rest:</p>
+  <ul>
+    <li><strong>Mac</strong> — full keyboard operation, the system Reduce Motion and appearance settings are honoured, and every capture path has a keyboard equivalent (⌘⇧Space anywhere).</li>
+    <li><strong>Web</strong> (app.heybefree.app) — keyboard-navigable with visible focus rings and a ⌘K command bar; screen-reader support has had less testing than iOS and we want to hear about problems.</li>
+    <li><strong>Android</strong> — in pre-release testing; TalkBack support is untested and we would welcome testers who rely on it.</li>
+    <li><strong>This website</strong> honours Reduce Motion: with it on, the mascot's breathing and every transition stop.</li>
   </ul>
   <p>These are tracked. If you depend on one of them, email us — we will prioritise what real users need.</p>
 
