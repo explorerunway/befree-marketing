@@ -8,7 +8,7 @@ import DownloadCTA from '../components/DownloadCTA.astro';
 const faqs = [
   {
     q: 'Is the free plan actually free?',
-    a: 'Yes — genuinely, forever. Capture, AI sorting, and all five kinds of content, synced across your devices, no card required. Pro is there when your brain-dump volume outgrows the free AI budget.',
+    a: 'Yes — no card required. Free includes 20 AI-sorted captures every 30 days, plus your tasks, events, reminders, lists and notes synced across devices. Choose Pro when you need more room for AI sorting.',
   },
   {
     q: 'Does it work on both Mac and iPhone?',
@@ -19,8 +19,8 @@ const faqs = [
     a: 'No. BeFree never trains AI on your dumps, and they are never sold or mined for ads — they sort your day and nothing else. Our language-model provider is contractually barred from training on your content, and our privacy policy spells out exactly how each AI provider handles your data. Everything travels over encrypted connections.',
   },
   {
-    q: 'Can I switch or cancel whenever?',
-    a: 'Anytime, in a couple of taps. Cancel Pro and you simply drop back to Free — your content stays right where it is. One purchase covers iPhone and Mac, and applies in the browser too.',
+    q: 'Can I cancel whenever?',
+    a: 'Yes. Open Your plan in the web app and choose Manage subscription, or use your Apple subscription settings for an App Store purchase. Cancellation stops renewal; Pro normally stays active until the current trial or paid period ends, then you return to Free without losing your content. One subscription covers the same BeFree account across devices.',
   },
   // The three objections a cold visitor actually arrives with, per the funnel
   // audit. Answered here rather than on a new FAQ page — /pricing is where
@@ -76,7 +76,7 @@ const faqs = [
         </div>
         <a href="https://app.heybefree.app" class="tier-btn outline">Start free in your browser</a>
         <div class="feats">
-          <div class="feat"><i class="ph-bold ph-check olive"></i> Voice capture &amp; AI sorting</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> 20 AI-sorted captures every 30 days</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Tasks, events, reminders, lists &amp; notes</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Siri, widgets &amp; Lock Screen capture</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Two-way Apple Reminders &amp; Calendar sync</div>
@@ -95,11 +95,11 @@ const faqs = [
           <span class="per">/mo</span>
         </div>
         <div class="bill-note" data-bill-note>billed annually — US$24.99/yr</div>
-        <a href="#download" class="tier-btn solid">Start free, upgrade in the app</a>
+        <a href="https://app.heybefree.app/plan" class="tier-btn solid">Get Pro in your browser</a>
         <div class="feats-label">Everything in Free, plus</div>
         <div class="feats">
-          <div class="feat"><i class="ph-bold ph-check plum"></i> More than double the AI budget, pooled across the whole year</div>
-          <div class="feat"><i class="ph-bold ph-check plum"></i> Loud weeks borrow from quiet ones — no wall mid-season</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> Far more room for AI-sorted captures</div>
+          <div class="feat"><i class="ph-bold ph-check plum"></i> A flexible AI allowance across the year</div>
           <div class="feat"><i class="ph-bold ph-check plum"></i> Keeps BeFree independent — no ads, ever</div>
         </div>
       </div>
@@ -110,14 +110,14 @@ const faqs = [
       >, offline capture, and sync. Cancel anytime.
     </div>
     <div class="currency-note">
-      Prices in US dollars — the App Store bills in your local currency. In Australia: A$4.99/mo or
-      A$39.99/yr.
+      Prices shown in US dollars. In Australia: A$4.99/mo or A$39.99/yr. Your checkout shows the
+      available currency, final price, any applicable tax, and any eligible trial before you subscribe.
     </div>
   </section>
 
   <!-- ══════════ VOICE MOMENT ══════════ -->
   <section class="voice-moment">
-    <p>No pressure to upgrade. No trial timer that flips to paid. Just calm.</p>
+    <p>Free never turns into paid on its own. Optional Pro trials renew at the price shown at checkout unless you cancel before the trial ends.</p>
   </section>
 
   <!-- ══════════ FAQ ══════════ -->
@@ -138,7 +138,7 @@ const faqs = [
   <!-- ══════════ DOWNLOAD CTA ══════════ -->
   <DownloadCTA
     title="Start free. Breathe easier."
-    sub="No card, no trial timer. Just your first brain dump."
+    sub="No card for Free. Choose Pro only when you need it."
     mascotSize={80}
     padTop={false}
   >
