@@ -6,6 +6,8 @@ import { readFileSync } from 'node:fs';
 const vercel = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
 assert.equal(vercel.cleanUrls, true);
 assert.equal(vercel.trailingSlash, false);
+assert.ok(vercel.rewrites?.some(({ source, destination }) => source === '/' && destination === '/index.html'),
+  'The prebuilt homepage needs its explicit index route');
 const readPage = (name) => readFileSync(new URL(`../dist/${name}.html`, import.meta.url), 'utf8');
 for (const page of ['index', 'pricing', 'mac', 'android', 'adhd']) {
   const html = readPage(page);
