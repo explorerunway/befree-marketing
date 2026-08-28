@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node scripts/check-static-build.mjs",
+    "test": "node --test scripts/fastlane-analytics.test.mjs",
     "preview": "astro preview"
   },
   "dependencies": {

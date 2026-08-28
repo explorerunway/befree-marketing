@@ -1,0 +1,114 @@
+<details id="website-analytics" class="analytics-preference">
+  <summary>Website analytics settings</summary>
+  <div class="preference-content">
+    <p>
+      May we use Fastlane to understand visits from our social posts? If you allow
+      it, Fastlane saves visitor and session IDs in your browser and receives
+      page addresses, the referring site, screen size, language, time spent and
+      scroll depth. This is only for this marketing site, not your BeFree account.
+    </p>
+    <p class="status" data-analytics-status role="status" aria-live="polite">
+      Fastlane analytics are off until you allow them.
+    </p>
+    <div class="choices">
+      <button type="button" data-analytics-allow disabled>Allow Fastlane</button>
+      <button type="button" data-analytics-deny disabled>Keep Fastlane off</button>
+    </div>
+    <p class="note">
+      You can change this here any time. Turning it off clears its browser IDs
+      and reloads an active page. Vercel’s existing cookie-free audience measurement
+      is separate. <a href="/privacy#website-analytics">How website analytics work</a>.
+    </p>
+    <noscript><p>JavaScript is off, so Fastlane will not load.</p></noscript>
+  </div>
+</details>
+
+<aside id="fastlane-consent-prompt" class="consent-prompt" aria-label="Optional website analytics" hidden>
+  <h2>Help us understand what brings you here?</h2>
+  <p>
+    Optional Fastlane analytics saves visitor and session IDs in your browser
+    and measures visits from our social posts. It starts only if you allow it.{' '}
+    <a href="/privacy#website-analytics">Privacy details</a>.
+  </p>
+  <p class="status" data-analytics-status role="status" aria-live="polite">
+    Fastlane analytics are off until you allow them.
+  </p>
+  <div class="choices">
+    <button type="button" data-analytics-allow disabled>Allow Fastlane</button>
+    <button type="button" data-analytics-deny disabled>No thanks</button>
+  </div>
+  <p class="note">You can change this any time in the website footer.</p>
+</aside>
+
+<script>
+  import { initFastlaneAnalytics } from '../lib/fastlane-analytics.js';
+  initFastlaneAnalytics(window);
+</script>
+
+<style>
+  .analytics-preference {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 clamp(18px, 4vw, 40px) 24px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    scroll-margin-top: 100px;
+  }
+  summary {
+    width: fit-content;
+    min-height: 44px;
+    padding: 10px 0;
+    cursor: pointer;
+  }
+  .preference-content {
+    max-width: 600px;
+    padding: 16px 20px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    background: var(--bg-card);
+  }
+  p { margin: 0 0 12px; }
+  .status { color: var(--text); font-weight: 600; }
+  .choices { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  button {
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-input);
+    background: var(--bg-card);
+    color: var(--text);
+    font: 600 14px var(--font-body);
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-subtle); }
+  button:disabled { cursor: default; opacity: .6; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  summary:focus-visible, button:focus-visible, a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  .note { margin-bottom: 0; font-size: 13px; }
+  .consent-prompt {
+    position: fixed;
+    inset: auto 16px 16px auto;
+    z-index: 50;
+    width: min(420px, calc(100% - 32px));
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--bg-card);
+    box-shadow: var(--elev-3);
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .consent-prompt[hidden] { display: none; }
+  h2 {
+    margin: 0 0 10px;
+    font: 600 20px/1.3 var(--font-display);
+    color: var(--text);
+  }
+</style>

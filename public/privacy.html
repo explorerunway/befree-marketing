@@ -77,7 +77,7 @@
 <div class="wrap">
   <p class="crumb"><a href="/">← BeFree</a></p>
   <h1>Privacy Policy</h1>
-  <p class="last">Effective date: August 27, 2026</p>
+  <p class="last">Effective date: August 28, 2026</p>
 
   <p>BeFree is a brain dump app: you talk or type, and BeFree organises what you share into tasks, calendar events, reminders, grocery items, and notes.</p>
 
@@ -113,7 +113,13 @@
 
   <p><strong>Basic usage records.</strong> Separately from optional analytics, BeFree keeps a small usage log on its own servers, limited to a fixed, named list of events: that the app was opened, onboarding milestones, capture milestones (a capture started, filed, or edited), an item being completed, resurfaced, or consciously let go, and views or dismissals of the upgrade screen. Each record contains your account identifier, which named event happened, when, and at most one broad category from a fixed list (for example, that a capture came from voice rather than typing). It never contains your content or free text, and no device or location details; it is never shared with a third party or used for advertising. These records are deleted when you delete your account and, in any case, after 400 days.</p>
 
-  <p><strong>Website analytics.</strong> Our marketing website at heybefree.app measures aggregate traffic using Vercel Web Analytics, provided by the same company that hosts the site. It sets <strong>no cookies</strong> and stores nothing on your device. It records which page was viewed, the site that referred you, an approximate location (country, region, city) derived from your IP address, your device type, browser, and operating system, and the time of the visit. Your IP address itself is not stored, and the temporary identifier used to count a visit is discarded after 24 hours. The result is aggregate only &mdash; it cannot identify you, it is never linked to your BeFree account, it is not used for advertising, and it is not combined with any other data. If you would rather not be counted at all, any content blocker or your browser's &ldquo;Do Not Track&rdquo; setting will stop it, and you can email us at <a href="mailto:support@heybefree.app">support@heybefree.app</a> to object &mdash; there is nothing to opt out of inside the BeFree app, because this runs on the marketing website only. It is separate from the optional &ldquo;Help improve BeFree&rdquo; setting described above, which continues to govern the app's crash reporting and product analytics.</p>
+  <p id="website-analytics"><strong>Basic website analytics (Vercel).</strong> Our marketing website at heybefree.app measures aggregate traffic using Vercel Web Analytics, provided by the same company that hosts the site. Vercel's analytics set <strong>no cookies</strong> and store nothing on your device. They record which page was viewed, the site that referred you, an approximate location (country, region, city) derived from your IP address, your device type, browser, and operating system, and the time of the visit. Your IP address itself is not stored, and the temporary identifier used to count a visit is discarded after 24 hours. Vercel's measurement is aggregate only &mdash; it is never linked to your BeFree account, is not used for advertising, and is not combined with other data. A content blocker or your browser's &ldquo;Do Not Track&rdquo; setting can stop Vercel's measurement, and you can email us at <a href="mailto:support@heybefree.app">support@heybefree.app</a> to object. This is separate from both the optional Fastlane measurement below and the app's &ldquo;Help improve BeFree&rdquo; setting, which governs product analytics and attaching your account identifier to crash reports.</p>
+
+  <p><strong>Optional website analytics (Fastlane).</strong> Fastlane, operated by Possibility Studios Pty Ltd, helps us understand visits to this marketing website and which social campaigns bring people here. <strong>It is off unless you select &ldquo;Allow Fastlane&rdquo;</strong> in <a href="/#website-analytics">Website analytics settings</a> in the website footer. We do not load it when your browser sends Do Not Track or Global Privacy Control. It is not installed in the signed-in web app at app.heybefree.app, and this integration does not send your BeFree account identifier, captures, notes or calendar content to Fastlane.</p>
+
+  <p>If you allow Fastlane, its script saves a random visitor identifier (<code>am_vid</code>), a session identifier (<code>am_sid</code>) and a session timestamp (<code>am_st</code>) in this website's browser storage (localStorage). These are not cookies. The visitor identifier remains until you turn Fastlane off or clear this site's browser data; the timestamp is used to group visits into 30-minute sessions. The script sends page addresses, referring addresses, campaign labels, screen dimensions, browser language, visit timestamps, time on page and scroll depth to Fastlane's collection service hosted on Convex. As with other network requests, the receiving service also receives your IP address. We withhold this tracker on unrecognised page addresses, query parameters, fragments or referring addresses to reduce the risk of sending private URL information. We do not use Fastlane to read what you type into the website's demo.</p>
+
+  <p>We store your allow/off choice separately in <code>befree-fastlane-consent-v1</code> only after you make it. You can reopen <a href="/#website-analytics">Website analytics settings</a> and choose &ldquo;Keep Fastlane off&rdquo; at any time. This clears Fastlane's three browser-storage values and reloads the page if its script was already active; an executed script cannot simply be unloaded. Turning it off stops future collection in that browser but does not delete reports Fastlane has already received. Fastlane's handling and retention of received data are described in its <a href="https://www.usefastlane.ai/privacy">Privacy Policy</a>. Turning Fastlane off does not change Vercel's separate measurement or the BeFree app's analytics choice.</p>
 
   <p>We do not sell your data, and we do not track you across other companies' apps or websites.</p>
 
@@ -146,9 +152,10 @@
     <li>Web app and website hosting</li>
     <li>Crash diagnostics (always; content-free)</li>
     <li>Product analytics (when enabled)</li>
+    <li>Website audience measurement (Vercel) and optional campaign analytics (Fastlane, only after you allow it)</li>
   </ul>
   <p>For the current list of named providers, see our <a href="/subprocessors.html">Subprocessors</a> page. We update that list when we change a provider, so you can always see exactly who processes BeFree data.</p>
-  <p>These providers process data only to deliver the app functionality you've used. We do not sell personal data.</p>
+  <p>These providers process data for the services and optional analytics described above. We do not sell personal data.</p>
 
   <h2>Data security</h2>
   <p>BeFree uses encrypted network connections and database-level access controls so each account can access only its own data. Authorized BeFree personnel can access stored data when necessary to operate, secure, or support the service — for example, to investigate a bug you've reported or respond to a security incident — and never for any other purpose. We design around least-necessary processing — no provider sees more than they need to do their job. No system is perfect, and we recommend keeping your device's OS up to date.</p>
@@ -157,6 +164,7 @@
   <p>You can:</p>
   <ul>
     <li>Leave diagnostics and analytics off (the default), or change the "Help improve BeFree" setting at any time in BeFree's privacy settings.</li>
+    <li>Leave Fastlane website analytics off, or change your choice in <a href="/#website-analytics">Website analytics settings</a> in the marketing website's footer.</li>
     <li>Revoke microphone, speech-recognition, calendar, reminder, or notification permissions in iOS Settings; on Mac in System Settings &rarr; Privacy &amp; Security; in a browser, through the site permissions for app.heybefree.app.</li>
     <li>Review or delete the personal facts BeFree has stored, in the in-app <em>About you</em> screen.</li>
     <li>Export your data from BeFree.</li>
