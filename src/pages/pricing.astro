@@ -8,7 +8,7 @@ import DownloadCTA from '../components/DownloadCTA.astro';
 const faqs = [
   {
     q: 'Is the free plan actually free?',
-    a: 'Yes — no card required. Free includes 20 AI-sorted captures every 30 days, plus your tasks, events, reminders, lists and notes synced across devices. Choose Pro when you need more room for AI sorting.',
+    a: 'Yes — no card required, and Free never turns into paid on its own. Your tasks, events, reminders, lists and notes are all included and sync across devices. Free includes a monthly allowance of AI-sorted captures; the app always shows your current one, because it differs by platform and we are still tuning it. Choose Pro when you need more room.',
   },
   {
     q: 'Does it work on both Mac and iPhone?',
@@ -27,7 +27,7 @@ const faqs = [
   // someone weighing it up already is.
   {
     q: 'What happens to my voice recording?',
-    a: 'There isn\'t one to keep. Your device turns speech into text, and only the text ever reaches BeFree — no audio is uploaded and none is stored. On Apple devices that transcription is Apple\'s; in a browser it\'s your browser\'s own engine.',
+    a: 'There isn\'t one to keep. BeFree never receives or stores your raw audio — only the text of what you said ever reaches us. On Apple devices the transcription is Apple\'s, and depending on your device and language Apple may process the audio on its own servers to produce that text; in a browser it is handled by your browser\'s speech engine.',
   },
   {
     q: 'Will it nag me?',
@@ -42,7 +42,7 @@ const faqs = [
 
 <Site
   title="BeFree Pricing — free brain dump app, Pro from US$2.08/mo"
-  description="BeFree is free forever: voice capture, AI sorting, sync, widgets and Siri. Pro adds a bigger AI allowance — US$3.49 a month or US$24.99 a year. No card to start."
+  description="BeFree is free to start: voice capture, AI sorting, sync, widgets and Siri, no card. Pro adds far more room for AI sorting — US$3.49 a month or US$24.99 a year."
   active="pricing"
 >
   <!-- ══════════ HERO ══════════ -->
@@ -50,7 +50,7 @@ const faqs = [
     <div class="eyebrow">Pricing</div>
     <h1>Calm doesn't have to<br />cost much.</h1>
     <p>
-      Start free and stay free for as long as you like. Upgrade only when your life gets loud enough
+      Start free, no card. Upgrade only when your life gets loud enough
       to need it.
     </p>
 
@@ -72,11 +72,11 @@ const faqs = [
         <div class="tier-tag">For getting your head clear.</div>
         <div class="price-row">
           <span class="price">$0</span>
-          <span class="per">forever</span>
+          <span class="per">to start</span>
         </div>
         <a href="https://app.heybefree.app" class="tier-btn outline">Start free in your browser</a>
         <div class="feats">
-          <div class="feat"><i class="ph-bold ph-check olive"></i> 20 AI-sorted captures every 30 days</div>
+          <div class="feat"><i class="ph-bold ph-check olive"></i> A monthly allowance of AI-sorted captures</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Tasks, events, reminders, lists &amp; notes</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Siri, widgets &amp; Lock Screen capture</div>
           <div class="feat"><i class="ph-bold ph-check olive"></i> Two-way Apple Reminders &amp; Calendar sync</div>
